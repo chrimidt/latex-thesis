@@ -1,0 +1,62 @@
+\documentclass[12pt,a4paper, twoside]{report}
+
+% Import preamble and setup code
+\input{preamble.tex}
+
+% Begin document
+\begin{document}
+
+% Roman numeral page numbering for front matter
+\pagenumbering{roman}
+
+% Title page
+\input{Sections/titlepage}
+
+\newpage
+\thispagestyle{empty} % Removes header/footer from the blank page
+\mbox{} % Inserts an empty box to force the page
+\newpage
+
+% Abstracts, Acknowledgments, etc.
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+This thesis, titled \textit{\ThesisTitle}, by \AuthorName, explores...
+\lipsum[1] % Replace with actual content
+
+
+\chapter*{Acknowledgments}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+\lipsum[3] % Replace with actual content
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% Switch to Arabic numerals starting from Chapter 1
+\newpage
+\pagenumbering{arabic}
+
+% Chapters
+\chapter{Introduction}
+\input{Chapters/Chapter1}
+
+\chapter{Background}
+\input{Chapters/Chapter2}
+
+\chapter{Methodology}
+\input{Chapters/Chapter3}
+
+% References
+\chapter{References}
+\thispagestyle{plain}
+\printbibliography
+
+% Appendices
+\chapter{Appendices}
+\begin{appendices}
+\input{Appendices/appendixA.tex}
+\input{Appendices/appendixB.tex}
+\input{Appendices/appendixC.tex}
+\end{appendices}
+
+\end{document}

@@ -1,0 +1,56 @@
+% Packages and setup code
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{pagecolor}
+\usepackage{chemformula}
+\usepackage{url}
+\usepackage{orcidlink}
+\usepackage{cleveref}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{appendix}
+\usepackage{helvet} % Use Helvetica font
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
+\addbibresource{bibliography.bib} 
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  allcolors=black,
+  pdfborder={0 0 0},
+}
+
+% Page geometry
+\geometry{
+  a4paper,
+  left=3.2cm,
+  right=3.2cm,
+  top=3.2cm,
+  bottom=3.2cm,
+  headheight=10pt
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Clear existing header/footer settings
+\fancyhead[LE,RO]{\small\leftmark} % Chapter title on even and odd pages in small caps
+\fancyfoot[C]{\thepage} % Centered page number at the bottom of each page
+
+
+% Define how chapter titles appear in headers in all caps
+\renewcommand{\chaptermark}[1]{\markboth{\scriptsize\MakeUppercase{Chapter \thechapter.\ #1}}{}}
+
+
+
+
+% Define variables for Author Name and Thesis Title
+\newcommand{\AuthorName}{Christine Annelise Midtgaard } %Leave a space after the last letter of your surname 
+\newcommand{\ThesisTitle}{Exploring Deep Learning Techniques for Long-Tailed Recognition: Methods, Models, and Analysis}
+
+% Custom patch to suppress page number on \part pages
+\makeatletter
+\let\sv@endpart\@endpart
+\def\@endpart{\thispagestyle{empty}\sv@endpart}
+\makeatother
