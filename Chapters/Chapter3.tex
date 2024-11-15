@@ -1,9 +1,32 @@
-\lipsum[23-25]
-\section{Methodology}
-\lipsum[26-28]
-\section{Results}
-\lipsum[29-31]
-\section{Discussion}
-\lipsum[32-35]
-\section{Conclusion}
-\lipsum[35-37]
+% Chapter 3: Methodology
+
+This chapter describes the methods and approaches used in the experiments. This includes dataset preparation, models, loss functions, etc.
+
+\section{Overview of Methodology Approach}
+A high-level description of the approach to tackling the long-tailed dataset problem, including an explanation of the overall strategy, 
+such as balancing techniques, model selection, and any specific objectives that guide the methodology.
+
+\section{Algorithm Selection and Rationale}
+Description of the algorithms or model architectures chosen, such as ConvNeXt or MobileNetV2, and why they are appropriate for long-tailed learning.
+Discussion of the strengths and limitations of these models in addressing the challenges posed by imbalanced data.
+
+\section{Long-tailed Learning Techniques}
+Description of the specific methods used to address class imbalance, such as data sampling (e.g., oversampling/undersampling), class re-weighting, or advanced approaches like LDAM or DRW. 
+Justification for selecting these techniques, potentially referencing prior research (e.g., from Deep Long-Tailed Learning: A Survey by Zhang et al.).
+
+\section{Loss Functions}
+Explanation of the different loss functions explored, such as cross-entropy, focal loss, LDAM loss, etc., and their relevance for long-tailed learning.
+Rationale for each loss function's inclusion, focusing on its expected benefits for imbalanced classes and how it addresses the bias toward majority classes.
+
+\section{Data Imbalance Handling Strategies}
+Detailed explanation of the techniques for creating and handling an imbalanced dataset, such as generating imbalanced training and test sets.
+Any adjustments to the data pipeline to ensure that class distributions are maintained or specifically structured, as needed for the experiments.
+
+\section{Evaluation Strategies}
+Justification for the metrics and evaluation approach, such as using weighted or macro F1 scores.
+Explanation of how you plan to assess performance across different class groups (e.g., head, middle, tail) to capture the model’s performance on minority classes.
+
+\section{implementation Details}
+Brief technical explanations of any unique or customized methods implemented in code, especially if they differ from standard practices.
+Examples of changes made to existing algorithms or functions to adapt them for the long-tailed learning problem.
+

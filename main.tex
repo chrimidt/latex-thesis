@@ -20,13 +20,12 @@
 % Abstracts, Acknowledgments, etc.
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-This thesis, titled \textit{\ThesisTitle}, by \AuthorName, explores...
-\lipsum[1] % Replace with actual content
+\input{Sections/abstract.tex}
 
 
-\chapter*{Acknowledgments}
-\addcontentsline{toc}{chapter}{Acknowledgments}
-\lipsum[3] % Replace with actual content
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+\input{Sections/acknowledgement.tex}
 
 % Table of Contents
 \tableofcontents
@@ -46,17 +45,24 @@ This thesis, titled \textit{\ThesisTitle}, by \AuthorName, explores...
 \chapter{Methodology}
 \input{Chapters/Chapter3}
 
+\chapter{Experimental Setup}
+\input{Chapters/Chapter4.tex}
+
+\chapter{Results and Analysis}
+\input{Chapters/Chapter5.tex}
+
+\chapter{Conclusion and Future Work}
+\input{Chapters/Chapter6.tex}
+
 % References
-\chapter{References}
-\thispagestyle{plain}
+%\chapter*{References}
+\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 
 % Appendices
-\chapter{Appendices}
+%\chapter*{Appendices}
 \begin{appendices}
 \input{Appendices/appendixA.tex}
-\input{Appendices/appendixB.tex}
-\input{Appendices/appendixC.tex}
 \end{appendices}
 
 \end{document}
