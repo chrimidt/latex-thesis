@@ -14,6 +14,9 @@ Discussion of the strengths and limitations of these models in addressing the ch
 Description of the specific methods used to address class imbalance, such as data sampling (e.g., oversampling/undersampling), class re-weighting, or advanced approaches like LDAM or DRW. 
 Justification for selecting these techniques, potentially referencing prior research (e.g., from Deep Long-Tailed Learning: A Survey by Zhang et al.).
 
+\subsection{Arguments}
+The reason the focus has been on class-sensistive learning form the re-balancing methods, is that re-sampling comes with challenges regarding knowing the dataset prior to training the model. we want to find the best method for classifying the moth dataset, on which we have no ability to test. TODO: this might not be the case. 
+
 \section{Loss Functions}
 Explanation of the different loss functions explored, such as cross-entropy, focal loss, LDAM loss, etc., and their relevance for long-tailed learning.
 Rationale for each loss function's inclusion, focusing on its expected benefits for imbalanced classes and how it addresses the bias toward majority classes.

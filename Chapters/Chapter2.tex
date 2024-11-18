@@ -1,12 +1,17 @@
 % Chapter 2: Background
 
-This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and 
-\textit{Visual Transformers (VT)}, the deep long-tailed learning methods \textit{Class Re-balancing (CR)}, \textit{Information Augmentation (IA)}, 
-and \textit{Module Improvement (MI)}. These topics will be explained for the reader.
+% Length: aim for 10-15 pages
+
+This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Visual Transformers (VT)}, the deep long-tailed learning methods \textit{Class Re-balancing (CR)}, \textit{Information Augmentation (IA)}, 
+and \textit{Module Improvement (MI)}. These topics will be explained for the reader.\\
+
+Maybe mention image classification, as it is the primary goal of this thesis. 
 
 \section{Long-Tailed Dataset}
 A short introductory paragraph explaining why these topics are relevant and how they tie into the thesis.
-Contextualize the sections—e.g., "Long-tailed datasets are central to this thesis, as they represent the primary challenge. Model architectures and classic long-tailed methods form the foundation of the approaches explored in this work."
+Contextualize the sections—e.g., "Long-tailed datasets are central to this thesis, as they represent the primary challenge. Model architectures and classic long-tailed methods form the foundation of the approaches explored in this work."\\
+
+Describe the difference between class-imbalanced learning and long-tailed learning.
 
 \section{Model Architechtures}
 Briefly describe the role of deep learning models in handling long-tailed datasets.
@@ -21,10 +26,14 @@ Mention why they are relevant for handling long-tailed datasets.
 
 
 \section{Classic Long-Tailed Methods}
-Introduce the three methods (CR, IA, MI) with a brief explanation of their purpose.
+Introduce the three methods (CR, IA, MI) with a brief explanation of their purpose.\\
+
+Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning (TODO: create a figure like figure 2 in the paper). This thesis does not aim to examine all the beforementioned method, but aims to find a deep learning approach to a specific problem. The backgrounds of the methods used in this thesis are described in this section.
 
 \subsection{Class Re-balancing}
-Techniques like oversampling/undersampling and class weighting. Loss functions.
+The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment \cite{zhang2023deep}. The traditional way to sample when training deep networks is bases on mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
+
+
 
 \subsection{Information Augmentation}
 Data augmentation techniques tailored for long-tailed datasets.
