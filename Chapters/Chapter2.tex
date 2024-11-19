@@ -31,12 +31,41 @@ Introduce the three methods (CR, IA, MI) with a brief explanation of their purpo
 Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning (TODO: create a figure like figure 2 in the paper). This thesis does not aim to examine all the beforementioned method, but aims to find a deep learning approach to a specific problem. The backgrounds of the methods used in this thesis are described in this section.
 
 \subsection{Class Re-balancing}
-The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment \cite{zhang2023deep}. The traditional way to sample when training deep networks is bases on mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
+The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment \cite{zhang2023deep}. 
 
+\subsubsection{Re-sampling}
+The traditional way to sample when training deep networks is bases on mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
+
+\subsubsection{Class-sensitive Learning}
+Class-sensitive learning incorporates strategies to adjust the loss function, making it more sensitive to the imbalanced nature of the dataset. This approach directly modifies the optimization process to prioritize learning from under-represented tail classes.
+
+\subsubsection{Loss Functions for Class-Sensitive Learning}
+Re-weighting  is a method that attempts to adjust the training loss values for different classes by multiplying them with different weights \cite{zhang2023deep}.
+
+\myindent \textbf{Cross-Entropy Loss}
+Softmax loss is the standard loss function used for classification tasks. It converts logits into probabilities via the softmax function and calculates the cross-entropy between predicted probabilities and ground-truth labels. While effective for balanced datasets, softmax loss struggles with long-tailed datasets because it assumes equal importance for all classes, leading to biased predictions favoring head classes.
+
+\myindent \textbf{Weighted Softmax Loss}
+
+\myindent \textbf{Focal Loss}
+
+\myindent \textbf{Class-Balanced Loss}
+
+\myindent \textbf{Balanced Softmax Loss}
+
+\myindent \textbf{LDAM Loss}
+
+\myindent \textbf{Equalization Loss}
 
 
 \subsection{Information Augmentation}
 Data augmentation techniques tailored for long-tailed datasets.
+
+\subsubsection{Transfer Learning}
+
+\subsubsection{Data Augmentation}
+
+
 
 \subsection{Module Improvement}
 Architectural changes to improve tail-class representation.

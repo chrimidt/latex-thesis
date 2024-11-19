@@ -13,31 +13,36 @@
 \usepackage{longtable}
 \usepackage{appendix}
 \usepackage{helvet} % Use Helvetica font
-\setlength\parindent{0pt} % Set no indentation for the entire file
 \usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
 \addbibresource{bibliography.bib} 
+
 \usepackage{hyperref}
 \hypersetup{
   colorlinks=true,
   allcolors=black,
   pdfborder={0 0 0},
-}
-
-% Page geometry
-\geometry{
-  a4paper,
-  left=3.2cm,
-  right=3.2cm,
-  top=3.2cm,
-  bottom=3.2cm,
-  headheight=14pt
-}
-
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{} % Clear existing header/footer settings
-\fancyhead[LE,RO]{\small\leftmark} % Chapter title on even and odd pages in small caps
-\fancyfoot[C]{\thepage} % Centered page number at the bottom of each page
+  }
+  
+  % Page geometry
+  \geometry{
+    a4paper,
+    left=3.2cm,
+    right=3.2cm,
+    top=3.2cm,
+    bottom=3.2cm,
+    headheight=14pt
+    }
+    
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhf{} % Clear existing header/footer settings
+    \fancyhead[LE,RO]{\small\leftmark} % Chapter title on even and odd pages in small caps
+    \fancyfoot[C]{\thepage} % Centered page number at the bottom of each page
+    
+    
+% Indentation    
+\setlength\parindent{0pt} % Set no indentation for the entire file
+\newcommand{\myindent}{\hspace*{2em}}
 
 
 % Define how chapter titles appear in headers in all caps
