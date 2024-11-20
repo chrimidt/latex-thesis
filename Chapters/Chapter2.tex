@@ -5,7 +5,7 @@
 This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Visual Transformers (VT)}, the deep long-tailed learning methods \textit{Class Re-balancing (CR)}, \textit{Information Augmentation (IA)}, 
 and \textit{Module Improvement (MI)}. These topics will be explained for the reader.\\
 
-Maybe mention image classification, as it is the primary goal of this thesis. 
+Mention image classification, as it is the primary goal of this thesis. 
 
 \section{Long-Tailed Dataset}
 A short introductory paragraph explaining why these topics are relevant and how they tie into the thesis.
@@ -39,13 +39,58 @@ The traditional way to sample when training deep networks is bases on mini-batch
 \subsubsection{Class-sensitive Learning}
 Class-sensitive learning incorporates strategies to adjust the loss function, making it more sensitive to the imbalanced nature of the dataset. This approach directly modifies the optimization process to prioritize learning from under-represented tail classes.
 
+
 \subsubsection{Loss Functions for Class-Sensitive Learning}
-Re-weighting  is a method that attempts to adjust the training loss values for different classes by multiplying them with different weights \cite{zhang2023deep}.
+The loss function serves as a measure of the model's fitness to the data, quantifying the distance between the actual and predicted values of the target. Typically, the loss is represented as a nonnegative value, where smaller values indicate a better fit, and a perfect fit corresponds to a loss of zero \cite{zhang2023dive}.
 
-\myindent \textbf{Cross-Entropy Loss}
-Softmax loss is the standard loss function used for classification tasks. It converts logits into probabilities via the softmax function and calculates the cross-entropy between predicted probabilities and ground-truth labels. While effective for balanced datasets, softmax loss struggles with long-tailed datasets because it assumes equal importance for all classes, leading to biased predictions favoring head classes.
+Conventional training of deep networks using the softmax cross-entropy loss often overlooks class imbalance. This results in uneven gradients for different classes, leading to suboptimal performance on underrepresented classes. To mitigate this issue, modifications to the loss function are introduced to ensure a more balanced contribution from each class during training. One such technique is re-weighting which adjusts the training loss for different classes by assigning a specific weight to each class \cite{zhang2023deep}. The softmax cross-entropy loss is used as a baseline, and is described below along with the loss functions for re-weighting.
 
-\myindent \textbf{Weighted Softmax Loss}
+\myindent \textbf{Softmax Cross-Entropy Loss}
+The \textit{Softmax-Cross-Entropy loss}, often denoted as \textit{softmax loss}, is a widely used combination for training deep neural networks in classification tasks, including image classification. It is particularly effective for multi-class problems, where the goal is to assign an input image to one of several predefined categories \cite{cs231n} \cite{pytorch_crossentropy}.
+
+The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function for class \( i \) is defined as:
+
+\begin{equation}
+    P(y = i \mid \mathbf{z}) = \frac{\exp(z_i)}{\sum_{j=1}^{K} \exp(z_j)}
+\end{equation}
+
+Here, \( \exp(z_i) \) ensures that all values are positive, and dividing by the sum normalizes the probabilities so that they sum to 1. This normalization is crucial for classification, as it allows the network's outputs to represent the likelihood of each class.
+
+The \textit{Cross-Entropy loss} measures the difference between the predicted probability distribution \( \mathbf{P} \) (produced by Softmax) and the true distribution \( \mathbf{y} \) (the one-hot encoded ground truth). It is defined as:
+
+\begin{equation}
+    \mathcal{L}_{\text{CE}} = -\sum_{i=1}^{K} y_i \log(P(y = i \mid \mathbf{z}))
+\end{equation}
+
+
+For a single example where the true class is \( c \), this simplifies to:
+
+\begin{equation}
+    \mathcal{L}_{\text{CE}} = -\log(P(y = c \mid \mathbf{z}))
+\end{equation}
+
+
+This formulation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
+
+This combination has become the de facto standard for image classification tasks, providing a robust and mathematically sound framework for training deep neural networks.
+
+
+\myindent \textbf{Weighted Softmax Cross-Entropy Loss}
+The \textit{Weighted Softmax Cross-Entropy loss}, often denoted as \textit{weighted softmax loss}, is a variant of the standard Softmax-Cross-Entropy loss, designed to address imbalanced datasets. By assigning different weights to each class, this method ensures that underrepresented classes contribute more to the overall loss, improving the model's performance on minority classes. The weighted cross-entropy loss applies class-specific weights to the standard Cross-Entropy formulation. It is defined as:
+
+\begin{equation}
+    \mathcal{L}_{\text{WCE}} = -\sum_{i=1}^{K} w_i y_i \log(P(y = i \mid \mathbf{z}))
+\end{equation}
+
+Where \( w_i \) is the weight for class \( i \), reflecting its relative importance, \( y_i \) is the one-hot encoded true label for class \( i \), and \( P(y = i \mid \mathbf{z}) \) is the predicted probability for class \( i \) (produced by the Softmax function).
+
+For a single example where the true class is \( c \), the loss simplifies to:
+
+\begin{equation}
+    \mathcal{L}_{\text{WCE}} = -w_c \log(P(y = c \mid \mathbf{z}))
+\end{equation}
+
+This weighted formulation ensures that minority classes (with higher weights) contribute more to the overall loss, addressing the imbalance during training and improving the model's performance on underrepresented classes.
 
 \myindent \textbf{Focal Loss}
 
