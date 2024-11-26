@@ -7,11 +7,26 @@ and \textit{Module Improvement (MI)}. These topics will be explained for the rea
 
 Mention image classification, as it is the primary goal of this thesis. 
 
-\section{Long-Tailed Dataset}
-A short introductory paragraph explaining why these topics are relevant and how they tie into the thesis.
-Contextualize the sections—e.g., "Long-tailed datasets are central to this thesis, as they represent the primary challenge. Model architectures and classic long-tailed methods form the foundation of the approaches explored in this work."\\
+\section{Long-Tailed Datasets}
+Long-tailed datasets pose significant challenges in deep learning, as they represent an extreme form of class imbalance. Addressing these challenges is central to this thesis, which explores methods to improve model performance on underrepresented classes. This section outlines the structure of long-tailed distributions and their implications.
 
-Mention the difference between class-imbalanced learning and long-tailed learning.
+A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. This  distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} and CIFAR-100 \cite{krizhevsky2009learning} using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
+
+One such benchmark, CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 32x32 color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following a Pareto distribution, introducing significant class imbalance. This makes it an ideal benchmark for studying the challenges posed by long-tailed datasets.  
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/long_tail_distribution.png} 
+    \caption{Illustration of a long-tailed distribution. Figure from \cite{lgresearch257}.}
+    \label{fig:lt_distribution} % Use a unique label for referencing the figure
+\end{figure}
+
+Class imbalance has a profound impact on model performance compared to evenly distributed datasets \cite{vanhorn2017deviltailsfinegrainedclassification, cui2019classbalancedlossbasedeffective}. Deep networks trained on long-tailed datasets often exhibit biased performance, favoring head classes while performing poorly on tail classes \cite{zhang2023deep}. Zhang et al. (2023) provide a comprehensive survey of methods addressing this challenge, categorizing current approaches into three main groups: class re-balancing, information augmentation, and module improvement. These methods will be further explored in section \ref{sec:lt_methods}. 
+
+
+
+
+% \cite{zhang2023deep} from ImageNet \cite{ImageNet2009}, Places365 \cite{Places365}, and CIFAR100 \cite{krizhevsky2009learning} to generate ImageNet-LT \cite{liu2019largescalelongtailedrecognitionopen}, Places-LT \cite{liu2019largescalelongtailedrecognitionopen}, and CIFAR100-LT , respectively. 
 
 \section{Model Architechtures}
 Describe the role of deep learning models in handling long-tailed datasets.
@@ -26,9 +41,17 @@ Mention why they are relevant for handling long-tailed datasets.
 
 
 \section{Classic Long-Tailed Methods}
+\label{sec:lt_methods}
 Introduce the three methods (CR, IA, MI) with a brief explanation of their purpose.\\
 
-Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning (TODO: create a figure like figure 2 in the paper). This thesis does not aim to examine all the beforementioned method, but aims to find a deep learning approach to a specific problem. The backgrounds of the methods used in this thesis are described in this section.
+Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis does not aim to examine all the beforementioned method, but aims to find a deep learning approach to a specific problem. The backgrounds of the methods used in this thesis are described in this section.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/lt_methods_categories.png} 
+    \caption{Long-tailed categories as described by \textit{Zhang et al.} \cite{zhang2023deep}.}
+    \label{fig:lt_main_categories} % Use a unique label for referencing the figure
+\end{figure}
 
 \subsection{Class Re-balancing}
 The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment \cite{zhang2023deep}. 
