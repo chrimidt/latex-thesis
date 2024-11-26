@@ -241,7 +241,6 @@ Table \ref{tab:vil_lt_acc1} show the top 1 accuracies for ViT-B/16 on various lo
 \end{table}
 
 
-Text.
 
 \begin{table}[H]
     \centering
@@ -306,7 +305,7 @@ Table \ref{tab:conv_lt_acc1} show the top 1 accuracies for ConvNeXt Base on vari
         Class-balanced loss   & 0.8332 & 0.8535 & 0.8566 & 0.8166 & 0.9474 \\
         Balanced Softmax loss   & 0.8364 & 0.8344 & 0.8365 & 0.7988 & 0.9474 \\
         Equalization loss   & 0.8318 & 0.8468 & 0.8448 & 0.8343 & 0.9474 \\
-        LDAM loss   & data & data & data & data & data \\
+        LDAM loss   & 0.8316 & 0.8373 & 0.8412 & 0.8047 & 0.8947 \\
         \bottomrule
     \end{tabular}
     \caption{Evaluation results for ConvNeXt Base trained on the custom balanced dataset, showing Acc1.}
@@ -328,13 +327,14 @@ Table \ref{tab:conv_lt_acc1} show the top 1 accuracies for ConvNeXt Base on vari
             Class-balanced & 0.9904 & 0.8332 & 0.8323 & 0.9594 & 0.8535 & 0.8661 & 0.9571 & 0.8566 & 0.9010 & 1.1028 & 0.8166 & 0.8603 & 0.3731 & 0.9474 & 0.9386 \\
             Balanced Softmax & 1.0008 & 0.8364 & 0.8350 & 0.9829 & 0.8344 & 0.8478 & 0.9720 & 0.8365 & 0.8853 & 1.1509 & 0.7988 & 0.8418 & 0.4780 & 0.9474 & 0.9386 \\
             Equalization & 0.9124 & 0.8318 & 0.8302 & 0.9030 & 0.8468 & 0.8594 & 0.8550 & 0.8448 & 0.8899 & 1.2187 & 0.8343 & 0.8779 & 0.4981 & 0.9474 & 0.9474 \\
-            LDAM & data & data & data & data & data & data & data & data & data & data & data & data & data & data & data \\
+            LDAM & 12.2036 & 0.8316 & 0.8308 & 11.0787 & 0.8373 & 0.8485 & 10.9948 & 0.8412 & 0.8882 & 12.5744 & 0.8047 & 0.8592 & 6.2892 & 0.8947 & 0.8947 \\
             \bottomrule
         \end{tabular}
     }
     \caption{Evaluation results for ConvNeXt Base trained on the custom balanced dataset, showing Loss, Acc1, and F1 scores for each dataset split.}
     \label{tab:conv_bal_results}
 \end{table}
+
 
 Text.
 
@@ -350,7 +350,7 @@ Text.
         Class-balanced loss   & 0.0142 & 0.0019 & 0.0000 & 0.0000 & 0.0526 \\
         Balanced Softmax loss   & 0.6460 & 0.8230 & 0.8685 & 0.6509 & 0.5789 \\
         Equalization loss   & 0.5956 & 0.8278 & 0.8768 & 0.6923 & 0.3421 \\
-        LDAM loss   & data & data & data & data & data \\
+        LDAM loss   & 0.3770 & 0.5956 & 0.6445 & 0.4260 & 0.2632 \\
         \bottomrule
     \end{tabular}
     \caption{Evaluation results for ConvNeXt Basetrained on the long-tailed dataset, showing Acc1.}
@@ -372,10 +372,14 @@ Text.
             Class-balanced & 5.0105 & 0.0142 & 0.0016 & 6.1643 & 0.0019 & 0.0000 & 6.5523 & 0.0000 & 0.0000 & 5.0450 & 0.0000 & 0.0000 & 3.4200 & 0.0526 & 0.0164 \\
             Balanced Softmax & 2.6574 & 0.6460 & 0.6273 & 0.9120 & 0.8230 & 0.8237 & 0.5457 & 0.8685 & 0.8952 & 2.1945 & 0.6509 & 0.7250 & 3.3453 & 0.5789 & 0.5965 \\
             Equalization & 2.5527 & 0.5956 & 0.5586 & 0.9349 & 0.8278 & 0.8139 & 0.6192 & 0.8768 & 0.8907 & 1.9792 & 0.6923 & 0.7375 & 3.2293 & 0.3421 & 0.3404 \\
-            LDAM & data & data & data & data & data & data & data & data & data & data & data & data & data & data & data \\
+            LDAM & 39.0426 & 0.3770 & 0.3448 & 12.8480 & 0.5956 & 0.5812 & 8.3491 & 0.6445 & 0.6597 & 25.5813 & 0.4260 & 0.5105 & 72.0081 & 0.2632 & 0.2719 \\
             \bottomrule
         \end{tabular}
     }
     \caption{Evaluation results for ConvNeXt Base trained on the long-tailed dataset, showing Loss, Acc1, and F1 scores for each dataset split.}
     \label{tab:conv_lt_results}
 \end{table}
+
+
+
+
