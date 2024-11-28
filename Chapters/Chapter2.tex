@@ -23,17 +23,86 @@ One such benchmark, CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldist
 
 Class imbalance has a profound impact on model performance compared to evenly distributed datasets \cite{vanhorn2017deviltailsfinegrainedclassification, cui2019classbalancedlossbasedeffective}. Deep networks trained on long-tailed datasets often exhibit biased performance, favoring head classes while performing poorly on tail classes \cite{zhang2023deep}. Zhang et al. (2023) provide a comprehensive survey of methods addressing this challenge, categorizing current approaches into three main groups: class re-balancing, information augmentation, and module improvement. These methods will be further explored in section \ref{sec:lt_methods}. 
 
+
+%===================================================================================
+
 \section{Model Architechtures}
-Describe the role of deep learning models in handling long-tailed datasets.
+Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Visual Transformers (VTs) stand out as the primary architectures used in this thesis. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2016}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the VT architecture.
+
+\subsection{Introdution to Neural Networks}
+Before the introduction of Convolutional Neural Networks (CNNs) and, more recently, Vision Transformers (ViTs), the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive}.
+
+To illustrate the structure of a neural network, figure \ref{fig:cnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/cnn_layers.jpg} 
+    \caption{Layers of a convolutional neural network. Figure from \cite{mathworks_cnn}.}
+    \label{fig:cnn_layers}
+\end{figure}
+
+However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. This limitation was addressed by CNNs, which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
 
 \subsection{Convolutional Neural Networks}
-Add historical context.
-Mention specific CNNs used in this thesis (e.g., ResNet, MobileNet).
+
+% What are CNNs?
+% Historical context.
+% Input data.
+% Output data.
+% Layers.
+
+% Before the CNNS, the standard was to flatten the image from two dimensional matrix into a one dimensional array and pass it through a feed-forward neural network in order to classify the image. As the image is converted into one dimension, naturally, spacial information in the image is lost. 
+
+% As is common for all neural networks, they are made up of neurons with learnable weights and biases, and has an input layer and an output layer with several hidden layers in between, where each hidden layer can have an arbitrary amount of neurons. Each neron recieves some inputs, perfom dot product and optionally follows it with nonlinearity.
+
+%  A simple neural network is illustrated in figure \ref{fig:cnn_layers}, which shows an NN with three input neurons, two hidden layers with four neurons each, and an output layer of two neurons. The example in figure \ref{fig:cnn_layers} could be a neural network designed to classify cats and dogs based on three parameters. The parameters could be height, weight, and nose length of the pet. This data would propagate through the NN and the result would be the value of the two output neurons. The output with the highest value would be intrepreted as the class of the given input data, either a cat or a dog. The idea is that a neural network functions as a universal approximator, and without the hidden layers, it is just a linear function \cite{zhang2023dive}. The hidden layers introduce nonlinearity  
+ 
+
+
+ A convolutional neural network is a neural network architecture for deep learning that gained popularity after being introduced by LeCun et al. in 1995 \cite{lecun1995}. It is designed to recognize patterns in images for classification, as CNNs preserve the two dimensional input of an image, preserving the idea that nearby pixels are related. 
+
+
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/CNN_illustration.jpg} 
+    \caption{Illustration of a convolutional neural network. Figure from \cite{mathworks_cnn}.}
+    \label{fig:cnn_illustration}
+\end{figure}
+
+\subsubsection{MobileNetV2 Architechture}
+
+MobileNetV2 is a lightweight CNN architecture designed for efficient mobile and edge computing applications \cite{sandler2018mobilenetv2}. It introduces two key innovations:
+
+Inverted Residuals: Use of shortcut connections between thin bottleneck layers to improve performance while maintaining low computational cost.
+Linear Bottlenecks: Avoiding non-linearities in narrow layers to preserve information. MobileNetV2 is particularly suited for image classification tasks on resource-constrained devices and is used in this thesis for its efficiency and effectiveness in feature extraction.
+
+\subsubsection{ResNet50V2 Architechture}
+ResNet50V2 is a variant of the ResNet (Residual Network) architecture, which introduced the concept of residual learning to address the vanishing gradient problem in deep networks \cite{he2016}. Key features include:
+
+Residual Connections: Allow gradients to flow more effectively through deeper layers.
+Improved Training Dynamics: Incorporates pre-activation, leading to smoother optimization. ResNet50V2’s ability to extract hierarchical features and its robustness to overfitting make it a popular choice for image classification tasks.
+
+\subsubsection{ConvNeXt Base Architechture}
+ConvNeXt Base is a modernized CNN architecture inspired by insights from transformer-based models, designed to achieve competitive performance while retaining the efficiency of CNNs \cite{todi2023convnext}. Notable features include:
+
+Simplified Design: Incorporates architectural refinements such as depthwise convolutions and LayerNorm.
+Enhanced Efficiency: Balances accuracy and computational cost, bridging the gap between traditional CNNs and transformer-based models. ConvNeXt Base represents a state-of-the-art approach to CNN design, making it a compelling choice for this thesis.
+
 
 \subsection{Visual Transformers}
 Explain their advantages over CNNs for certain tasks.
 Mention why they are relevant for handling long-tailed datasets.
 
+\subsubsection{ViT-B/16 Architecture}
+ViT-B/16 is a Visual Transformer model that leverages the transformer architecture for image classification \cite{dosovitskiy2021imageworth16x16words}. Key characteristics include:
+
+Patch Embeddings: Images are divided into 16x16 patches, which are then flattened and embedded.
+Self-Attention Mechanism: Captures global dependencies and relationships between image regions.
+Scalability: Performs particularly well on large-scale datasets, where its global attention mechanism can fully exploit the available data. ViT-B/16 exemplifies the application of transformers in computer vision and is used in this thesis to explore the capabilities of attention-based architectures.
+
+%====================================================================================
 
 \section{Classic Long-Tailed Methods}
 \label{sec:lt_methods}
