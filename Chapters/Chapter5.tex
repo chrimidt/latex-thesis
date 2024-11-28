@@ -58,6 +58,32 @@ Table \ref{tab:mobilenet_lt_acc1_1} show the top 1 accuracies for MobileNetV2 on
     \label{tab:mobilenet_lt_acc1_1}
 \end{table}
 
+\subsubsection{Comparison}
+
+The comparison of my experiment to the original MobileNetV2 trained on the original CIFAR100 dataset.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lp{5cm}p{5cm}}
+        \toprule
+        \textbf{Aspect} & \textbf{Your Experiment} & \textbf{Their Study (A3)} \\ 
+        \midrule
+        Dataset            & CIFAR100 Customized                & CIFAR100                \\
+        Loss Function      & Softmax Cross-Entropy   & Binary Cross-Entropy    \\
+        Epochs             & 90                      & 100                     \\
+        Optimizer          & Adam                    & LAMB                    \\
+        Learning Rate      & Step decay at 30, 60 epochs & Cosine decay from 0.005 or 0.008 \\
+        Augmentation       & Resize (224x224), RandomCrop, Horizontal Flip, Normalize & RandAugment, Mixup, CutMix, Normalize \\
+        Hardware           & 4x NVIDIA TITAN X (Pascal, 12GB) & 4x NVIDIA V100 (32GB) \\
+        Evaluation Metric  & Top-1 Accuracy          & Top-1 Accuracy          \\
+        Top-1 Accuracy     & 79.8 \% & 86.2\%-86.9\%           \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparison of MobileNetV2 on CIFAR100 with their study (Procedure A3) \cite{wightman2021resnetstrikesbackimproved}.}
+    \label{tab:comparison}
+\end{table}
+
+
 \subsection{ResNet50V2}
 
 Table \ref{tab:resnet_bal_acc1_1} show the top 1 accuracies for ResNet50V2 on various loss functions.
@@ -145,6 +171,33 @@ Table \ref{tab:vit_lt_acc1} show the top 1 accuracies for ViT-B/16 on various lo
     \caption{Evaluation results for ViT-B/16 trained on the long-tailed dataset, showing Acc1.}
     \label{tab:vit_lt_acc1}
 \end{table}
+
+\subsubsection{Comparison}
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.2} % Adjust row spacing
+    \setlength{\tabcolsep}{4pt} % Adjust column spacing
+    \begin{tabular}{lp{6cm}p{6cm}}
+        \toprule
+        \textbf{Aspect} & \textbf{Your Experiment} & \textbf{PUGD Results} \\ 
+        \midrule
+        Dataset           & CIFAR100 & CIFAR100 \\
+        Model             & ViT-B/16 pretrained on ImageNet-21K & Multiple models: VGG-16, ResNet-18, DenseNet-121, UPANet-16, and ViT-B/16 \\
+        Pretraining       & ImageNet-21K & ImageNet-1K (for fine-tuned models) \\
+        Optimizer         & Adam & PUGD \\
+        Loss Function     & Softmax Cross-Entropy & Softmax Cross-Entropy \\
+        Epochs            & 90 & 200 (end-to-end); 80–100 (fine-tuning) \\
+        Learning Rate     & Step decay: 0.001 → 0.0001 → 0.00001 & Cosine Annealing: 0.1 (end-to-end); 0.01–0.005 (fine-tuning) \\
+        Augmentation      & Resize (224), RandomCrop, Horizontal Flip, Normalize & Resize (224), RandAugment, Cutout, Normalize \\
+        Top-1 Accuracy    & - & End-to-End: Up to 78.30\% (DenseNet-121); Fine-tuning: ViT-B/16 achieves 93.95\% \\
+        Hardware          & 4x NVIDIA TITAN X (Pascal, 12GB) & RTX-Titan, 32GB RAM, eight-core processor \\
+        \bottomrule
+    \end{tabular}
+    \caption{Comparison of my experiment with PUGD results on CIFAR-100.}
+    \label{tab:comparison3}
+\end{table}
+
 
 \subsection{ConvNeXt Base}
 
