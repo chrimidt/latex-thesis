@@ -3,43 +3,67 @@
 % Length: aim for 2-3 pages.
 
 \label{sec:introduction}
-This thesis focuses on the problem with long-tailed datasets. The problem with training a deep learning model on long-tailed datasets is that the model will effectively 
-the data from the classes with most samples, and not the classes with few samples. The finsihed model will then not recognize an input from the tail classes. Most real-world
-datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data. The aim of this thesis is to try out some of the methods tackling the long-tailed problem for deep learning described in the paper \textit{Deep Long-Tailed Learning: A Survey} by Zhang et al.\cite{zhang2023deep} to find a method for long-tailed learning that works on a specific long-tailed dataset of images of moths taken around equator. The goal of the moth dataset is to identify species.
-
-\section{Problem Definition}
-Define the problem formally, including key terms like "head classes" and "tail classes."
-Provide an example or visualization of a long-tailed dataset.
-Connect the problem definition to the moth dataset.
-
 Image classification is one of the main challenges computer vision.
 
-\subsection{Goals of this thesis}
-Outline the goals of the thesis, emphasizing optimizing performance on tail classes.
-Mention how these goals contribute to the field of long-tailed learning.
+Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results [reference here]. The trained models have shown image classification with accuracies of over 80 \% [reference here], and hence the interest in deep learning for image recognition is high. However, the high accuracies are for on models trained on balanced datasets with thounsands of samples per class [reference here], while most real-world datasets are skewed in samples per class [reference here].  
 
-\subsubsection{Hypothesis}
+
+This thesis focuses on the problem with long-tailed datasets. The problem with training a deep learning model on long-tailed datasets is that the model will effectively the data from the classes with most samples, and not the classes with few samples. The finsihed model will then not recognize an input from the tail classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data. The aim of this thesis is to try out some of the methods tackling the long-tailed problem for deep learning described in the paper \textit{Deep Long-Tailed Learning: A Survey} by Zhang et al.\cite{zhang2023deep} to find a method for long-tailed learning that works on a specific long-tailed dataset of images of moths taken around equator. The goal of the moth dataset is to identify species.
+
+\section{Problem Definition}
+Something about head and tail classes.
+
+
+The goal of this project is to investigate deep learning models, like Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), and methods, mainly class re-balancing through cost-sensitive learning, and analyze their performance on datasets representaing a long-tailed structure.  
+
+Four models are investigated, where three of them are CNNs, and one is a ViT. The CNNs investigated are the MobileNetV2, ResNet50v2, and ConvNeXt Base, while the ViT investigated is the ViT-B/16. All four models are pretrained on ImageNet, and further trained on both a balanced version of CIFAR100 and an long-tailed version of CIFAR100, called CIFAR100-LT, and introducing the long-tailed technique as class re-balancing in the loss functions by using re-weighting. All models are trained with Softmax Cross-Entropy Loss, Weighted Softmax Cross-Entropy Loss, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, LDAM Loss, and Equalization Loss. The main purpose of this master's thesis is to compare class re-balancing methods on a well respresenting type of models used in deep learning image recognition tasks. Furhter comparison with state-of-the-art methods for deep long-tailed learning will be made. The motivation for this comparison is to find a way to train on a real-world long-tailed dataset of moths to correctly identify species.
+
+
+% These particular models were chosen because of their individual strenghts MobileNetV2 was designed for resource effeciency, respresenting a models designed for environments with limited resources. ResNet50v2 is build on the succes of the ResNet architecture, offering a strong baseline, providing a standard for comparison. ConvNeXt Base is a newer interpretation of convolutional neural networks, incorporating design principles of vision transformers, bridging the gap between tradional CNNs and ViTs. ViT-B/16 is 
+
+
+\subsection{Goals of this thesis}
+The goals of this thesis are to:
+
+\begin{enumerate}
+    \item Investigate the efficacy of long-tailed learning methods by assessing their performance on tail classes without sacrificing accuracy on head classes. 
+    \item Understand how model design affects the performance of deep long-tailed learning methods.
+    \item Provide a comprehensive insight in comparisons that inform the choice of methods for long-tailed distributions in acedemic and industry settings.
+\end{enumerate}
+
+\subsection{Hypothesis}
+Deep long-tailed learning methods, such as the carefully designed loss functions tailored for long-tailed ditributed datasets, can improve the performance of underrepresented (tail) classes while maintaining the overall accuracy across diverse model architectures. The effectiveness of these loss functions is influenced by the choise of model architecture and the degree of imbalance of the dataset.
 
 
 \subsection{Approach}
-Summarize the approach to achieve goals, such as implementing and comparing methods from Zhang et al.’s survey.
-% Highlight any novel aspects of the work (e.g., unique dataset, evaluation framework, or combination of methods).
+This master's thesis consists of six steps, described below:\\  
+
+\textbf{First step} is to investigate the dataset used for training, testing and validation in \textit{Deep Long-Tailed Learning: A Survey}, as the class re-balancing in this paper is used as inspiration for this thesis.\\
+
+\textbf{Second step} is generating a long-tailed version of CIFAR100 that can be used for training and comparisons of methods.\\
+
+\textbf{Third step} is the implementation of models and methods, combining them.\\
+
+\textbf{Fourth step} is hyperparameter settings.\\
+
+\textbf{Fifth step} is training and evaluation of the models with different loss functions. The training is both on the balanced and long-tailed version of CIFAR100.\\
+
+\textbf{Sixth step} is a comparison of the methods.
+
+Other steps could involve comparisons to related work and other long-tailed learning methods.
 
 \subsection{Scope of this thesis}
-Specify the scope:
-Focus is on image classification.
-Methods are tested on a specific dataset.
-The evaluation is limited to certain metrics.
+This thesis focuses on applying deep long-tailed learning methods to image classification tasks with an emphasis on loss functions as a solution to handle imbalanced datasets. The experiments are conducted on the CIFAR100 dataset, with both a balanced and synthetically generated long-tailed version. This thesis explores class re-balancing methods, specifically cost-sensitive learning applied via loss functions. These include cross-entropy loss, focal loss, weighted cross-entropy loss,  class-balanced loss, balanced softmax loss, equalization loss, and LDAM loss. The evaluation is done with particular focus on top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications.
 
-\section{Motivation}
-Discuss why the problem is significant, including real-world implications.
-Mention the importance of biodiversity studies or the challenges of species identification with limited samples.
-Discuss broader impacts, such as how solving long-tailed learning problems can benefit other fields.
+% \section{Motivation}
+% Discuss why the problem is significant, including real-world implications.
+% Mention the importance of biodiversity studies or the challenges of species identification with limited samples.
+% Discuss broader impacts, such as how solving long-tailed learning problems can benefit other fields.
 
 
-\section{Reading Guide}
-Mention what each chapter will cover and how they relate to each other.
+% \section{Reading Guide}
+% Mention what each chapter will cover and how they relate to each other.
 % Example: "Chapter 2 provides the theoretical background for long-tailed learning and deep learning methodologies. Chapter 3 describes the methodology used in this thesis, including dataset preparation and implementation details. Chapters 4 and 5 present the experimental results and analysis, followed by conclusions and suggestions for future work in Chapter 6."
 
-\section{Related Work}
-A section that describes the work related to this thesis. 
+% \section{Related Work}
+% A section that describes the work related to this thesis. 

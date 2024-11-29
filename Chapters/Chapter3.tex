@@ -2,32 +2,47 @@
 
 This chapter describes the methods and approaches used in the experiments. This includes dataset preparation, models, loss functions, etc.
 
-\section{Overview of Methodology Approach}
+\section{Overview of Approach}
 An overall description of the approach to tackling the long-tailed dataset problem, including an explanation of the strategy, 
 such as balancing techniques and model selection.
 
-\section{Algorithm Selection and Rationale}
+\section{Dataset Preparation and Specifications}
+Following the dataset structure used in \textit{Deep Long-Tailed Learning: A Survey}, the CIFAR100 dataset was modified to create a long-tailed training set and a balanced test set. Key details include:
+
+\begin{itemize}
+    \item Dataset characteristics: Number of classes, imbalance ratio, and train-test splits.
+    \item Preprocessing steps: Resizing, normalization, and augmentation techniques.
+    \item Handling imbalance: Techniques like re-sampling and augmentation to address the long-tailed distribution.
+\end{itemize}
+
+\section{Model and Algorithm Selection}
 Description of the model architectures chosen, and why they are appropriate for long-tailed learning.
 Discussion of the strengths and limitations of these models in addressing the challenges posed by imbalanced data.
 
-\section{Long-tailed Learning Techniques}
+\subsection{Long-tailed Learning Techniques}
 Description of the specific methods used to address class imbalance, such as data sampling, class re-weighting, etc. 
 Justification for selecting these techniques, potentially referencing prior research (from Deep Long-Tailed Learning: A Survey by Zhang et al.).
 
 % \subsection{Arguments}
 % The reason the focus has been on class-sensistive learning form the re-balancing methods, is that re-sampling comes with challenges regarding knowing the dataset prior to training the model. we want to find the best method for classifying the moth dataset, on which we have no ability to test. TODO: this might not be the case. 
 
-\section{Loss Functions}
+\subsubsection{Loss Functions}
 Explanation of the different loss functions explored, such as cross-entropy, focal loss, LDAM loss, etc., and their relevance for long-tailed learning.
 Rationale for each loss function's inclusion, focusing on its expected benefits for imbalanced classes and how it addresses the bias toward majority classes.
 
-\section{Data Imbalance Handling Strategies}
-Detailed explanation of the techniques for creating and handling an imbalanced dataset, such as generating imbalanced training and test sets.
 
 
-\section{Evaluation Strategies}
+\section{Evaluation Metrics}
 Justification for the metrics and evaluation approach, such as using weighted or macro F1 scores.
 Explanation of how the performance is assessed across different class groups to capture the model’s performance on minority classes.
+
+\section{Reproducibility}
+Steps taken to ensure reproducibility of experiments:
+\begin{itemize}
+    \item Use of random seed initialization.
+    \item Documentation of dataset versions and codebase.
+    \item Availability of scripts for dataset preparation and model training.
+\end{itemize}
 
 \section{Implementation Details}
 Technical explanations of any unique or customized methods implemented in code, for example the custom dataset.
