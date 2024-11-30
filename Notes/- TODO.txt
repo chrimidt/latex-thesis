@@ -1,0 +1,23 @@
+- Make plot of ImageNet distribution into bar plots
+- Compare models to state-of-the-art for CIFAR100 on paperswithcode.com
+- Convolutional Neural Networks
+- Vision Transformers
+- Focal loss
+- Class-balanced loss
+- Balanced SoftMax loss
+- LDAM
+- Equalization loss
+- Methodology
+- Experimental Setup
+- Results and Analysis
+- Conclusion and Future Work
+- Related Work
+- Appendix 
+- Explain choice of optimizer
+- Explain not freezing layers
+- Module Improvement
+- Information Augmentation
+- Transfer Learning
+- Make notes in the beginning of each section of what I think is missing
+- Read all notes from earlier
+- Write the differences from my experiments and their experiments
