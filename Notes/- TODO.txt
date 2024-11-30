@@ -21,3 +21,4 @@
 - Make notes in the beginning of each section of what I think is missing
 - Read all notes from earlier
 - Write the differences from my experiments and their experiments
+- Check the minimum number of samples in a class for the CIFAR100 training dataset.

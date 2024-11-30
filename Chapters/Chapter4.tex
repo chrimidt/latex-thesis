@@ -6,6 +6,31 @@ This chapter focuses on the on the implementation details of the experiments con
 Details about the dataset(s) used, including size, source, and preprocessing steps.
 Description of class imbalance characteristics and the train/validation/test splits.
 
+The experiments conducted in this thesis primarily utilize the CIFAR-100 dataset, a publicly available dataset widely used for image classification tasks. The dataset consists of 60,000 32x32 color images categorized into 100 classes, with each class containing 600 images. The dataset is split into a training set of 50,000 images and a test set of 10,000 images.
+
+The dataset was downloaded using the PyTorch torchvision.datasets.CIFAR100 utility. The training and test datasets were preprocessed by converting the images to tensors using the ToTensor transformation and saved as .pth files for efficient loading during experiments. 
+
+To address the needs of the experiments in this thesis, the original CIFAR-100 dataset was modified to create a new split of the training data. Specifically, the training data was split into 450 samples per class for training and 50 samples per class for testing, maintaining the class distribution within these splits. The original test set of the CIFAR-100 dataset was retained as the validation set for training and evaluation purposes.
+
+This resulted in the following dataset sizes:
+
+\begin{table}[h]
+    \centering
+    \caption{Dataset Split Overview}
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Dataset}    & \textbf{Total Samples} & \textbf{Samples per Class} \\ \hline
+    Training Set        & 45,000                & 450                        \\ \hline
+    Test Set            & 5,000                 & 50                         \\ \hline
+    Validation Set      & 10,000                & Unaltered (100 per class)  \\ \hline
+    \end{tabular}
+    \label{tab:dataset_split}
+\end{table}
+
+To simulate real-world scenarios with class imbalances, the training dataset was modified to introduce an exponential imbalance across the 100 classes. The imbalance was created using the quantile Pareto distribution in equation \eqref{eq:pareto}, where the number of samples per class decreases exponentially, controlled by the imbalance factor. For this thesis, an imbalance factor of 0.01 was applied. This means that the most frequent class contains significantly more samples than the least frequent class. 
+
+The resulting class distribution varied from the most frequent class having 450 samples to the least frequent class having only [todo: check] samples.  This imbalance ensured no class was left with zero samples, maintaining the integrity of all classes for training.
+
 \section{Data Preprocessing}
 Any transformations, augmentations, or normalization applied to the dataset before feeding it to the model.
 Information on how the class imbalance is handled (re-sampling or synthetic data generation).

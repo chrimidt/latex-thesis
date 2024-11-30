@@ -12,7 +12,15 @@ Long-tailed datasets pose significant challenges in deep learning, as they repre
 
 A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. This  distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} and CIFAR-100 \cite{krizhevsky2009learning} using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
 
-One such benchmark, CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 32x32 color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following a Pareto distribution, introducing significant class imbalance. This makes it an ideal benchmark for studying the challenges posed by long-tailed datasets.  
+One such benchmark, CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 32x32 color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following a Pareto distribution with number of samplers per class as followed \cite{kaidic_ldam_drw}:
+
+\begin{equation}
+    \label{eq:pareto}
+\text{num\_samples} = \text{max\_samples} \times (\text{imb\_factor})^{\frac{\text{class\_index}}{\text{num\_classes} - 1}}
+\end{equation}
+
+where \textit{max\_samples} is the maximum number of samples for a class, \textit{imb\_factor} is the imbalance factor, \textit{class\_index} is the index of the class, and \textit{num\_classes} is the total number of classes.
+ 
 
 \begin{figure}[ht]
     \centering
@@ -131,6 +139,7 @@ Table/overview of loss functions as in the paper.
 
 
 \subsubsection{Loss Functions for Class-Sensitive Learning}
+
 The loss function serves as a measure of the model's fitness to the data, quantifying the distance between the actual and predicted values of the target. Typically, the loss is represented as a nonnegative value, where smaller values indicate a better fit, and a perfect fit corresponds to a loss of zero \cite{zhang2023dive}.
 
 Conventional training of deep networks using the softmax cross-entropy loss often overlooks class imbalance. This results in uneven gradients for different classes, leading to suboptimal performance on underrepresented classes. To mitigate this issue, modifications to the loss function are introduced to ensure a more balanced contribution from each class during training. One such technique is re-weighting which adjusts the training loss for different classes by assigning a specific weight to each class \cite{zhang2023deep}. The softmax cross-entropy loss is used as a baseline, and is described below along with the loss functions for re-weighting.
