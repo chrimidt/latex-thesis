@@ -7,6 +7,29 @@ An overall description of the approach to tackling the long-tailed dataset probl
 such as balancing techniques and model selection.
 
 \section{Dataset Preparation and Specifications}
+The first step is to prepare the data for training and testing. In order to generate training, validation, and test datasets that resemble the datasets used for the empirical studies in \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, their dataset are investigated: The GitHub repository \cite{VanintLT} for the paper \textit{Deep Long-Tailed Learning: A Survey} was downloaded and an environment was set up on the Jupyter Hub on the Freja node on the ece cluster. The \texttt{.txt} files with the data from ImageNet-LT (\texttt{ImageNet\_LT\_train.txt}, \texttt{ImageNet\_LT\_val.txt}, \texttt{ImageNet\_LT\_test.txt}) are shown on figures \ref{fig:IN-train}, \ref{fig:IN-val}, and \ref{fig:IN-test}, respectively. TODO: Describe the plots and what they mean for my data preparation. 
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_train.png}
+    \caption{The class distribution of the training images for the ImageNet-LT dataset shows a long-tailed distribution.}
+    \label{fig:IN-train}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_val.png}
+    \caption{The class distribution of the validation images for the ImageNet-LT dataset shows that there are 20 samples of each class.}
+    \label{fig:IN-val}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_test.png}
+    \caption{The class distribution of the test images for the ImageNet-LT dataset shows that there are 50 samples of each class.}
+    \label{fig:IN-test}
+\end{figure}
+
 Following the dataset structure used in \textit{Deep Long-Tailed Learning: A Survey}, the CIFAR100 dataset was modified to create a long-tailed training set and a balanced test set. Key details include:
 
 \begin{itemize}
