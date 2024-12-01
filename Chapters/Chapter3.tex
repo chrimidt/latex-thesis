@@ -63,7 +63,20 @@ The first step is to prepare the data for training and testing. In order to gene
     \item Insert plot of the division of the long-tailed test dataset: head, middle, and tail classes.
     \item Explain the purpose of the division.
     \item Potentially a few images from the CIFAR100 dataset.
+    \item Argument as to why the training data was split into training and test.
 \end{itemize}
+
+The experiments conducted in this thesis primarily utilize the CIFAR-100 dataset.
+
+The dataset was downloaded using the PyTorch torchvision.datasets.CIFAR100 utility. The training and test datasets were preprocessed by converting the images to tensors using the ToTensor transformation and saved as .pth files for efficient loading during experiments. 
+
+To address the needs of the experiments in this thesis, the original CIFAR-100 dataset was modified to create a new split of the training data. Specifically, the training data was split into 450 samples per class for training and 50 samples per class for testing, maintaining the class distribution within these splits. The original test set of the CIFAR-100 dataset was retained as the validation set for training and evaluation purposes.
+
+\textbf{Training Set:} To simulate real-world scenarios with class imbalances, the training dataset was modified to introduce an exponential imbalance across the 100 classes. The imbalance was created using the quantile Pareto distribution in equation \eqref{eq:pareto}, where the number of samples per class decreases exponentially, controlled by the imbalance factor. For this thesis, an imbalance factor of 0.01 was applied. This means that the most frequent class contains significantly more samples than the least frequent class. 
+
+The resulting class distribution varied from the most frequent class having 450 samples to the least frequent class having only [todo: check] samples.  This imbalance ensured no class was left with zero samples, maintaining the integrity of all classes for training. TODO: see figure \ref{fig:cifar100_imbalance_cifar}.
+
+\textbf{Test Set:} To evaluate the performance of the model under similar conditions to the imbalanced training set, an imbalanced test set was created from the previously split test dataset. The imbalance in the test set mirrors the exponential distribution used for the training data, with the same imbalance factor of 0.01. The class distribution in the test set follows the same order of classes (from most to least frequent) as the imbalanced training set. No class has fewer than one sample.
 
 Describe the class distribution in figures \ref{fig:cifar100_imbalance_cifar} and \ref{fig:cifar100val}.
 
