@@ -3,6 +3,11 @@
 % Length: aim for 2-3 pages.
 
 \label{sec:introduction}
+
+\begin{itemize}
+    \item Emphasize head and tail classes.
+\end{itemize}
+
 Image classification is one of the main challenges computer vision.
 
 Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results [reference here]. The trained models have shown image classification with accuracies of over 80 \% [reference here], and hence the interest in deep learning for image recognition is high. However, the high accuracies are for on models trained on balanced datasets with thounsands of samples per class [reference here], while most real-world datasets are skewed in samples per class [reference here].  
@@ -53,7 +58,7 @@ This master's thesis consists of six steps, described below:\\
 Other steps could involve comparisons to related work and other long-tailed learning methods.
 
 \subsection{Scope of this thesis}
-This thesis focuses on applying deep long-tailed learning methods to image classification tasks with an emphasis on loss functions as a solution to handle imbalanced datasets. The experiments are conducted on the CIFAR100 dataset, with both a balanced and synthetically generated long-tailed version. This thesis explores class re-balancing methods, specifically cost-sensitive learning applied via loss functions. These include cross-entropy loss, focal loss, weighted cross-entropy loss,  class-balanced loss, balanced softmax loss, equalization loss, and LDAM loss. The evaluation is done with particular focus on top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications.
+This thesis focuses on applying deep long-tailed learning methods to image classification tasks with an emphasis on loss re-weighting as a solution to handle imbalanced datasets. The loss re-weighting methods include cross-entropy loss, focal loss, weighted cross-entropy loss,  class-balanced loss, balanced softmax loss, equalization loss, and LDAM loss. The experiments are conducted on the CIFAR100 dataset, with both a balanced and synthetically generated long-tailed version. The evaluation is done with particular focus on top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications. [TODO: not yet module improvement.]
 
 % \section{Motivation}
 % Discuss why the problem is significant, including real-world implications.
@@ -67,5 +72,15 @@ This thesis focuses on applying deep long-tailed learning methods to image class
 
 \section{Related Work}
 A section that describes the work related to this thesis. This includes re-sampling, data augmentation, module improvement.
+
+\subsection{Data Re-Balancing}
+
+\subsection{Re-Weighting}
+
+\subsection{Margin Loss}
+
+\subsection{Meta-Learning}
+
+\subsection{Decoupled Training}
 
 

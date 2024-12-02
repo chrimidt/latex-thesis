@@ -1,5 +1,17 @@
-- Make plot of ImageNet distribution into bar plots
-- Compare models to state-of-the-art for CIFAR100 on paperswithcode.com
+
+ 
+- Make notes in the beginning of each section of what I think is missing
+
+Experiments:
+- Investigate why Class-Balanced loss is so bad 
+- Investigate module improvement for the two best models.
+- Ditch iNaturalist
+
+Introduction:
+- Hypothesis
+- Related work
+
+Background:
 - Convolutional Neural Networks
 - Vision Transformers
 - Focal loss
@@ -7,18 +19,32 @@
 - Balanced SoftMax loss
 - LDAM
 - Equalization loss
-- Methodology
-- Experimental Setup
-- Results and Analysis
-- Conclusion and Future Work
-- Related Work
-- Appendix 
-- Explain choice of optimizer
-- Explain not freezing layers
 - Module Improvement
 - Information Augmentation
 - Transfer Learning
-- Make notes in the beginning of each section of what I think is missing
+
+
+Methodology:
 - Read all notes from earlier
-- Write the differences from my experiments and their experiments
 - Check the minimum number of samples in a class for the CIFAR100 training dataset.
+- Make plot of ImageNet distribution into bar plots
+- Explain choice of optimizer
+- Explain not freezing layers
+
+Experimental Setup:
+
+
+
+Results and Discussion:
+- Compare models to state-of-the-art for CIFAR100 on paperswithcode.com
+- Write the differences from my experiments and their experiments
+- Why is middle class lower than head an tail classes
+- Investigate why Class-Balanced loss is so bad 
+- What is the best method and compare to the others
+- How should the methods be compared in order to find the best method 
+- The state-of-the-art method on ResNet is better than the loss functions. Would ConvNext also be better with module improvement. Is module improvement overall better?
+
+
+Conclusion and Future Work:
+
+Appendix:
