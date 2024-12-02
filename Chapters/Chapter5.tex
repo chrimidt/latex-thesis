@@ -10,10 +10,6 @@ Present the performance of all tested models and methods.
 Use tables or charts to summarize key results.
 Highlight trends or notable observations across the methods.
 
-\section{Head, Middle, and Tail Class Performance}
-Break down the performance into head, middle, and tail class groups.
-Include visualizations.
-Discuss how well the methods balance performance across these groups, particularly focusing on tail classes.
 
 \subsection{MobileNetV2}
 Table \ref{tab:mobilenet_bal_acc1_1} show the top 1 accuracies for MobileNetV2 on various loss functions.
@@ -128,6 +124,9 @@ Table \ref{tab:resnet_lt_acc1_1} show the top 1 accuracies for ResNet50V2 on var
     \label{tab:resnet_lt_acc1_1}
 \end{table}
 
+\subsubsection{Comparison}
+
+
 \subsection{ViT-B/16}
 
 Table \ref{tab:vit_bal_acc1_1} show the top 1 accuracies for ViT-B/16 on various loss functions.
@@ -173,6 +172,7 @@ Table \ref{tab:vit_lt_acc1} show the top 1 accuracies for ViT-B/16 on various lo
 \end{table}
 
 \subsubsection{Comparison}
+
 
 \begin{table}[H]
     \centering
@@ -242,6 +242,17 @@ Table \ref{tab:conv_lt_acc1_1} show the top 1 accuracies for ConvNeXt Base on va
     \caption{Evaluation results for ConvNeXt Basetrained on the long-tailed dataset, showing Acc1.}
     \label{tab:conv_lt_acc1_1}
 \end{table}
+
+\subsubsection{Comparison}
+
+
+\section{Head, Middle, and Tail Class Performance}
+Break down the performance into head, middle, and tail class groups.
+Include visualizations.
+Discuss how well the methods balance performance across these groups, particularly focusing on tail classes.
+
+
+\section{Comparison with Baselines}
 
 \section{Comparison of Loss Functions}
 Analyze how different loss functions impact performance.

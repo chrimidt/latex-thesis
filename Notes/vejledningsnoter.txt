@@ -1,0 +1,9 @@
+- Sammenlign oprindelig findings fra papers på de specifikke modeller.
+- Hvorfor er middle lavere end head og tail
+- Check hvorfor class-balanced er så dårlig
+- Hvad er den bedste metode, og sammenlign med de andre
+- Hvordan ville jeg regne ud hvilket der er den bedste metode. Er det den samme uanset model?
+- Undersøg module improvement på to bedste modeller.
+- Drop iNaturalist
+- hypothese
+- State of art, på resnet er bedre end loss function. vil convnext også være bedre på module improvement. Er de bedre generelt?
