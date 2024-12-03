@@ -1,18 +1,52 @@
 % Chapter 5: Results and Analysis
+This chapter presents a detailed analysis of the experimental results, comparing model performances across head, middle, and tail classes, and evaluating the impact of different loss functions.
 
-Presentation of the results, with tables, charts, and explanations for each tested method's performance.
-
-Brief overview of the chapter’s purpose.
-Recap the evaluation goals (model performance across head, middle, and tail classes, and comparing methods).
-
-\section{Overall Results}
+\section{Overview}
 Present the performance of all tested models and methods.
-Use tables or charts to summarize key results.
+Use tables or plots to summarize key results.
 Highlight trends or notable observations across the methods.
 
+\section{Main Findings}
+% 1. Complete "Main Findings" Section
+% This is the most critical part to finalize, as it sets the tone for the rest of the results chapter.
+% Go through your tables and add specific examples of findings for each claim. For example:
+% "Balanced Softmax consistently improved tail-class accuracy across all models, with a notable improvement in MobileNetV2 (Acc1: 0.9211)."
+% "LDAM performed comparably on middle classes but struggled on head classes, as observed in ResNet50V2 (Acc1: 0.7983)."
+% This will eliminate the TODO placeholders and give the reader a clear summary of the results.
+
+Describe main findings.
+
+Example:
+
+"Model X achieved an accuracy of Y \% on the balanced test set."
+"F1 score for the imbalanced test set showed an improvement using Loss A."
+"The MobileNetV2 model, trained with Focal Loss, achieved a higher F1 score compared to models trained with Cross-Entropy Loss."
+
+This section summarizes the overall performance of all tested models using tables and plots to highlight key trends and notable observations.
+
+Across all models, loss functions like TODO and TODO showed improved performance on tail classes, while TODO often underperformed in imbalanced scenarios.
+
+\section{Comparison of Models}
+Analyze how different models impact performance.
+Use visualizations to compare results.
+Discuss strengths and weaknesses of each model.
 
 \subsection{MobileNetV2}
-Table \ref{tab:mobilenet_bal_acc1_1} show the top 1 accuracies for MobileNetV2 on various loss functions.
+Table \ref{tab:mobilenet_bal_acc1_1} shows the top 1 accuracies for MobileNetV2 on various loss functions.
+
+% \begin{itemize}
+%     \item Best performance on balanced test data.
+%     \item Best performance on long tailed test data.
+%     \item Best performance on head classes.
+%     \item Best performance on tail classes.
+%     \item Worst performance on blananced test data.
+%     \item Worst performance on long tailed test data.
+%     \item Worst performance on head classes.
+%     \item Wrost performance on tail classes.
+%     \item Comment on the why the results on the middle classes are worse than both head and tail classes.
+%     \item Comment on curious results on the middle classes for softmax, focal loss, weighted softmax, and class-balanced loss.
+%     \item Comment on the curious results on the tail classes for balanced softmax loss, equalization loss and LDAM loss.
+% \end{itemize}
 
 \begin{table}[H]
     \centering
@@ -21,7 +55,7 @@ Table \ref{tab:mobilenet_bal_acc1_1} show the top 1 accuracies for MobileNetV2 o
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
         \midrule
         Softmax   & 0.7978   & 0.8059 & 0.8069 & 0.7870 & 0.8684 \\
-        Focal loss   & 0.8014   & 0.8011 & 0.7998 4 & 0.7870 & 0.8947 \\
+        Focal loss   & 0.8014   & 0.8011 & 0.7998 & 0.7870 & 0.8947 \\
         Weighted Softmax loss   & 0.7978   & 0.8059 & 0.8069 & 0.7870 & 0.8684 \\
         Class-balanced loss   & 0.7978   & 0.8059 & 0.8069 & 0.7870 & 0.8684 \\
         Balanced Softmax loss   & 0.8034  & 0.8030 & 0.8069 & 0.7574 & 0.9211 \\
@@ -29,11 +63,45 @@ Table \ref{tab:mobilenet_bal_acc1_1} show the top 1 accuracies for MobileNetV2 o
         LDAM loss   &  0.7828   & 0.7821 & 0.7808 & 0.7574 & 0.9211 \\
         \bottomrule
     \end{tabular}
-    \caption{Evaluation results for MobileNetV2 trained on the custom balanced dataset, showing Acc1.}
+    \caption{Top-1 accuracy results for MobileNetV2 on the balanced dataset across all loss functions.}
     \label{tab:mobilenet_bal_acc1_1}
 \end{table}
 
+From Table \ref{tab:mobilenet_bal_acc1_1}, the overall best performance on MobileNetV2 trained with a balanced CIFAR100 training dataset is achieved by Balanced Softmax Loss, which has the highest accuracy on the balanced test dataset (Acc1: 0.8034), as well as on the head (Acc1: 0.8069) and tail (Acc1: 0.9211) classes, with only slightly worse performance on the middle classes in comparison. Among all loss functions, LDAM Loss shows the lowest overall performance on the balanced test set (Acc1: 0.7828) and the long-tailed test set (Acc1: 0.7821), except for its strong performance on tail classes (Acc1: 0.9211). % This highlights LDAM’s specialized focus on tail classes at the cost of performance on head and middle classes.
+
+Softmax Loss, Weighted Softmax Loss, and Class-Balanced Loss yield the same accuracies across all test datasets, likely due to their similarities in loss design [TODO: Refer to background section].
+
+Balanced Softmax Loss, Equalization Loss, and LDAM Loss exhibit the highest accuracy on tail classes (Acc1: 0.9211). Despite their differing loss designs, this convergence in accuracy suggests that the dataset's tail-class performance may have reached a plateau, possibly due to the inherent characteristics of the tail classes, i.e. either noise or the limited number of samples available per class in the tail [TODO: Refer to background section].
+
+A similar trend is observed in the middle-class accuracy, where Softmax, Focal Loss, Weighted Softmax Loss, and Class-Balanced Loss all achieve identical results (Acc1: 0.7870). Similarly, for head classes, Softmax, Weighted Softmax Loss, Class-Balanced Loss, and Balanced Softmax Loss perform equally well, achieving the highest accuracy (Acc1: 0.8069), hinting at saturation.  % This consistency across different loss functions on the balanced dataset could be due to their shared design principles.
+
+
+
+
+
+% However, because balanced softmax loss does not yield the same result on both the balanced test set and the long-tailed test set as the other three mentioned, it is likely due to a saturation in the head classes. The softmax loss, weighted softmax loss, and class-balanced loss all yield the same performance across test sets, showing their similiarity in loss design on a balanced training dataset. The best perfoming loss function on the balanced test set is the weighted softmax loss (Acc1: 0.8034), however this is not the best performing loss function on the complete long-tailed dataset, but it has the best accuracy on tail classes (Acc1: 0.9211), and comparable performance on head and tail classes. Except for the performance on tail classes, the overall worst performing loss method is the LDAM loss, with accuracy of 0.7828 on a balanced test set, and 0.7821 on a long-tailed test set. Compared to the baseline, the softmax loss, that has an accuracy of 0.7978 on the balanced test set, and 0.8059 on the long-tailed test set.
+
+
+% Balanced Softmax Loss, however, stands out due to its differentiated performance across datasets. Unlike Softmax, Weighted Softmax Loss, and Class-Balanced Loss, which yield consistent results across balanced and long-tailed datasets, Balanced Softmax achieves a higher accuracy on tail classes while showing slight variability in overall performance. This suggests that Balanced Softmax is more sensitive to class-specific adjustments, particularly in imbalanced scenarios.
+
+
+% 
+% Compared to the baseline Softmax Loss (balanced: Acc1: 0.7978, long-tailed: Acc1: 0.8059), Balanced Softmax Loss demonstrates slightly better performance on the balanced dataset but shows more variability on the long-tailed dataset, where it achieves comparable results on tail classes but lower performance overall.
+
+
 Table \ref{tab:mobilenet_lt_acc1_1} show the top 1 accuracies for MobileNetV2 on various loss functions.
+
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
 
 \begin{table}[H]
     \centering
@@ -57,6 +125,12 @@ Table \ref{tab:mobilenet_lt_acc1_1} show the top 1 accuracies for MobileNetV2 on
 \subsubsection{Comparison}
 
 The comparison of my experiment to the original MobileNetV2 trained on the original CIFAR100 dataset.
+
+Table \ref{tab:comparison} compares the experimental setup and results of MobileNetV2 trained on the CIFAR100 dataset with those reported in Study A3. Key differences include the loss function, optimizer, and data augmentation techniques used.
+
+While our approach achieves competitive top-1 accuracy on balanced datasets, the performance gap on long-tailed datasets highlights potential areas for improvement in augmentation and learning rate strategies.
+
+TODO: Move comparisons of results to a seperate section. Keep only the results, put specification in an appendix.
 
 \begin{table}[H]
     \centering
@@ -84,6 +158,18 @@ The comparison of my experiment to the original MobileNetV2 trained on the origi
 
 Table \ref{tab:resnet_bal_acc1_1} show the top 1 accuracies for ResNet50V2 on various loss functions.
 
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
+
 \begin{table}[H]
     \centering
     \begin{tabular}{cccccc}
@@ -105,6 +191,18 @@ Table \ref{tab:resnet_bal_acc1_1} show the top 1 accuracies for ResNet50V2 on va
 
 Table \ref{tab:resnet_lt_acc1_1} show the top 1 accuracies for ResNet50V2 on various loss functions.
 
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
+
 \begin{table}[H]
     \centering
     \begin{tabular}{cccccc}
@@ -124,12 +222,23 @@ Table \ref{tab:resnet_lt_acc1_1} show the top 1 accuracies for ResNet50V2 on var
     \label{tab:resnet_lt_acc1_1}
 \end{table}
 
-\subsubsection{Comparison}
 
 
 \subsection{ViT-B/16}
 
 Table \ref{tab:vit_bal_acc1_1} show the top 1 accuracies for ViT-B/16 on various loss functions.
+
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
 
 \begin{table}[H]
     \centering
@@ -152,6 +261,18 @@ Table \ref{tab:vit_bal_acc1_1} show the top 1 accuracies for ViT-B/16 on various
 
 Table \ref{tab:vit_lt_acc1} show the top 1 accuracies for ViT-B/16 on various loss functions.
 
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
+
 \begin{table}[H]
     \centering
     \begin{tabular}{cccccc}
@@ -164,7 +285,7 @@ Table \ref{tab:vit_lt_acc1} show the top 1 accuracies for ViT-B/16 on various lo
         Class-balanced loss   & 0.0558 & 0.0076 & 0.0000 & 0.0237 & 0.1053 \\
         Balanced Softmax loss   & 0.2460 & 0.4244 & 0.4822 &  0.2130 & 0.0789 \\
         Equalization loss   & 0.2168 & 0.4215 & 0.4893 & 0.1716 & 0.0263 \\
-        LDAM loss   & 0.5906 & 0.6013 & 0.5924 & 0.6095 & 0.7632 \\
+        LDAM loss   & 0.1570 & 0.2750 & 0.3140 & 0.1361 & 0.0263 \\
         \bottomrule
     \end{tabular}
     \caption{Evaluation results for ViT-B/16 trained on the long-tailed dataset, showing Acc1.}
@@ -173,6 +294,7 @@ Table \ref{tab:vit_lt_acc1} show the top 1 accuracies for ViT-B/16 on various lo
 
 \subsubsection{Comparison}
 
+TODO: Move comparisons of results to a seperate section. Keep only the results, put specification in an appendix.
 
 \begin{table}[H]
     \centering
@@ -203,6 +325,18 @@ Table \ref{tab:vit_lt_acc1} show the top 1 accuracies for ViT-B/16 on various lo
 
 Table \ref{tab:conv_bal_acc1_1} show the top 1 accuracies for ConvNeXt Base on various loss functions.
 
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{cccccc}
@@ -224,6 +358,18 @@ Table \ref{tab:conv_bal_acc1_1} show the top 1 accuracies for ConvNeXt Base on v
 
 Table \ref{tab:conv_lt_acc1_1} show the top 1 accuracies for ConvNeXt Base on various loss functions.
 
+\begin{itemize}
+    \item Best performance on balanced test data.
+    \item Best performance on long tailed test data.
+    \item Best performance on head classes.
+    \item Best performance on tail classes.
+    \item Worst performance on blananced test data.
+    \item Worst performance on long tailed test data.
+    \item Worst performance on head classes.
+    \item Wrost performance on tail classes.
+    \item Comment on the curious results on the middle classes.
+\end{itemize}
+
 \begin{table}[h!]
     \centering
     \begin{tabular}{cccccc}
@@ -243,33 +389,28 @@ Table \ref{tab:conv_lt_acc1_1} show the top 1 accuracies for ConvNeXt Base on va
     \label{tab:conv_lt_acc1_1}
 \end{table}
 
-\subsubsection{Comparison}
 
+% \section{Head, Middle, and Tail Class Performance}
+% Break down the performance into head, middle, and tail class groups.
+% Include visualizations.
+% Discuss how well the methods balance performance across these groups, particularly focusing on tail classes.
 
-\section{Head, Middle, and Tail Class Performance}
-Break down the performance into head, middle, and tail class groups.
-Include visualizations.
-Discuss how well the methods balance performance across these groups, particularly focusing on tail classes.
-
-
-\section{Comparison with Baselines}
 
 \section{Comparison of Loss Functions}
 Analyze how different loss functions impact performance.
-Use visualizations to compare results ( per-class performance or confusion matrices).
+Use visualizations to compare results.
 Discuss strengths and weaknesses of each loss function.
 
-\section{Qualitative Results}
-Optional.
+\section{Comparison with Baselines}
+Compare the results to the softmax cross-entropy loss.
 
+\section{Comparison with External Findings}
+Compare the results of baseline CIFAR100 trained on the models used in this thesis to state-of-the-art performance from paperswithcode.
+
+\section{Qualitative Results}
+Include if time.
 Provide examples of correctly and incorrectly classified samples, especially for tail classes.
 Include visualizations or images of difficult cases to highlight challenges in tail-class prediction.
-
-% \section{Ablation Studies}
-% Optional.
-
-% If applicable, evaluate the impact of individual components or configurations (e.g., re-weighting, sampling).
-% Discuss how removing or altering specific aspects affects performance.
 
 \section{Summary and Discussion}
 Recap the key findings, such as which methods or loss functions performed best and why.

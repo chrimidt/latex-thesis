@@ -43,6 +43,9 @@ Results and Discussion:
 - What is the best method and compare to the others
 - How should the methods be compared in order to find the best method 
 - The state-of-the-art method on ResNet is better than the loss functions. Would ConvNext also be better with module improvement. Is module improvement overall better?
+- Ask reddit about the middle class results.
+- Qualitative results.
+- Move comparisons with state-of-the-art results in seperate section.
 
 
 Conclusion and Future Work:
