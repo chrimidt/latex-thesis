@@ -16,15 +16,15 @@ This chapter presents the experimental results, comparing model performances acr
 
 Describe main findings.
 
-Example:
+% Example:
 
-"Model X achieved an accuracy of Y \% on the balanced test set."
-"F1 score for the imbalanced test set showed an improvement using Loss A."
-"The MobileNetV2 model, trained with Focal Loss, achieved a higher F1 score compared to models trained with Cross-Entropy Loss."
+% "Model X achieved an accuracy of Y \% on the balanced test set."
+% "F1 score for the imbalanced test set showed an improvement using Loss A."
+% "The MobileNetV2 model, trained with Focal Loss, achieved a higher F1 score compared to models trained with Cross-Entropy Loss."
 
-This section summarizes the overall performance of all tested models using tables and plots to highlight key trends and notable observations.
+% This section summarizes the overall performance of all tested models using tables and plots to highlight key trends and notable observations.
 
-Across all models, loss functions like \todo{insert} and \todo{insert} showed improved performance on tail classes, while \todo{insert} often underperformed in imbalanced scenarios.
+% Across all models, loss functions like \todo{insert} and \todo{insert} showed improved performance on tail classes, while \todo{insert} often underperformed in imbalanced scenarios.
 
 \section{Overall Results}
 This section presents the overall results of all experiments conducted in this thesis, commenting on the best and worst performance of loss designs on a given model, and not directly comparing loss designs or models. This section is meant as an overview of all findings.
@@ -32,21 +32,6 @@ This section presents the overall results of all experiments conducted in this t
 \subsection{MobileNetV2}
 
 \subsubsection{Results from Balanced Training Dataset}
-Table \ref{tab:mobilenet_bal_acc1_1} shows the top 1 accuracies for MobileNetV2 on all loss functions.
-
-% \begin{itemize}
-%     \item Best performance on balanced test data.
-%     \item Best performance on long tailed test data.
-%     \item Best performance on head classes.
-%     \item Best performance on tail classes.
-%     \item Worst performance on blananced test data.
-%     \item Worst performance on long tailed test data.
-%     \item Worst performance on head classes.
-%     \item Wrost performance on tail classes.
-%     \item Comment on the why the results on the middle classes are worse than both head and tail classes.
-%     \item Comment on curious results on the middle classes for softmax, focal loss, weighted softmax, and class-balanced loss.
-%     \item Comment on the curious results on the tail classes for balanced softmax loss, equalization loss and LDAM loss.
-% \end{itemize}
 
 \begin{table}[H]
     \centering
@@ -66,6 +51,15 @@ Table \ref{tab:mobilenet_bal_acc1_1} shows the top 1 accuracies for MobileNetV2 
     \end{tabular}
     \label{tab:mobilenet_bal_acc1_1}
 \end{table}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/mobilenet_bal_loss_comparison.png}
+    \caption{Top-1 accuracy comparison of MobileNetV2 trained on the balanced CIFAR-100 across loss functions on different test datasets. The bars represent performance on balanced test data, long-tailed test data, and head, middle, and tail classes.}
+    \label{fig:mobilenet_bal_loss_comparison}
+\end{figure}
+
+\todo{Comment on \ref{fig:mobilenet_bal_loss_comparison}.}
 
 From Table \ref{tab:mobilenet_bal_acc1_1}, the overall best performance on MobileNetV2 trained with a balanced CIFAR100 training dataset is achieved by Balanced Softmax Loss, which has the highest accuracy on the balanced test dataset (Acc1: 0.8034), as well as on the head (Acc1: 0.8069) and tail (Acc1: 0.9211) classes, with only slightly worse performance on the middle classes in comparison. Among all loss functions, LDAM Loss shows the lowest overall performance on the balanced test set (Acc1: 0.7828) and the long-tailed test set (Acc1: 0.7821), except for its strong performance on tail classes (Acc1: 0.9211). % This highlights LDAM’s specialized focus on tail classes at the cost of performance on head and middle classes.
 
@@ -112,6 +106,14 @@ Table \ref{tab:mobilenet_lt_acc1_1} shows the top 1 accuracies for MobileNetV2 o
     \label{tab:mobilenet_lt_acc1_1}
 \end{table}
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/mobilenet_lt_loss_comparison.png}
+    \caption{Top-1 accuracy comparison of MobileNetV2 trained on the long-tailed CIFAR-100 across loss functions on different test datasets. The bars represent performance on balanced test data, long-tailed test data, and head, middle, and tail classes.}
+    \label{fig:mobilenet_lt_loss_comparison}
+\end{figure}
+
+\todo{Comment on figure \ref{fig:mobilenet_lt_loss_comparison}.}
 
 From table \ref{tab:mobilenet_lt_acc1_1}, the best overall performance on MobileNetV2 trained with a long-tailed CIFAR100 training dataset is achieved by Balanced Softmax Loss, with the highest accuracy on the balanced test set (Acc1: 0.5796), middle classes (Acc1: 0.6331), and tail classes (Acc1: 0.4211), and with competing accuracies on the long-tailed test dataset (Acc1: 0.7650) and head classes (Acc1: 0.8069), with the highest performance of Focal Loss with top-1 accuracies of 0.7745 and 0.8389, respectively.
 
@@ -367,6 +369,8 @@ The worst performance is achieved by the Class-Balanced loss, with accuracies fa
 Analyze how different models impact performance.
 Use visualizations to compare results.
 Discuss strengths and weaknesses of each model.
+
+
 
 \todo{Metric for comparison of overall model performance.}
 

@@ -4,19 +4,17 @@
 
 \label{sec:introduction}
 
-\begin{itemize}
-    \item Emphasize head and tail classes.
-\end{itemize}
+\todo{Emphasize head and tail classes.}
 
 Image classification is one of the main challenges computer vision.
 
-Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results [reference here]. The trained models have shown image classification with accuracies of over 80 \% [reference here], and hence the interest in deep learning for image recognition is high. However, the high accuracies are for on models trained on balanced datasets with thounsands of samples per class [reference here], while most real-world datasets are skewed in samples per class [reference here].  
+Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results \todo{reference here}. The trained models have shown image classification with accuracies of over 80 \% \todo{reference here}, and hence the interest in deep learning for image recognition is high. However, the high accuracies are for on models trained on balanced datasets with thounsands of samples per class \todo{reference here}, while most real-world datasets are skewed in samples per class \todo{reference here}.  
 
 
 This thesis focuses on the problem with long-tailed datasets. The problem with training a deep learning model on long-tailed datasets is that the model will effectively the data from the classes with most samples, and not the classes with few samples. The finsihed model will then not recognize an input from the tail classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data. The aim of this thesis is to try out some of the methods tackling the long-tailed problem for deep learning described in the paper \textit{Deep Long-Tailed Learning: A Survey} by Zhang et al.\cite{zhang2023deep} to find a method for long-tailed learning that works on a specific long-tailed dataset of images of moths taken around equator. The goal of the moth dataset is to identify species.
 
 \section{Problem Definition}
-Something about head and tail classes.
+\todo{Something about head and tail classes.}
 
 
 The goal of this project is to investigate deep learning models, like Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), and methods, mainly class re-balancing through cost-sensitive learning, and analyze their performance on datasets representaing a long-tailed structure.  
@@ -41,6 +39,7 @@ Deep long-tailed learning methods, such as the carefully designed loss functions
 
 
 \subsection{Approach}
+\todo{finish this section.}
 This master's thesis consists of six steps, described below:\\  
 
 \textbf{First step} is to investigate the dataset used for training, testing and validation in \textit{Deep Long-Tailed Learning: A Survey}, as the class re-balancing in this paper is used as inspiration for this thesis.\\
@@ -58,7 +57,7 @@ This master's thesis consists of six steps, described below:\\
 Other steps could involve comparisons to related work and other long-tailed learning methods.
 
 \subsection{Scope of this thesis}
-This thesis focuses on applying deep long-tailed learning methods to image classification tasks with an emphasis on loss re-weighting as a solution to handle imbalanced datasets. The loss re-weighting methods include cross-entropy loss, focal loss, weighted cross-entropy loss,  class-balanced loss, balanced softmax loss, equalization loss, and LDAM loss. The experiments are conducted on the CIFAR100 dataset, with both a balanced and synthetically generated long-tailed version. The evaluation is done with particular focus on top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications. [TODO: not yet module improvement.]
+This thesis focuses on applying deep long-tailed learning methods to image classification tasks with an emphasis on loss re-weighting as a solution to handle imbalanced datasets. The loss re-weighting methods include cross-entropy loss, focal loss, weighted cross-entropy loss,  class-balanced loss, balanced softmax loss, equalization loss, and LDAM loss. The experiments are conducted on the CIFAR100 dataset, with both a balanced and synthetically generated long-tailed version. The evaluation is done with particular focus on top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications. \todo{not yet module improvement.}
 
 % \section{Motivation}
 % Discuss why the problem is significant, including real-world implications.
@@ -66,8 +65,8 @@ This thesis focuses on applying deep long-tailed learning methods to image class
 % Discuss broader impacts, such as how solving long-tailed learning problems can benefit other fields.
 
 
-% \section{Reading Guide}
-% Mention what each chapter will cover and how they relate to each other.
+\section{Reading Guide}
+\todo{Mention what each chapter will cover and how they relate to each other.}
 % Example: "Chapter 2 provides the theoretical background for long-tailed learning and deep learning methodologies. Chapter 3 describes the methodology used in this thesis, including dataset preparation and implementation details. Chapters 4 and 5 present the experimental results and analysis, followed by conclusions and suggestions for future work in Chapter 6."
 
 \section{Related Work}
@@ -82,5 +81,11 @@ A section that describes the work related to this thesis. This includes re-sampl
 \subsection{Meta-Learning}
 
 \subsection{Decoupled Training}
+
+\subsection{Transfer Learning}
+
+\subsection{Ensemble Learning}
+
+\subsection{Few Shot Learning}
 
 
