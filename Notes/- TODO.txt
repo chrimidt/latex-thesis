@@ -32,7 +32,8 @@ Methodology:
 - Explain not freezing layers
 
 Experimental Setup:
-
+- Clean up
+- Make tables instead of lists
 
 
 Results and Discussion:

@@ -54,6 +54,9 @@
 \renewcommand{\chaptermark}[1]{\markboth{\scriptsize\MakeUppercase{Chapter \thechapter.\ #1}}{}}
 
 
+% Define the custom \todo{} command
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}
+
 
 
 % Define variables for Author Name and Thesis Title
@@ -67,3 +70,4 @@
 \let\sv@endpart\@endpart
 \def\@endpart{\thispagestyle{empty}\sv@endpart}
 \makeatother
+
