@@ -370,17 +370,76 @@ Analyze how different models impact performance.
 Use visualizations to compare results.
 Discuss strengths and weaknesses of each model.
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/mobilenet_lt_loss_comparison_line.png}
+    \caption{MobileNetV2 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:mobilenet_bal_loss_comparison_line}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/resnet_lt_loss_comparison_line.png}
+    \caption{ResNet50V2 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:resnet_bal_loss_comparison_line}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/vit_lt_loss_comparison_line.png}
+    \caption{ViT-B/16 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:vit_bal_loss_comparison_line}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/convnext_lt_loss_comparison_line.png}
+    \caption{ConvNeXt Base top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:conv_bal_loss_comparison_line}
+\end{figure}
+
+\subsubsection{Mean and Standard Deviation}
+
+\todo{Make a table for the mean and standard deviations.}
+
+The plots on figures \ref{fig:mean_loss_comparison_line} and \ref{fig:mean_loss_comparison_line_noCB} compares the performance of the models MobileNetV2, ResNet50V2, ViT-B/16, and ConvNeXt Base across the evaluation categories: balanced, long-tailed, head, middle, and tail. Each model is slightly offset along the x-axis to avoid overlap. The mean and standard deviation in figure \ref{fig:mean_loss_comparison_line} include the Class-Balanced Loss while figure \ref{fig:mean_loss_comparison_line_noCB} does not.
+
+Each point represents the mean accuracy of a model for a specific category and the bars represent the standard deviation. A model with higher mean accuracy is performing better in that category, and a smoother or higher line indicates consistent performance across all categories.
+
+The error bars show the variability in accuracy across different loss functions for each model and category. A longer error bar means the performance is less consistent and the performance is more dependent on the chosen loss function, while shorter error bars indicate consistant performance.
+
+The plot in figure \ref{fig:mean_loss_comparison_line_noCB} shows that the model with the best average performance on tail classes is the ConvNeXt Base architecture, while also showing a strong performance in other categories. 
+
+MobileNetV2 is the least dependent on loss functions, exhibiting the smallest standard deviation, while the ResNet50V2 architecture, compared with figures \ref{fig:resnet_bal_loss_comparison_line} and \ref{fig:conv_bal_loss_comparison_line}, is the most dependent on loss functions when exhibiting tail performance, as the Balanced Softmax Loss outperforms the remaining loss functions, as seen in figure \ref{fig:resnet_bal_loss_comparison_line} and table \ref{tab:resnet_lt_acc1_1}.
+
+The model exhibiting the worst performance is the ViT-B/16 with a significant lower mean than the other three models.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/mean_loss_comparison.png}
+    \caption{Mean Accuracy with Standard Deviation Across Categories for MobileNetV2, ResNet50V2, ViT-B/16, and ConvNeXt Base.}
+    \label{fig:mean_loss_comparison_line}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/mean_loss_comparison_noCB.png}
+    \caption{Mean Accuracy with Standard Deviation Across Categories for MobileNetV2, ResNet50V2, ViT-B/16, and ConvNeXt Base without Class-Balanced Loss.}
+    \label{fig:mean_loss_comparison_line_noCB}
+\end{figure}
 
 
-\todo{Metric for comparison of overall model performance.}
+\todo{Comparison of overall model performance. Perform statistical analysis, e.g. ANOVA, Tukey's HSD.}
 
 \section{Comparison of Loss Functions}
 Analyze how different loss functions impact performance. 
 Use visualizations to compare results.
+Use statistical significance to validate whether a loss function is better than the other.
 Discuss strengths and weaknesses of each loss function.
 
+
 \section{Comparison with Baselines}
-Compare the results to the softmax cross-entropy loss.
+Compare the results to the softmax cross-entropy loss, and compare to the model trained with balanced dataset.
 
 \section{Comparison with Benchmarks}
 The results are compared to the best published results for MobileNetV2, ResNet50V2, ViT-B/16 and ConvNeXt Base on CIFAR-100.
@@ -400,3 +459,12 @@ Include visualizations or images of difficult cases to highlight challenges in t
 \section{Summary and Discussion}
 Recap the key findings, such as which methods or loss functions performed best and why.
 Connect these findings to the thesis objectives and broader implications for long-tailed learning.
+
+Things for discussion:
+
+\begin{itemize}
+    \item Run multiple of the same training to check for variance. What could this tell us in terms of statistical significance?
+    \item The LDAM should be run with DRW as well. Compare to articles that run both LDAM and LDAM-DRW.
+    \item Including or omitting the Class-Balanced Loss.
+    \item Discuss why the ViT-B/16 model underperforms but shows excellent performance in other studies.
+\end{itemize}
