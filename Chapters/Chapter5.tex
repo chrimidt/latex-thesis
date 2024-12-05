@@ -14,8 +14,7 @@ This chapter presents the experimental results, comparing model performances acr
 % "LDAM performed comparably on middle classes but struggled on head classes, as observed in ResNet50V2 (Acc1: 0.7983)."
 % This will eliminate the TODO placeholders and give the reader a clear summary of the results.
 
-Describe main findings.
-
+Across all model, the Balanced Softmax Loss demonstrated the highest performance on tail classes for models trained with long-tailed dataset while maintaining a consistant performance on head and middle classes as well as the full long-tailed test set. The highest top 1 accuracy for tail classes was performed by the ResNet50V2 architecture (Acc1: 0.6053) closely followed by the ConvNeXt Base architecture (Acc1: 0.5789). The price for the highest tail class accuracy is the compromise on the head class accuracy, where ConvNeXt Base outperforms ResNet50V2 with a top 1 accuracy of 0.8685 against 0.8270 and an overall performance of 0.8230 for the ConvNeXt Base against 0.7916 for the ResNet50V2 on all classes. See tables \ref{tab:resnet_lt_acc1_1} and \ref{tab:conv_lt_acc1_1} for reference.
 % Example:
 
 % "Model X achieved an accuracy of Y \% on the balanced test set."
@@ -216,6 +215,12 @@ Two loss designs are competing for the worst performance with underwhelming resu
 \subsubsection{Comparison to Benchmark}
 \todo{No benchmark for ResNet50V2 trained on CIFAR-100. Closest architecture is ResNet50 from the paper \textit{ResNet strikes back: An improved training procedure in timm} \cite{wightman2021resnetstrikesbackimproved}.}
 
+Top 1 accuracy trained on a balanced CIFAR100:
+Their: 86.9 \%.
+Mine: 83.2 \%.
+
+\todo{Describe differences.}
+
 \subsection{ViT-B/16}
 
 \subsubsection{Results from Balanced Training Dataset}
@@ -271,7 +276,7 @@ From table \ref{tab:vit_lt_acc1}, the best perfomance on the balanced test datas
 In all tests, the only loss design achieving a higher accuracy than 50 \% is the Softmax loss on the head classes, meaning that the model underperforms across all loss designs.
 
 \subsubsection{Comparison to Benchmark}
-The best result from ViT-B/16 trained with CIFAR100 is obtained in \textit{Perturbated Gradients Updating within Unit Space for Deep Learning} \cite{Tseng_2022} with the best accuracy of 93.95 \% \todo{check the paper again to be sure}. In comparison, the highest achieved accuracy on a balanced test dataset in this experiment on ViT-B/16 trained with a balanced CIFAR100 was 59 \%. See table \ref{tab:vit_bal_acc1_1}. \todo{Compare methods.}
+The best result from ViT-B/16 trained with CIFAR100 is obtained in \textit{Perturbated Gradients Updating within Unit Space for Deep Learning} \cite{Tseng_2022} with the best accuracy of 93.95 \% \todo{check the paper again to be sure}. In comparison, the highest achieved accuracy on a balanced test dataset in this experiment on ViT-B/16 trained with a balanced CIFAR100 was 59.1 \%. See table \ref{tab:vit_bal_acc1_1}. \todo{Compare methods.}
 
 \todo{Make a table with results.}
 
@@ -429,13 +434,20 @@ The model exhibiting the worst performance is the ViT-B/16 with a significant lo
 \end{figure}
 
 
-\todo{Comparison of overall model performance. Perform statistical analysis, e.g. ANOVA, Tukey's HSD.}
+\todo{Comparison of overall model performance. Potentially statistical analysis, e.g. ANOVA, Tukey's HSD.}
 
 \section{Comparison of Loss Functions}
-Analyze how different loss functions impact performance. 
-Use visualizations to compare results.
-Use statistical significance to validate whether a loss function is better than the other.
-Discuss strengths and weaknesses of each loss function.
+\todo{Analyze how different loss functions impact performance.} 
+
+From figure \ref{fig:loss_comparison} it can be seen that the Balanced Softmax Loss has a better average perfomance on tail classes, while also displaying the smoothest variation across evaluation categories, ignoring the Class-Balanced loss. However, the standard deviation suggests that the perfomance of the Balanced Softmax Loss depend on the model architecture.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{Images/Plots/loss_comparison.png}
+    \caption{Performance trends of different loss functions across evaluation categories. Error bars indicate the standard deviation of accuracy across models, highlighting variability in performance for each loss function.}
+    \label{fig:loss_comparison}
+\end{figure}
+
 
 
 \section{Comparison with Baselines}
@@ -444,17 +456,19 @@ Compare the results to the softmax cross-entropy loss, and compare to the model 
 \section{Comparison with Benchmarks}
 The results are compared to the best published results for MobileNetV2, ResNet50V2, ViT-B/16 and ConvNeXt Base on CIFAR-100.
 
-% To contextualize the performance of our MobileNetV2 model, we compare it against the best posted results for the same architecture on CIFAR-100, reported by [Author/Source].
+To contextualize the performance of models, the results are compared against the best posted results for the same architecture on CIFAR-100, reported by Author/Source.
+
+\todo{Move benchmark results into a table.}
 
 % Highlight Key Differences
 % If there are differences in training conditions (e.g., data augmentation, optimization strategies, or hardware), acknowledge them:
 % "It is important to note that while our setup involves an imbalanced CIFAR-100 dataset, the benchmark results were obtained on a balanced dataset."
 % "Our experiments use an Adam optimizer, whereas [Source] employed SGD with momentum."
 
-\section{Qualitative Results}
-Include if time.
-Provide examples of correctly and incorrectly classified samples, especially for tail classes.
-Include visualizations or images of difficult cases to highlight challenges in tail-class prediction.
+% \section{Qualitative Results}
+% Include if time.
+% Provide examples of correctly and incorrectly classified samples, especially for tail classes.
+% Include visualizations or images of difficult cases to highlight challenges in tail-class prediction.
 
 \section{Summary and Discussion}
 Recap the key findings, such as which methods or loss functions performed best and why.
@@ -463,7 +477,8 @@ Connect these findings to the thesis objectives and broader implications for lon
 Things for discussion:
 
 \begin{itemize}
-    \item Run multiple of the same training to check for variance. What could this tell us in terms of statistical significance?
+    \item Why is the performance on tail classes better than the performance on head and middle classes for the balanced training data, and what could it mean for the results on the long-tail training data?
+    \item Running multiple of the same training to check for variance. What could this tell us in terms of statistical significance?
     \item The LDAM should be run with DRW as well. Compare to articles that run both LDAM and LDAM-DRW.
     \item Including or omitting the Class-Balanced Loss.
     \item Discuss why the ViT-B/16 model underperforms but shows excellent performance in other studies.
