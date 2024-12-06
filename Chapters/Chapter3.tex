@@ -74,7 +74,7 @@ To address the needs of the experiments in this thesis, the original CIFAR-100 d
 
 \textbf{Training Set:} To simulate real-world scenarios with class imbalances, the training dataset was modified to introduce an exponential imbalance across the 100 classes. The imbalance was created using the quantile Pareto distribution in equation \eqref{eq:pareto}, where the number of samples per class decreases exponentially, controlled by the imbalance factor. For this thesis, an imbalance factor of 0.01 was applied. This means that the most frequent class contains significantly more samples than the least frequent class. 
 
-The resulting class distribution varied from the most frequent class having 450 samples to the least frequent class having only [todo: check] samples.  This imbalance ensured no class was left with zero samples, maintaining the integrity of all classes for training. TODO: see figure \ref{fig:cifar100_imbalance_cifar}.
+The resulting class distribution varied from the most frequent class having 450 samples to the least frequent class having only \todo{check} samples.  This imbalance ensured no class was left with zero samples, maintaining the integrity of all classes for training. \todo{see figure \ref{fig:cifar100_imbalance_cifar}.}
 
 \textbf{Test Set:} To evaluate the performance of the model under similar conditions to the imbalanced training set, an imbalanced test set was created from the previously split test dataset. The imbalance in the test set mirrors the exponential distribution used for the training data, with the same imbalance factor of 0.01. The class distribution in the test set follows the same order of classes (from most to least frequent) as the imbalanced training set. No class has fewer than one sample.
 
@@ -93,6 +93,8 @@ Describe the class distribution in figures \ref{fig:cifar100_imbalance_cifar} an
     \caption{The class distribution of the CIFAR100 validation set from torchvision [reference here].}
     \label{fig:cifar100val}
 \end{figure}
+
+\todo{Include plots of head, middle and tail test splits.}
 
 \subsection{Data Augmentation}
 Not sure if this should be a section, or if it should be in the experimental setup section.

@@ -379,9 +379,8 @@ Closest is \textit{Conv2NeXt: Reconsidering Conv NeXt Network Design for Image R
 Link: \url{https://ieeexplore.ieee.org/document/10072172}
 
 \section{Comparison of Models}
-Analyze how different models impact performance.
-Use visualizations to compare results.
-Discuss strengths and weaknesses of each model.
+
+The model are compared by taking the mean of the results of the loss functions for each model. The mean and standard deviation for each model are shown on figure \ref{fig:mean_loss_comparison_line}, and on figure \ref{fig:mean_loss_comparison_line_noCB} excluding the Class-Balanced Loss.
 
 \begin{figure}[h!]
     \centering
@@ -425,7 +424,7 @@ The plot in figure \ref{fig:mean_loss_comparison_line_noCB} shows that the model
 
 MobileNetV2 is the least dependent on loss functions, exhibiting the smallest standard deviation, while the ResNet50V2 architecture, compared with figures \ref{fig:resnet_bal_loss_comparison_line} and \ref{fig:conv_bal_loss_comparison_line}, is the most dependent on loss functions when exhibiting tail performance, as the Balanced Softmax Loss outperforms the remaining loss functions, as seen in figure \ref{fig:resnet_bal_loss_comparison_line} and table \ref{tab:resnet_lt_acc1_1}.
 
-The model exhibiting the worst performance is the ViT-B/16 with a significant lower mean than the other three models.
+The model exhibiting the worst performance is the ViT-B/16 with a significant lower mean than the other three models. \todo{reference to figures and tables.}
 
 \begin{figure}[h!]
     \centering
@@ -445,7 +444,7 @@ The model exhibiting the worst performance is the ViT-B/16 with a significant lo
 \todo{Comparison of overall model performance. Potentially statistical analysis, e.g. ANOVA, Tukey's HSD.}
 
 \section{Comparison of Loss Functions}
-\todo{Analyze how different loss functions impact performance.} 
+\todo{Comment on the lack of results from the Class-Balanced Loss on all sets except the tail classes.} 
 
 From figure \ref{fig:loss_comparison} it can be seen that the Balanced Softmax Loss has a better average perfomance on tail classes, while also displaying the smoothest variation across evaluation categories, ignoring the Class-Balanced loss. However, the standard deviation suggests that the perfomance of the Balanced Softmax Loss depend on the model architecture.
 
@@ -489,14 +488,15 @@ Things for discussion:
     \item Discuss why the ViT-B/16 model underperforms but shows excellent performance in other studies.
 \end{itemize}
 
-Balanced Softmax Loss emerged as the most effective loss function for addressing the lack of samples in tail classes, consistently achieving the highest accuracy on these classes across all tested models. This result highlights its strength in re-weighting logits to account for imbalanced datasets, particularly for tail classes, where traditional loss functions often falter. The synergy between Balanced Softmax and certain architectures, such as ConvNeXt Base, was especially notable, suggesting that specific combinations of models and loss functions can yield superior performance.
 
-However, this improvement in tail-class accuracy often came with trade-offs. For example, while ResNet50V2 achieved a top-1 accuracy of 0.6053 on tail classes using Balanced Softmax, its head-class accuracy (0.8270) lagged behind ConvNeXt Base (0.8685). This trade-off underscores the challenge of optimizing for both head and tail classes simultaneously and indicates that Balanced Softmax prioritizes tail-class adjustments at the expense of head-class performance.
+The Balanced Softmax Loss proved to be the most effective loss function for tail classes, consistently achieving the highest accuracy on these classes across all models while also achieving competing results on other datasets. This results highlight its strenght in re-weighting logits to account for imbalanced datasets, particular for tail classes, where the Softmax baseline loss function falter. The synergy between Balanced Softmax and certain architectures, such as ConvNeXt Base, was espicially notable, suggesting that specific combinations of models and loss functions can achieve superior performance.
 
-Class-Balanced Loss, in contrast, consistently underperformed across all models and datasets, raising questions about its suitability for highly imbalanced scenarios. The discrepancy between its intended purpose and observed results suggests possible issues with its weighting strategy or implementation. Further investigation is necessary to understand these limitations and determine whether its performance can be improved.
+However, this improvement in tail-class accuracy often came with trade-offs. For example, while ResNet50V2 achieved a top 1 accuracy of 0.6053 on tail classes using Balanced Softmax, its head-class accuracy (0.8270) lagged behind ConvNeXt Base (0.8685). This trade-off highlights the challenge of optimizing for both head and tail classes simultaneously and indicates that Balanced Softmax prioritizes tail-class adjustments at the expense of head-class performance. \todo{mention statistical significance.}
 
-Notably, the ViT-B/16 architecture underperformed significantly across all loss functions and datasets, with an overall accuracy of 59.06\% compared to its benchmark of 93.95\%. This gap suggests that Vision Transformers, despite their success in other contexts, may require more data, longer training, or additional fine-tuning to handle imbalanced datasets effectively. The results indicate that ViT-B/16's default configuration may not be well-suited for long-tailed datasets without further optimization.
+Class-Balanced Loss, in contrast, consistently underperformed across all models and datasets. This discrepancy between its intended purpose and observed results suggests possible issues with its weighting strategy or implementation. Further investigation is necessary to understand these limitations and determine whether its performance can be improved.
 
-While Balanced Softmax stood out as the most robust loss function overall, statistical validation is required to confirm the significance of these findings, particularly when comparing closely performing configurations. For instance, the performance gap between Balanced Softmax and Softmax Loss on middle classes or long-tailed datasets could reflect inherent dataset characteristics rather than the superiority of the loss function alone.
+Notably, the ViT-B/16 architecture underperformed significantly across all loss functions and datasets, with an the best accuracy of 59.06\% on a balanced training dataset compared to its benchmark of 93.95\%. This suggests that Vision Transformers, despite their reported success in other contexts, may require more data, longer training, or additional fine-tuning. The results indicate that the default ViT-B/16 architecture may not be well-suited for long-tailed datasets without further optimization.
 
-Overall, these findings emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the unique challenges of long-tailed learning. They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
+While Balanced Softmax stood out as the most robust loss function overall, statistical validation is required to confirm the significance of these findings, particularly when comparing closely performing configurations. % For instance, the performance gap between Balanced Softmax and Softmax Loss on middle classes or long-tailed datasets could reflect inherent dataset characteristics rather than the superiority of the loss function alone.
+
+Overall, these findings emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the challenges of deep long-tailed learning. % They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
