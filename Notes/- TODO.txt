@@ -51,3 +51,14 @@ Results and Discussion:
 Conclusion and Future Work:
 
 Appendix:
+
+Rangering:
+- Balanced SoftMax
+- Weighted SoftMax
+- SoftMax
+- Focal
+- Equalization
+- LDAM
+- CB
+
+Boxplot for figur 5.9 ligesom figur 5.1
