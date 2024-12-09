@@ -2,7 +2,7 @@
 
 % Length: aim for 10-15 pages
 
-This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Visual Transformers (VT)}, the deep long-tailed learning methods \textit{Class Re-balancing (CR)}, \textit{Information Augmentation (IA)}, 
+This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Vision Transformers (VT)}, the deep long-tailed learning methods \textit{Class Re-balancing (CR)}, \textit{Information Augmentation (IA)}, 
 and \textit{Module Improvement (MI)}. These topics will be explained for the reader.\\
 
 \todo{Mention image classification, as it is the primary goal of this thesis.} 
@@ -34,18 +34,18 @@ Class imbalance has a profound impact on model performance compared to evenly di
 
 %===================================================================================
 
-\section{Model Architechtures}
-Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Visual Transformers (VTs) stand out as the primary architectures used in this thesis. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2016}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the VT architecture.
+\section{Model Architecures}
+Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2016}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the VT architecture.
 
-\subsection{Introdution to Deep Neural Networks}
-Before the introduction of Convolutional Neural Networks (CNNs) and, more recently, Vision Transformers (ViTs), the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive}.
+\subsection{Introduction to Deep Neural Networks}
+Before the introduction of Convolutional Neural Networks (CNNs) and, more recently, Vision Transformers (ViTs), the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive,HORNIK1989359}.
 
 To illustrate the structure of a neural network, figure \ref{fig:cnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{Images/cnn_layers.jpg} 
-    \caption{Layers of a convolutional neural network. Figure from \cite{mathworks_cnn}.}
+    \caption{Layers of a neural network. Figure from \cite{mathworks_cnn}.}
     \label{fig:cnn_layers}
 \end{figure}
 
@@ -80,16 +80,20 @@ However, this simple neural network becomes insufficient for more complex proble
     \label{fig:cnn_illustration}
 \end{figure}
 
-\subsubsection{MobileNetV2 Architechture}
+\subsubsection{MobileNetV2 Architecture}
 \todo{write this section.}
 
-MobileNetV2 is a lightweight CNN architecture designed for efficient mobile and edge computing applications \cite{sandler2018mobilenetv2}. 
+Improvement from predecessors: efficiency.
+
+MobileNetV2 \cite{sandler2018mobilenetv2} is a 53-layer lightweight CNN architecture designed primarily for resource-constrained environments, such as mobile or embedded vision applications. It builds upon the original MobileNetV1 \cite{howard2017mobilenetsefficientconvolutionalneural} by Howard et al. in 2017, by introducing an inverted residual structure where the residual connections are between the bottleneck layers. 
+
+Following MobileNetV1, MobileNetV2 relies on depthwise separable convolutions, whereas standard convolution performs 
 
 "This lightweight MobileNetV2 CNN model was proposed by Sandler et al. [24] in 2019. It is based on the MobileNetV1 architecture given by Howard et al. [25] in 2017. MobileNetV2 is a 53-layer deep lightweight CNN model with fewer parameters and an input size of 224x224. The MobileNetV1 architecture used the concept of depth-wise separable convolutions that applies a single filter to each input channel, and the point-wise convolutions (1x11x1) aim at combining the output of the depth-wise convolutions. The MobileNetV2 lightweight CNN model is made up of mainly two blocks: (a) block with stride=[1 1], often called the residual block with S=[1 1]; and (b) block with stride=[2 2], which mainly aims at downsizing. The depth-wise convolution performs filtering, which is lightweight in nature. This is achieved simply by applying one convolution filter per input channel and forms the first layer of the MobileNetV2 blocks. The 1x1 convolution forms the second layer of the MobileNetV2 blocks and is known as the point-wise convolution. These 1x1 convolutions are responsible for structuring new features through the linear combination of input channels. Fig. 7.5 shows the structure of the building blocks of the MobileNetV2 CNN model with stride=[1 1] and stride=[2 2]. The MobileNetV2 CNN model has been widely used in medical image analysis [20, 26-34]" \url{https://www.sciencedirect.com/topics/computer-science/mobilenetv2}
 
 
 
-\subsubsection{ResNet50V2 Architechture}
+\subsubsection{ResNet50V2 Architecture}
 \todo{write this section.}
 ResNet50V2 is a variant of the ResNet (Residual Network) architecture, which introduced the concept of residual learning to address the vanishing gradient problem in deep networks \cite{he2016}. 
 
@@ -97,26 +101,28 @@ Key features: identity mapping, and reordering of batch normalization and relu a
 
 ResNet50V2 is the 50-layer version of the ResNet architecture. 
 
+Improvement from predecessors: addressing vanishing gradients.
 
-
-\subsubsection{ConvNeXt Base Architechture}
+\subsubsection{ConvNeXt Base Architecture}
 \todo{Write this section.}
 ConvNeXt Base is a modernized CNN architecture inspired by insights from transformer-based models, designed to achieve competitive performance while retaining the efficiency of CNNs \cite{todi2023convnext}. Notable features include:
 
 Simplified Design: Incorporates architectural refinements such as depthwise convolutions and LayerNorm.
 Enhanced Efficiency: Balances accuracy and computational cost, bridging the gap between traditional CNNs and transformer-based models. 
 
+Improvement from predecessors: integrating insights from ViTs.
+
 "The "Roaring 20s" of visual recognition began with the introduction of Vision Transformers (ViTs), which quickly superseded ConvNets as the state-of-the-art image classification model. A vanilla ViT, on the other hand, faces difficulties when applied to general computer vision tasks such as object detection and semantic segmentation. It is the hierarchical Transformers (e.g., Swin Transformers) that reintroduced several ConvNet priors, making Transformers practically viable as a generic vision backbone and demonstrating remarkable performance on a wide variety of vision tasks. However, the effectiveness of such hybrid approaches is still largely credited to the intrinsic superiority of Transformers, rather than the inherent inductive biases of convolutions. In this work, we reexamine the design spaces and test the limits of what a pure ConvNet can achieve. We gradually "modernize" a standard ResNet toward the design of a vision Transformer, and discover several key components that contribute to the performance difference along the way. The outcome of this exploration is a family of pure ConvNet models dubbed ConvNeXt. Constructed entirely from standard ConvNet modules, ConvNeXts compete favorably with Transformers in terms of accuracy and scalability, achieving 87.8 \% ImageNet top-1 accuracy and outperforming Swin Transformers on COCO detection and ADE20K segmentation, while maintaining the simplicity and efficiency of standard ConvNets." \url{https://paperswithcode.com/paper/a-convnet-for-the-2020s}
 
 
-\subsection{Visual Transformers}
+\subsection{Vision Transformers}
 \todo{Explain their advantages over CNNs for certain tasks.
 Mention why they are relevant for handling long-tailed datasets.}
 
 
 \subsubsection{ViT-B/16 Architecture}
 \todo{write this section.}
-ViT-B/16 is a Visual Transformer model that leverages the transformer architecture for image classification \cite{dosovitskiy2021imageworth16x16words}. Key characteristics include:
+ViT-B/16 is a Vision Transformer model that leverages the transformer architecture for image classification \cite{dosovitskiy2021imageworth16x16words}. Key characteristics include:
 
 Patch Embeddings: Images are divided into 16x16 patches, which are then flattened and embedded.
 \url{https://sh-tsang.medium.com/review-vision-transformer-vit-406568603de0}
