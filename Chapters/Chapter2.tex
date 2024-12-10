@@ -58,7 +58,7 @@ To illustrate the structure of a neural network, figure \ref{fig:dnn_layers} sho
     \label{fig:dnn_layers}
 \end{figure}
 
-However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. This limitation was addressed by CNNs, which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
+However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. The limitations of MLPs were addressed by Convolutional Neural Networks (CNNs), which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
 
 % ===============================================================================
 % CNNs
@@ -79,10 +79,12 @@ However, this simple neural network becomes insufficient for more complex proble
 %  A simple neural network is illustrated in figure \ref{fig:cnn_layers}, which shows an NN with three input neurons, two hidden layers with four neurons each, and an output layer of two neurons. The example in figure \ref{fig:cnn_layers} could be a neural network designed to classify cats and dogs based on three parameters. The parameters could be height, weight, and nose length of the pet. This data would propagate through the NN and the result would be the value of the two output neurons. The output with the highest value would be intrepreted as the class of the given input data, either a cat or a dog. The idea is that a neural network functions as a universal approximator, and without the hidden layers, it is just a linear function \cite{zhang2023dive}. The hidden layers introduce nonlinearity  
  
 
+Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images,by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. %CNNs exploit the spatial structure of images by applying local filters through convolutional layers. This approach preserves important relationships between neighboring pixels and enables more efficient learning of visual patterns \cite{lecun1998,NIPS2012_c399862d}.
 
- A convolutional neural network is a neural network architecture for deep learning that gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}. Later, AlexNet \cite{NIPS2012_c399862d} demonstrated the potential of CNNs to handle large-scale image recognition tasks \todo{expand on this}. 
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998} that demonstrated the potential of CNNs by recognizing handwritten digits. Later, AlexNet \cite{NIPS2012_c399862d} achieved a breakthrough by winning the ImageNet Challenge in 2012, demonstrating the potential of CNNs to handle large-scale image recognition tasks by deepening the architechtures and utilizing multiple GPUs for training. Subsequently, the evolution of CNNs has progressed through architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and ResNet \cite{he2016}, which have set the stage for the advancements seen in modern CNNs.
  
- CNNs are designed to recognize patterns in images for classification, as they preserve the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{zhang2023dive}. 
+CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}. Convolutional layers extract local features by applying filters to small regions of an image, while pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation.
+
 
 \begin{figure}[ht]
     \centering
@@ -91,7 +93,7 @@ However, this simple neural network becomes insufficient for more complex proble
     \label{fig:cnn_illustration}
 \end{figure}
 
-
+\todo{Tie to the models used for experiments in this thesis.}
 
 % ===============================================================================
 % ResNet50
