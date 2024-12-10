@@ -3,7 +3,7 @@
 % Length: aim for 10-15 pages
 
 This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Vision Transformers (VT)}, the deep long-tailed learning methods \textit{Class Re-balancing (CR)}, \textit{Information Augmentation (IA)}, 
-and \textit{Module Improvement (MI)}. These topics will be explained for the reader.\\
+and \textit{Module Improvement (MI)}. These topics will be explained for the reader.
 
 \todo{Mention image classification, as it is the primary goal of this thesis.} 
 
@@ -49,16 +49,16 @@ Deep learning has revolutionized image classification by introducing models capa
 \subsection{Introduction to Deep Neural Networks}
 Before the introduction of Convolutional Neural Networks (CNNs) and, more recently, Vision Transformers (ViTs), the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive,HORNIK1989359}.
 
-To illustrate the structure of a neural network, figure \ref{fig:cnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
+To illustrate the structure of a neural network, figure \ref{fig:dnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{Images/cnn_layers.jpg} 
     \caption{Layers of a neural network. Figure from \cite{mathworks_cnn}. \todo{Make this figure.}}
-    \label{fig:cnn_layers}
+    \label{fig:dnn_layers}
 \end{figure}
 
-However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. This limitation was addressed by CNNs, which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
+However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. This limitation was addressed by CNNs, which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
 
 % ===============================================================================
 % CNNs
@@ -80,7 +80,9 @@ However, this simple neural network becomes insufficient for more complex proble
  
 
 
- A convolutional neural network is a neural network architecture for deep learning that gained popularity after being introduced by LeCun et al. in 1995 \cite{lecun1995}. It is designed to recognize patterns in images for classification, as CNNs preserve the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{zhang2023dive}. 
+ A convolutional neural network is a neural network architecture for deep learning that gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}. Later, AlexNet \cite{NIPS2012_c399862d} demonstrated the potential of CNNs to handle large-scale image recognition tasks \todo{expand on this}. 
+ 
+ CNNs are designed to recognize patterns in images for classification, as they preserve the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{zhang2023dive}. 
 
 \begin{figure}[ht]
     \centering
@@ -88,6 +90,8 @@ However, this simple neural network becomes insufficient for more complex proble
     \caption{Illustration of a convolutional neural network. Figure from \cite{mathworks_cnn}. \todo{Make this figure.}}
     \label{fig:cnn_illustration}
 \end{figure}
+
+
 
 % ===============================================================================
 % ResNet50
@@ -116,7 +120,7 @@ MobileNetV2 introduced by Sandler et al. \cite{sandler2018mobilenetv2} is a ligh
 % \end{figure}
 
 \paragraph{Inverted Residual Blocks}
-While traditional residual connections, introduced in Residual Networks (ResNets) \cite{he2016} \todo{as discussed in the previous section}, allow for identity mapping and improved gradient flow, MobileNetV2 employs an inverted residual structure \cite{sandler2018mobilenetv2}. Instead of mapping from a high-dimensional representation down to a lower-dimensional bottleneck, then reconstructing features at the output, inverted residual blocks begin with a low-dimensional input and expand it to a higher-dimensional space before applying a depthwise convolution. After spatial filtering, the representation is projected back down to a low-dimensional space. This approach, illustrated in Figure \ref{fig:residual}, helps preserve crucial information and maintain a rich feature space without substantially increasing computational cost. The use of a linear bottleneck (i.e., no nonlinear activation in the low-dimensional projection) also helps prevent the destruction of useful information, further improving efficiency and accuracy. % The illustrated in figure \ref{fig:residual} shows that the inverted residual blocks first map the low-dimensional input to a higher dimensional representation instead of expanding from a high-dimensional input to a lower dimensional representation.  
+While traditional residual connections, introduced in Residual Networks (ResNets) \cite{he2016} \todo{as discussed in the previous section}, allow for identity mapping and improved gradient flow, MobileNetV2 employs an inverted residual structure \cite{sandler2018mobilenetv2}. Instead of mapping from a high-dimensional representation down to a lower-dimensional bottleneck, then reconstructing features at the output, inverted residual blocks begin with a low-dimensional input and expand it to a higher-dimensional space before applying a depthwise convolution. After spatial filtering, the representation is projected back down to a low-dimensional space. This approach, illustrated in Figure \ref{fig:residual}, helps preserve crucial information and maintain a rich feature space without substantially increasing computational cost. The use of a linear bottleneck (i.e., no nonlinear activation in the low-dimensional projection) also helps prevent the destruction of useful information, further improving efficiency and accuracy.  
 
 \begin{figure}[ht]
     \centering
