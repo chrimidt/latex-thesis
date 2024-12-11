@@ -79,11 +79,10 @@ However, this simple neural network becomes insufficient for more complex proble
 %  A simple neural network is illustrated in figure \ref{fig:cnn_layers}, which shows an NN with three input neurons, two hidden layers with four neurons each, and an output layer of two neurons. The example in figure \ref{fig:cnn_layers} could be a neural network designed to classify cats and dogs based on three parameters. The parameters could be height, weight, and nose length of the pet. This data would propagate through the NN and the result would be the value of the two output neurons. The output with the highest value would be intrepreted as the class of the given input data, either a cat or a dog. The idea is that a neural network functions as a universal approximator, and without the hidden layers, it is just a linear function \cite{zhang2023dive}. The hidden layers introduce nonlinearity  
  
 
-Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images,by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. %CNNs exploit the spatial structure of images by applying local filters through convolutional layers. This approach preserves important relationships between neighboring pixels and enables more efficient learning of visual patterns \cite{lecun1998,NIPS2012_c399862d}.
+Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. %CNNs exploit the spatial structure of images by applying local filters through convolutional layers. This approach preserves important relationships between neighboring pixels and enables more efficient learning of visual patterns \cite{lecun1998,NIPS2012_c399862d}.
 
-CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998} that demonstrated the potential of CNNs by recognizing handwritten digits. Later, AlexNet \cite{NIPS2012_c399862d} achieved a breakthrough by winning the ImageNet Challenge in 2012, demonstrating the potential of CNNs to handle large-scale image recognition tasks by deepening the architechtures and utilizing multiple GPUs for training. Subsequently, the evolution of CNNs has progressed through architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and ResNet \cite{he2016}, which have set the stage for the advancements seen in modern CNNs.
- 
-CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}. Convolutional layers extract local features by applying filters to small regions of an image, while pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation.
+
+CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}. They have three main layers: convolutional layers, pooling layers, and a fully connected layer. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image, while pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. The CNN can be made up of multiple convolution and pooling layers, but the fully connected layer will be the final layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation.
 
 
 \begin{figure}[ht]
@@ -94,6 +93,9 @@ CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_i
 \end{figure}
 
 \todo{Tie to the models used for experiments in this thesis.}
+\url{https://www.ibm.com/topics/convolutional-neural-networks}
+
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998} that demonstrated the potential of CNNs by recognizing handwritten digits. Later, AlexNet \cite{NIPS2012_c399862d} achieved a breakthrough by winning the ImageNet Challenge in 2012, demonstrating the potential of CNNs to handle large-scale image recognition tasks by deepening the architechtures and utilizing multiple GPUs for training. Subsequently, the evolution of CNNs has progressed through architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and ResNet \cite{he2016}, which have set the stage for the advancements seen in modern CNNs.
 
 % ===============================================================================
 % ResNet50
@@ -187,7 +189,7 @@ The Vision Transformer, or ViT, is a model for image classification that employs
 
 \section{Classic Long-Tailed Methods}
 \label{sec:lt_methods}
-Introduce the three methods (CR, IA, MI) with a brief explanation of their purpose.\\
+\todo{Introduce the three methods (CR, IA, MI) with a brief explanation of their purpose.}
 
 Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis does not aim to examine all the beforementioned method, but aims to find a deep learning approach to a specific problem. The backgrounds of the methods used in this thesis are described in this section.
 
@@ -205,20 +207,58 @@ The class re-balancing method aims to re-balance the effect of the imbalanced tr
 The traditional way to sample when training deep networks is bases on mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
 
 \subsubsection{Class-sensitive Learning}
-Class-sensitive learning incorporates strategies to adjust the loss function, making it more sensitive to the imbalanced nature of the dataset. This approach directly modifies the optimization process to prioritize learning from under-represented tail classes.
+% The loss function serves as a measure of the model's fitness to the data, quantifying the distance between the actual and predicted values of the target. Typically, the loss is represented as a nonnegative value, where smaller values indicate a better fit, and a perfect fit corresponds to a loss of zero \cite{zhang2023dive}. 
 
-TODO: Mention re-weighting and re-margining.
-Table/overview of loss functions as in the paper.
+% Conventional training of deep networks using the softmax cross-entropy loss often overlooks class imbalance. This results in uneven gradients for different classes, leading to suboptimal performance on underrepresented classes. To mitigate this issue, modifications to the loss function are introduced to ensure a more balanced contribution from each class during training.
+
+Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function to pay more attention to minority classes, thus improving overall performance.
+
+Two prominent categories of class-sensitive strategies are \emph{re-weighting} and \emph{re-margining}. Re-weighting involves adjusting the contribution of each class to the loss by multiplying them with different weights. By carefully selecting these weights, the model allocates a higher penalty to misclassification of underrepresented classes, thus re-balancing the training process \cite{zhang2023deep}. Re-margining, on the other hand, modifies the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}.
+
+In what follows, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with the baseline Softmax Cross-Entropy loss. Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as a re-margining method exemplified by LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
 
 
-\subsubsection{Loss Functions for Class-Sensitive Learning}
+% \subsubsection{Loss Functions for Class-Sensitive Learning}
+% The loss function serves as a measure of the model's fitness to the data, quantifying the distance between the actual and predicted values of the target. 
+Table \ref{tab:loss_summary} summarizes the loss functions employed for class-sensitive learning used in this thesis, outlining their formulations and categorizations into re-weighting or re-margining strategies.
 
-The loss function serves as a measure of the model's fitness to the data, quantifying the distance between the actual and predicted values of the target. Typically, the loss is represented as a nonnegative value, where smaller values indicate a better fit, and a perfect fit corresponds to a loss of zero \cite{zhang2023dive}.
 
-Conventional training of deep networks using the softmax cross-entropy loss often overlooks class imbalance. This results in uneven gradients for different classes, leading to suboptimal performance on underrepresented classes. To mitigate this issue, modifications to the loss function are introduced to ensure a more balanced contribution from each class during training. One such technique is re-weighting which adjusts the training loss for different classes by assigning a specific weight to each class \cite{zhang2023deep}. The softmax cross-entropy loss is used as a baseline, and is described below along with the loss functions for re-weighting.
+\begin{table}[H]
+    \centering
+    \caption{Summary of losses.}
+    \label{tab:loss_summary}
+    \begin{tabular}{|l|l|c|}
+    \hline
+    \textbf{Loss Name}       & \textbf{Formulation}                                                & \textbf{Type}        \\ \hline
+    Softmax loss \cite{pytorch_crossentropy}             & $L_{ce} = - \log(p_y)$                                              & -                   \\
+    Focal loss \cite{lin2018focallossdenseobject}     & $L_{fl} = -(1 - p_y)^\gamma \log(p_y)$                             & re-weighting        \\
+    Weighted Softmax loss \cite{zhang2023deep}    & $L_{wce} = - \frac{1}{\pi_y} \log(p_y)$                           & re-weighting        \\
+    Class-balanced loss \cite{cui2019classbalancedlossbasedeffective} & $L_{cb} = - \frac{1 - \gamma}{1 - \gamma^{n_y}} \log(p_y)$         & re-weighting        \\
+    Balanced Softmax loss \cite{ren2020balancedmetasoftmaxlongtailedvisual} & $L_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)$ & re-weighting        \\
+    Equalization loss \cite{tan2020equalizationlosslongtailedobject} & $L_{eq} = - \log\left( \frac{\exp(z_y)}{\sum_j \omega_j \exp(z_j)} \right)$    & re-weighting        \\
+    LDAM loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}      & $L_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)$ & re-margining        \\
+    \hline
+    \end{tabular}
+    \end{table}
 
-\myindent \textbf{Softmax Cross-Entropy Loss}
-The \textit{Softmax-Cross-Entropy loss}, often referred to as \textit{softmax loss}, is a widely used combination for training deep neural networks in classification tasks, including image classification. It is particularly effective for multi-class problems, where the goal is to assign an input image to one of several predefined categories \cite{cs231n} \cite{pytorch_crossentropy}.
+% From \cite{zhang2023deep}: Conventional training of deep networks is based on the softmax
+% cross-entropy loss (c.f. Table 3). This loss ignores the class
+% imbalance in data sizes and tends to generate uneven gradients for
+% different classes. That is, each positive sample of one class can be
+% seen as a negative sample for other classes in cross-entropy, which
+% leads head classes to receive more supporting gradients (as they
+% usually are positive samples) and causes tail classes to receive more
+% suppressed gradients (as they usually are negative samples) [19],
+% [55]. To address this, class-sensitive learning seeks to particularly
+% adjust the training loss values for various classes to re-balance
+% the uneven training effects caused by the imbalance issue [132],
+% [133], [134], [135], [136], [137]. There are two main types of
+% class-sensitive strategies, i.e., re-weighting and re-margining. We
+% begin with class re-weighting as follows.
+
+\paragraph{Softmax Cross-Entropy Loss}
+
+The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. 
 
 The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function for class \( i \) is defined as:
 
@@ -234,21 +274,23 @@ The \textit{Cross-Entropy loss} measures the difference between the predicted pr
     \mathcal{L}_{\text{CE}} = -\sum_{i=1}^{K} y_i \log(P(y = i \mid \mathbf{z}))
 \end{equation}
 
-
 For a single example where the true class is \( c \), this simplifies to:
 
 \begin{equation}
     \mathcal{L}_{\text{CE}} = -\log(P(y = c \mid \mathbf{z}))
 \end{equation}
 
+This equation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
 
-This formulation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
+While this approach provides a robust and stable training objective, it inherently treats all classes equally and does not account for class imbalance.
 
-This combination has become the de facto standard for image classification tasks, providing a robust and mathematically sound framework for training deep neural networks.
+% Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
 
+% The \textit{Softmax-Cross-Entropy loss}, often referred to as \textit{softmax loss}, is a widely used combination for training deep neural networks in classification tasks, including image classification. It is particularly effective for multi-class problems, where the goal is to assign an input image to one of several predefined categories \cite{cs231n} \cite{pytorch_crossentropy}.
 
-\myindent \textbf{Weighted Softmax Cross-Entropy Loss}
-The \textit{Weighted Softmax Cross-Entropy loss}, often referred to as \textit{weighted softmax loss}, is a variant of the standard softmax cross-entropy loss, designed to address imbalanced datasets \cite{pytorch_crossentropy} \cite{lin2018focallossdenseobject}. By assigning different weights to each class, this method ensures that underrepresented classes contribute more to the overall loss, improving the model's performance on minority classes. The weighted cross-entropy loss applies class-specific weights to the standard cross-entropy formulation. It is defined as:
+\paragraph{Weighted Softmax Cross-Entropy Loss}
+%\myindent \textbf{Weighted Softmax Cross-Entropy Loss}
+The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss to address imbalanced datasets by assigning different weights to each class \cite{pytorch_crossentropy,lin2018focallossdenseobject}. By doing so, it increases the loss contribution from underrepresented classes and decreases it for well-represented classes, improving the model's performance on minority classes. The WCE loss multiplies the loss values of different classes by the inverse of training label frequencies \cite{zhang2023deep}. The equation is as follows:
 
 \begin{equation}
     \mathcal{L}_{\text{WCE}} = -\sum_{i=1}^{K} w_i y_i \log(P(y = i \mid \mathbf{z}))
@@ -264,34 +306,71 @@ For a single example where the true class is \( c \), the loss simplifies to:
 
 This weighted formulation ensures that minority classes contribute more to the overall loss, addressing the imbalance during training and improving the model's performance on underrepresented classes.
 
-\myindent \textbf{Focal Loss}
-Focal Loss, introduced by Lin et al. (2017) \cite{lin2018focallossdenseobject}, addresses the challenges of extreme class imbalance in classification tasks by dynamically scaling the standard cross-entropy loss. Focal Loss mitigates the issue of imbalanced datasets by down-weighting the loss contributions from well-classified examples and focusing on misclassified examples during training.
+\todo{insert weight as the inverse of label frequency.}
+% $L_{wce} = - \frac{1}{\pi_y} \log(p_y)$
 
-% For multiclass classification, the focal loss is formulated as:
+\paragraph{Focal Loss}
+\emph{Focal Loss} \cite{lin2018focallossdenseobject} addresses class imbalance by emphasizing harder-to-classify examples, which are often from tail classes. Instead of relying on training label frequencies, it uses the prediction probabilities to dynamically adjust the contribution of each sample to the loss. Well-classified examples with high probabilities $p_y$ are down-weighted using a modulating factor $(1 - p_y)^\gamma$, where $\gamma > 0$ is a focusing parameter. The Focal Loss modifies the CE loss by applying the inverse prediction probability as follows:
 
-% \begin{equation}
-%     \mathcal{L}_{\text{FL}} = - \frac{1}{N} \sum_{i=1}^{N} \sum_{c=1}^{K} \alpha_c (1 - p_{i,c})^\gamma \log(p_{i,c}),
-% \end{equation}
+\begin{equation}
+    L_{fl} = -(1 - p_y)^\gamma \log(p_y)
+\end{equation}
 
-% where \( N \) is the number of samples, \( K \) is the total number of classes, \( p_{i,c} \) is the predicted probability for class \( c \) for the \( i \)-th sample, typically obtained via a softmax function, \( \alpha_c \) is a weighting factor for class \( c \), \( \gamma \geq 0 \) is the focusing parameter, which adjusts the scaling effect of \( (1 - p_{i,c})^\gamma \). A higher \( \gamma \) increases the model's focus on harder examples, and \( \log(p_{i,c}) \) is the standard cross-entropy loss for the true class.
+This mechanism increases the weight of misclassified examples, ensuring the model prioritizes learning from challenging samples. 
+
+\paragraph{Class-Balanced Loss}
+Instead of simply using raw class frequencies, \emph{Class-Balanced (CB) Loss} \cite{cui2019classbalancedlossbasedeffective} estimates how much additional information new samples provide, acknowledging that adding redundant data from majority classes will diminish the benefit. The CB loss introduces the concept of the effective number of samples to guide the re-weighting process, which is an exponential function of their training label number. The CB loss then enforces a class-balanced re-weighting term, inversely proportional to the effective numer of classes. The CB loss function is as follows:
+
+\begin{equation}
+    L_{cb} = - \frac{1 - \gamma}{1 - \gamma^{n_y}} \log(p_y)
+\end{equation}
+
+\todo{Explain the components of this equation.}
+
+\paragraph{Balanced Softmax Loss}
+The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. The BS loss function is as follows:
+
+\begin{equation}
+    L_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
+\end{equation}
+
+where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
 
 
-% The term \( (1 - p_{i,c})^\gamma \) serves as a modulating factor that reduces the contribution of well-classified examples, where \( p_{i,c} \) is high, to the total loss. This enables the model to focus more on examples with lower predicted probabilities, which are typically harder to classify. The parameter \( \alpha_c \) further adjusts the loss to account for class imbalance, ensuring that minority classes receive adequate attention during training.
+\paragraph{Equalization Loss}
+\emph{Equalization Loss (EQ)} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes \cite{tan2020equalizationlosslongtailedobject}. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. The EQ Loss is defined as:
 
+\begin{equation}
+    L_{eq} = - \log\left( \frac{\exp(z_y)}{\sum_j \omega_j \exp(z_j)} \right)
+\end{equation}
 
-\myindent \textbf{Class-Balanced Loss} \textit{Class-balanced loss}, introduced by Cui et al. (2019) \cite{cui2019classbalancedlossbasedeffective}, ...
+where $z_i$ represents the logit for the true class $y$, $\omega_j$ is a weight assigned to class $j$, and the denominator normalizes the probabilities.
 
-\myindent \textbf{Balanced Softmax Loss} \textit{Balanced Softmax loss}, introduced by Ren et al. (2020) \cite{ren2020balancedmetasoftmaxlongtailedvisual}, ...
+\paragraph{LDAM Loss}
+The \emph{Label-Distribution-Aware Margin (LDAM)} Loss represents a class-sensitive approach based on re-margining rather than re-weighting \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
 
-\myindent \textbf{LDAM Loss} \textit{LDAM loss}, introduced by Cao et al. (2019) \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, ...
+Instead of altering the loss directly, LDAM modifies the margin applied to each class’ decision boundary, ensuring that minority classes have more “space” in the representation space to reduce misclassification.
 
-\myindent \textbf{Equalization Loss} \textit{Equalization loss}, introduced by Tan et al. (2020) \cite{tan2020equalizationlosslongtailedobject}, ...
+"First, we propose a theoretically-principled label-distribution-aware margin (LDAM) loss motivated by minimizing a margin-based generalization bound. This loss replaces the standard cross-entropy objective during training and can be applied with prior strategies for training with class-imbalance such as re-weighting or re-sampling." 
 
+\begin{equation}
+    L_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)
+\end{equation}
 
-\subsection{Information Augmentation}
-Data augmentation techniques tailored for long-tailed datasets.
+From \cite{zhang2023deep}: To handle the class imbalance, re-margining
+attempts to adjust losses by subtracting different margin factors for
+different classes, so that they have a different minimal margin (i.e.,
+distance) between features and the classifier. Directly using existing
+soft margin losses [138], [139] is unfeasible, since they ignore the
+issue of class imbalance. To address this, Label-Distribution-Aware
+Margin (LDAM) [18] enforces class-dependent margin factors for
+different classes based on their training label frequencies, which
+encourages tail classes to have larger margins.
 
-\subsubsection{Transfer Learning}
+% \subsection{Information Augmentation}
+% Data augmentation techniques tailored for long-tailed datasets.
+
+% \subsubsection{Transfer Learning}
 
 % \subsubsection{Data Augmentation}
 

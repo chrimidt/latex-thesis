@@ -1,3 +1,4 @@
+% Main article: Deep Long-Tailed Learning: A Survey
 @article{zhang2023deep,
       title={Deep long-tailed learning: A survey},
       author={Zhang, Yifan and Kang, Bingyi and Hooi, Bryan and Yan, Shuicheng and Feng, Jiashi},
@@ -6,6 +7,7 @@
       publisher={IEEE}
 }
 
+% Book
 @book{zhang2023dive,
     title={Dive into Deep Learning},
     author={Zhang, Aston and Lipton, Zachary C. and Li, Mu and Smola, Alexander J.},
@@ -22,12 +24,17 @@
     year         = {2024}
 }
 
+% ===============================================================================
+% Loss Functions
+
+% Cross-Entropy Loss
 @misc{pytorch_crossentropy,
     title        = {torch.nn.CrossEntropyLoss — PyTorch documentation},
     howpublished = {\url{https://pytorch.org/docs/stable/generated/torch.nn.CrossEntropyLoss.html}},
     note         = {Accessed: 2024-11-20}
 }
 
+% Focal Loss
 @misc{lin2018focallossdenseobject,
       title={Focal Loss for Dense Object Detection}, 
       author={Tsung-Yi Lin and Priya Goyal and Ross Girshick and Kaiming He and Piotr Dollár},
@@ -38,6 +45,7 @@
       url={https://arxiv.org/abs/1708.02002}, 
 }
 
+% Class-Balanced Loss
 @misc{cui2019classbalancedlossbasedeffective,
       title={Class-Balanced Loss Based on Effective Number of Samples}, 
       author={Yin Cui and Menglin Jia and Tsung-Yi Lin and Yang Song and Serge Belongie},
@@ -48,6 +56,7 @@
       url={https://arxiv.org/abs/1901.05555}, 
 }
 
+% Balanced Softmax Loss
 @misc{ren2020balancedmetasoftmaxlongtailedvisual,
       title={Balanced Meta-Softmax for Long-Tailed Visual Recognition}, 
       author={Jiawei Ren and Cunjun Yu and Shunan Sheng and Xiao Ma and Haiyu Zhao and Shuai Yi and Hongsheng Li},
@@ -58,6 +67,7 @@
       url={https://arxiv.org/abs/2007.10740}, 
 }
 
+% LDAM-DRW
 @misc{cao2019learningimbalanceddatasetslabeldistributionaware,
       title={Learning Imbalanced Datasets with Label-Distribution-Aware Margin Loss}, 
       author={Kaidi Cao and Colin Wei and Adrien Gaidon and Nikos Arechiga and Tengyu Ma},
@@ -68,6 +78,7 @@
       url={https://arxiv.org/abs/1906.07413}, 
 }
 
+% Equalization Loss
 @misc{tan2020equalizationlosslongtailedobject,
       title={Equalization Loss for Long-Tailed Object Recognition}, 
       author={Jingru Tan and Changbao Wang and Buyu Li and Quanquan Li and Wanli Ouyang and Changqing Yin and Junjie Yan},
@@ -78,6 +89,11 @@
       url={https://arxiv.org/abs/2003.05176}, 
 }
 
+
+% ===============================================================================
+% Datasets
+
+% CIFAR-100
 @techreport{krizhevsky2009learning,
   author = {Krizhevsky, Alex and Hinton, Geoffrey},
   title = {Learning Multiple Layers of Features from Tiny Images},
@@ -86,6 +102,7 @@
   type = {Technical Report},
 }
 
+% Dataset Distribution
 @misc{liu2019largescalelongtailedrecognitionopen,
       title={Large-Scale Long-Tailed Recognition in an Open World}, 
       author={Ziwei Liu and Zhongqi Miao and Xiaohang Zhan and Jiayun Wang and Boqing Gong and Stella X. Yu},
@@ -96,6 +113,7 @@
       url={https://arxiv.org/abs/1904.05160}, 
 }
 
+% Dataset Distribution
 @article{Newman_2005,
    title={Power laws, Pareto distributions and Zipf’s law},
    volume={46},
@@ -109,7 +127,8 @@
    year={2005},
    month=sep, pages={323–351} }
 
-   @article{Buda_2018,
+% Not used?
+@article{Buda_2018,
    title={A systematic study of the class imbalance problem in convolutional neural networks},
    volume={106},
    ISSN={0893-6080},
@@ -121,7 +140,7 @@
    year={2018},
    month=oct, pages={249–259} }
 
-
+% Imbalanced Datasets
 @misc{vanhorn2017deviltailsfinegrainedclassification,
       title={The Devil is in the Tails: Fine-grained Classification in the Wild}, 
       author={Grant Van Horn and Pietro Perona},
@@ -132,6 +151,7 @@
       url={https://arxiv.org/abs/1709.01450}, 
 }
 
+% iNaturalist
 @misc{vanhorn2018inaturalistspeciesclassificationdetection,
       title={The iNaturalist Species Classification and Detection Dataset}, 
       author={Grant Van Horn and Oisin Mac Aodha and Yang Song and Yin Cui and Chen Sun and Alex Shepard and Hartwig Adam and Pietro Perona and Serge Belongie},
@@ -142,6 +162,7 @@
       url={https://arxiv.org/abs/1707.06642}, 
 }
 
+% Long-tailed illustration
 @misc{lgresearch257,
   author       = {LG AI Research},
   title        = {[ICML 2022] Part 1: Long-Tail Distribution Learning},
@@ -149,6 +170,7 @@
   note         = {Accessed: 2024-11-26}
 }
 
+% ImageNet
 @INPROCEEDINGS{ImageNet2009,
   author={Deng, Jia and Dong, Wei and Socher, Richard and Li, Li-Jia and Kai Li and Li Fei-Fei},
   booktitle={2009 IEEE Conference on Computer Vision and Pattern Recognition}, 
@@ -160,7 +182,8 @@
   keywords={Large-scale systems;Image databases;Explosions;Internet;Robustness;Information retrieval;Image retrieval;Multimedia databases;Ontologies;Spine},
   doi={10.1109/CVPR.2009.5206848}}
 
-  @inproceedings{Places365,
+% Places365
+@inproceedings{Places365,
  author = {Zhou, Bolei and Lapedriza, Agata and Xiao, Jianxiong and Torralba, Antonio and Oliva, Aude},
  booktitle = {Advances in Neural Information Processing Systems},
  editor = {Z. Ghahramani and M. Welling and C. Cortes and N. Lawrence and K.Q. Weinberger},
@@ -172,6 +195,7 @@
  year = {2014}
 }
 
+% Distribution
 @misc{dealvis2024surveydeeplongtailclassification,
       title={A Survey of Deep Long-Tail Classification Advancements}, 
       author={Charika de Alvis and Suranga Seneviratne},
@@ -272,6 +296,7 @@ author = {Kurt Hornik and Maxwell Stinchcombe and Halbert White},
       url={https://arxiv.org/abs/2110.00476}, 
 }
 
+% ResNet
 @INPROCEEDINGS{he2016,
   author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
   booktitle={2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 
@@ -283,7 +308,8 @@ author = {Kurt Hornik and Maxwell Stinchcombe and Halbert White},
   keywords={Training;Degradation;Complexity theory;Image recognition;Neural networks;Visualization;Image segmentation},
   doi={10.1109/CVPR.2016.90}}
 
-  @inproceedings{todi2023convnext,
+% ConvNeXt
+@inproceedings{todi2023convnext,
   title={ConvNext: A Contemporary Architecture for Convolutional Neural Networks for Image Classification},
   author={Todi, Agastya and Narula, Navya and Sharma, Moolch and Gupta, Umesh},
   booktitle={2023 3rd International Conference on Innovative Sustainable Computational Technologies (CISCT)},
@@ -292,6 +318,7 @@ author = {Kurt Hornik and Maxwell Stinchcombe and Halbert White},
   organization={IEEE}
 }
 
+% ConvNet
 @misc{liu2022convnet2020s,
       title={A ConvNet for the 2020s}, 
       author={Zhuang Liu and Hanzi Mao and Chao-Yuan Wu and Christoph Feichtenhofer and Trevor Darrell and Saining Xie},
@@ -302,6 +329,7 @@ author = {Kurt Hornik and Maxwell Stinchcombe and Halbert White},
       url={https://arxiv.org/abs/2201.03545}, 
 }
 
+% ConvNeXt Base
 @misc{torchvision2024convnextbase,
   author       = {PyTorch Team},
   title        = {ConvNeXt Base Model},
@@ -398,6 +426,7 @@ journal = {International Conference on Artificial Neural Networks}
 % ===============================================================================
 % GitHub Repositories
 
+% Deep Long-Tailed Learning: A Survey
 @misc{VanintLT,
   author = {Vanint},
   title = {Awesome-LongTailed-Learning},
@@ -409,6 +438,7 @@ journal = {International Conference on Artificial Neural Networks}
   note = {Accessed: 2024-09-18}
 }
 
+% LDAM-DRW
 @misc{kaidic_ldam_drw,
   author       = {Kai, Di},
   title        = {LDAM-DRW: Learning from Long-Tailed Data},
