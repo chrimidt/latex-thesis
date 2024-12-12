@@ -336,8 +336,6 @@ The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation 
 
 where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
 
-\subsubsection{Margin Loss and Logit Adjustment}
-Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the prediction logits.
 
 \paragraph{Equalization Loss}
 \emph{Equalization Loss (EQ)} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes \cite{tan2020equalizationlosslongtailedobject}. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. The EQ Loss is defined as:
@@ -347,6 +345,13 @@ Logit adjustment is a class re-balancing technique that aims to optimize the cla
 \end{equation}
 
 where $z_i$ represents the logit for the true class $y$, $\omega_j$ is a weight assigned to class $j$, and the denominator normalizes the probabilities.
+
+
+\subsubsection{Logit Adjustment}
+Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the prediction logits \cite{menon2021longtaillearninglogitadjustment}, typically based on prior class probabilities. 
+
+\subsubsection{Re-margining}
+Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes.
 
 \paragraph{LDAM Loss}
 The \emph{Label-Distribution-Aware Margin (LDAM)} Loss represents a class-sensitive approach based on re-margining rather than re-weighting \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
@@ -369,14 +374,3 @@ Margin (LDAM) [18] enforces class-dependent margin factors for
 different classes based on their training label frequencies, which
 encourages tail classes to have larger margins.
 
-% \subsection{Information Augmentation}
-% Data augmentation techniques tailored for long-tailed datasets.
-
-% \subsubsection{Transfer Learning}
-
-% \subsubsection{Data Augmentation}
-
-
-
-% \subsection{Module Improvement}
-% Architectural changes to improve tail-class representation.
