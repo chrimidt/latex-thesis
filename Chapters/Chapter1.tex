@@ -82,23 +82,26 @@ This thesis focuses on applying deep long-tailed learning methods to image class
 
 
 \section{Related Work}
-A section that describes the work related to this thesis. This includes re-sampling, data augmentation, module improvement.
+The challenge of long-tailed datasets has been extensively studied in the literature \cite{zhang2023deep,zhang2024systematicreviewlongtailedlearning}. Zhang et al. \cite{zhang2023deep} conducted a comprehensive survey on long-tailed learning techniques, categorizing them into three main strategies: class re-balancing, information augmentation, and module improvement. This section explores class re-balancing approaches that are beyond the scope of this thesis, as well as other related methodologies commonly employed to address the issues of long-tailed datasets.
 
-\paragraph{Data Re-Balancing}
+\paragraph{Data Re-sampling}
+Data re-sampling techniques aim to modify the training dataset to mitigate class imbalance by simulating a balanced dataset. The most popular methods for re-sampling are random over-sampling (ROS) and random under-sampling (RUS) \cite{Chawla_2002,han2005}. ROS involves duplicating random samples from the minority classes, whereas RUS involves removing samples from the majority classes \cite{zhang2023deep,han2005}. However, these techniques have their weaknesses: over-sampling the minority classes will eventually lead to overfitting tail classes, and under-sampling can lead to underperformance on head classes \cite{zhang2023deep}. Another re-sampling technique, called Synthetic Minority Over-Sampling Technique (SMOTE) \cite{Chawla_2002}, involves synthetical generation of instances of the minority classes based on the existing data. 
 
-\paragraph{Re-Weighting}
+\paragraph{Logit Adjustment}
+Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the prediction logits.
 
-\paragraph{Margin Loss}
+\paragraph{Other Methods}
+Other common long-tailed learning techniques include transfer learning, data augmentation, decoupled training, ensemble learning, and few shot learning among other thing.
 
-\paragraph{Meta-Learning}
+Transfer learning techniques adress the issue of class imblance by transferring learned features from head classes to tail classes. 
 
-\paragraph{Decoupled Training}
+Data augmentation is a deep learning technique used to expand the training dataset by applying transformations to samples or features, enhancing model accuracy while reducing overfitting \cite{perez2017effectivenessdataaugmentationimage,shorten2019survey}. Common augmentation methods include Mixup \cite{zhang2018mixupempiricalriskminimization}, which combines pairs of samples to create interpolated examples; CutMix \cite{yun2019cutmixregularizationstrategytrain}, which replaces regions of one image with patches from another; and UniMix \cite{xu2021calibratedmodellongtailedvisual}, which focuses on calibrating the feature space for long-tailed distributions. Other approaches focus on enhancing tail-class performance by transferring knowledge from head classes. For example, the Rare-class Sample Generator (RSG) \cite{wang2021rsgsimpleeffectivemodule} estimates feature centers for each class and uses the displacement between head-class sample features and their nearest intra-class feature center to generate tail-class features, thereby expanding the tail-class feature space.
 
-\paragraph{Transfer Learning}
+Decoupled Training 
 
-\paragraph{Ensemble Learning}
+Ensemble learning
 
-\paragraph{Few Shot Learning}
+Few Shot Learning
 
 \section{Reading Guide}
 \todo{Mention what each chapter will cover and how they relate to each other.}

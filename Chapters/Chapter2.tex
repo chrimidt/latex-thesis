@@ -204,7 +204,7 @@ Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023
 The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment \cite{zhang2023deep}. 
 
 \subsubsection{Re-sampling}
-The traditional way to sample when training deep networks is bases on mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
+The traditional way to sample when training deep networks is using mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
 
 \subsubsection{Class-sensitive Learning}
 % The loss function serves as a measure of the model's fitness to the data, quantifying the distance between the actual and predicted values of the target. Typically, the loss is represented as a nonnegative value, where smaller values indicate a better fit, and a perfect fit corresponds to a loss of zero \cite{zhang2023dive}. 
@@ -336,6 +336,8 @@ The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation 
 
 where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
 
+\subsubsection{Margin Loss and Logit Adjustment}
+Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the prediction logits.
 
 \paragraph{Equalization Loss}
 \emph{Equalization Loss (EQ)} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes \cite{tan2020equalizationlosslongtailedobject}. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. The EQ Loss is defined as:
