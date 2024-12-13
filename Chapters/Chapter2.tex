@@ -11,19 +11,31 @@ and \textit{Module Improvement (MI)}. These topics will be explained for the rea
 % LT Datasets
 
 \section{Long-Tailed Datasets}
+\label{sec:lt-datasets}
 Long-tailed datasets pose significant challenges in deep learning, as they represent an extreme form of class imbalance. Addressing these challenges is central to this thesis, which explores methods to improve model performance on underrepresented classes. This section outlines the structure of long-tailed distributions and their implications.
 
-A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. This  distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} and CIFAR-100 \cite{krizhevsky2009learning} using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
+A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. This  distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} by using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
 
-One such benchmark, CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 32x32 color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following a Pareto distribution with number of samplers per class as followed \cite{kaidic_ldam_drw}:
+CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 32x32 color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following an exponential decay en sample sizes, given by:
+
+\begin{equation}
+    \label{eq:exp}
+    n_i = n_{max}\cdot \text{IR}^{\frac{i-1}{C-1}}
+\end{equation}
+
+Where $n_i$ is the number of samples in class $i$, $n_{max}$ is the number of samples in the most frequent class, IR is the imbalance ratio, and $C$ is the total number of classes \cite{kaidic_ldam_drw}.
+
+Other long-tailed datasets follow a Pareto distribution with number of samplers per class as followed \cite{liu2019largescalelongtailedrecognitionopen}:
 
 \begin{equation}
     \label{eq:pareto}
-\text{num\_samples} = \text{max\_samples} \times (\text{imb\_factor})^{\frac{\text{class\_index}}{\text{num\_classes} - 1}}
+    f(C) = \frac{\alpha C_{\text{m}}^\alpha}{C^{\alpha + 1}}, \quad C \geq C_{\text{m}}, \quad \alpha > 0
 \end{equation}
 
-where \textit{max\_samples} is the maximum number of samples for a class, \textit{imb\_factor} is the imbalance factor, \textit{class\_index} is the index of the class, and \textit{num\_classes} is the total number of classes.
- 
+Here, $\alpha$ is the shape parameter, $C_{\text{m}}$ is the scale parameter representing the minimum possible class index, and $C$ is the class index. A larger $\alpha$ results in a more severe imbalance.
+
+    
+
 
 \begin{figure}[ht]
     \centering

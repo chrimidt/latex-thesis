@@ -1,31 +1,59 @@
 % Chapter 3: Methodology
 
-This chapter describes the methods and approaches used in the experiments. This includes dataset preparation, models, loss functions, etc.
+This chapter describes the methods and approaches used in the experiments. This includes the selection of dataset, models, loss functions, and evaluation strategies.
 
 \section{Overview of Approach}
-An overall description of the approach to tackling the long-tailed dataset problem, including an explanation of the strategy, 
-such as balancing techniques and model selection.
+
+Image classification involves predicting the correct category of an image from a set of predefined classes. This project focuses on addressing the challenge of class imbalance, where some classes have many samples while others have very few.
+
+The CIFAR-100 dataset \cite{krizhevsky2009learning} was chosen because it is small enough to work with efficiently and is commonly used in other research. To create a long-tailed version of the dataset, its class distribution was adjusted to match the distribution of the ImageNet-LT dataset used in \cite{zhang2023deep}. This adjustment ensures that the experiments simulate real-world class imbalance.
+
+Several loss functions designed to handle class imbalance were tested in this project, including Softmax Cross-Entropy (CE), Focal Loss (FL), Class-Balanced (CB) Loss, Balanced Softmax (BS) Loss, Equalization (EQ) Loss, and LDAM Loss. These loss functions modify how the models learn, making it easier for them to focus on classes with fewer samples.
+
+The experiments were performed using four model architectures: ResNet50, MobileNetV2, ConvNeXt Base, and ViT-B/16. All models were pretrained on ImageNet, which provided a strong starting point for fine-tuning on the CIFAR-100 dataset. These models were chosen because they are well-suited for image classification tasks and represent different design approaches.
+
+Each model was trained on both a balanced training set and a long-tailed training set. The performance of the models was evaluated using a balanced test set, a long-tailed test set, and the long-tailed test set divided into head, middle, and tail classes. This division made it possible to analyze the performance for classes with different numbers of samples. The main evaluation metric used was top-1 accuracy, which measures how often the model's top prediction is correct.
+
+In what follows, each step of the methodology will be explained in detail.
 
 \section{Dataset Preparation and Specifications}
 A description of this section here.
 
-Following the dataset structure used in \textit{Deep Long-Tailed Learning: A Survey}, the CIFAR100 dataset was modified to create a long-tailed training set and a balanced test set. Key details include:
+Following the dataset structure used in \textit{Deep Long-Tailed Learning: A Survey}, the CIFAR100 dataset was modified to create a long-tailed training set and a balanced test set. 
 
-\begin{itemize}
-    \item Dataset characteristics: Number of classes, imbalance ratio, and train-test splits.
-    \item Preprocessing steps: Resizing, normalization, and augmentation techniques.
-    \item Handling imbalance: Techniques like re-sampling and augmentation to address the long-tailed distribution.
-\end{itemize}
+\subsection{Benchmark Dataset Selection}
+There are a number of benchmark datasets for long-tailed image classification tasks, including ImageNet-LT, Places365-Lt, CIFAR-100-LT, and iNaturalist 2018 \todo{references}. The previous three are sampled from ImageNet, Places365, and CIFAR-100, following the Pareto distribution, as described in section \ref{sec:lt-datasets}, while the iNaturalist 2018 is a natural long-tailed dataset. Table \ref{tab:datasets} summarizes the four datasets and their data specifications. 
+
+\begin{table}[ht]
+    \centering
+    \caption{Summary of long-tailed benchmarks for image classification.}
+    \begin{tabular}{lccc}
+    \hline
+    \textbf{Dataset}           & \textbf{\# Classes} & \textbf{\# Training Data} & \textbf{\# Test Data} \\ \hline
+    ImageNet-LT   & 1,000              & 115,846                   & 50,000                \\
+    CIFAR100-LT   & 100                & 50,000                    & 10,000                \\
+    Places-LT     & 365                & 62,500                    & 36,500                \\
+    iNaturalist 2018 & 8,142            & 437,513                   & 24,426                \\ \hline
+    \end{tabular}
+    \label{tab:datasets}
+\end{table}
+    
+
+With its 100 classes and only 60,000 samples, the CIFAR-100 dataset was chosen as a benchmark for the experiments conducted in this thesis based on its managable size, compared to the other benchmarks, and widespread use as a standard in image classification research \todo{reference}. It's comparatively small size allows for rapid experimentation and comparisons, wheras a larger benchmark requires more computational effort and time for experiments, thus it is well-suited for multiple configurations and evaluations. However, CIFAR-100 has some limitations comparet to larger dataset, like ImageNet-LT or iNaturalist. For example, CIFAR-100 images are of relatively low resolution ($32 \times 32$ pixels) compared to ImageNet ($224 \times 224$ pixels), and may limit the ability of models to capture fine-grained details. Likewise, the smaller number of classes and samples can result in less diversity compared to datasets like iNaturalist 2018, which contains nearly nine times as many samples in the training data as CIFAR-100-LT. Despite these drawbacks, CIFAR-100-LT remains a practical choice for this thesis due to its computational efficiency. 
+
+\todo{Describe the type of images in CIFAR-100 and include examples.}
 
 \subsection{Data Characteristics: Class Distribution}
-\textit{A list of subjects to include in this section:}
+% \textit{A list of subjects to include in this section:}
 
-\begin{itemize}
-    \item Describe the ImageNet-LT dataset: number of classes, imbalance ratio, etc.
-    \item Describe the plots and what they mean for the CIFAR100-LT data preparation. 
-\end{itemize}
+% \begin{itemize}
+%     \item Describe the ImageNet-LT dataset: number of classes, imbalance ratio, etc.
+%     \item Describe the plots and what they mean for the CIFAR100-LT data preparation. 
+% \end{itemize}
+Understanding the class distribution in long-tailed datasets is essential for evaluating the impact of the class imbalance on model performance. This section analyzes the class distribution of the benchmark ImageNet-LT used in \cite{zhang2023deep}, which serves as a reference for creating a similar distribution across the CIFAR-100-LT training, evaluation, and test datasets.  
 
-The first step is to prepare the data for training and testing. In order to generate training, validation, and test datasets that resemble the datasets used for the empirical studies in \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, their dataset are investigated: The GitHub repository \cite{VanintLT} for the paper \textit{Deep Long-Tailed Learning: A Survey} was downloaded and an environment was set up on the Jupyter Hub on the Freja node on the ece cluster. The \texttt{.txt} files with the data from ImageNet-LT (\texttt{ImageNet\_LT\_train.txt}, \texttt{ImageNet\_LT\_val.txt}, \texttt{ImageNet\_LT\_test.txt}) are shown on figures \ref{fig:IN-train}, \ref{fig:IN-val}, and \ref{fig:IN-test}, respectively. 
+The ImageNet-LT dataset, introduced by Liu et al. \cite{liu2019largescalelongtailedrecognitionopen}, has been widely used in empirical studies, including \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}. The class distributions of its training, validation, and test sets are shown in Figures~\ref{fig:IN-train}, \ref{fig:IN-val}, and \ref{fig:IN-test}, respectively. The ImageNet-LT is constructed from the original ImageNet-2012 following the Pareto-distribution (Eq. \eqref{eq:pareto}) with power value $\alpha=6$ \cite{liu2019largescalelongtailedrecognitionopen}, resulting in an imbalance ratio of 256, meaning that the most frequent class has 256 times more samples than the least frequent class. As suggested in figure \ref{fig:IN-train}, the most frequent class has 1280 images, and the least frequent class 5 images \cite{liu2019largescalelongtailedrecognitionopen}. The power value of 6 is relatively large, resulting in the steep imbalance as seen in figure \ref{fig:IN-train}. Both the validation and test sets are balanced, as shown in figures \ref{fig:IN-val} and \ref{fig:IN-test}, respectively. There are 20 samples per class in the validation set, and 50 samples per class in the test set.
+
 
 \begin{figure}[h!]
     \centering
@@ -47,6 +75,10 @@ The first step is to prepare the data for training and testing. In order to gene
     \caption{The class distribution of the test images for the ImageNet-LT dataset shows that there are 50 samples of each class.}
     \label{fig:IN-test}
 \end{figure}
+
+
+However, investigating the CIFAR-100-LT dataset used in \emph{Learning Imbalanced Datasets with Label-Distribution-Aware Margin Loss} by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware} shows that the training dataset follows a exponential decay, and not a pareto distribution. The imbalance factor in their studies is 100, meaning that the most frequent class has 100 times more samples than the least frequent class, according to equation \eqref{eq:exp}. The following section will describe the preparation of CIFAR-100 for the experiments in this thesis.
+
 
 \subsection{Preparation: CIFAR100-LT}
 \textit{A list of subjects to include in this section:}
@@ -97,8 +129,6 @@ Describe the class distribution in figures \ref{fig:cifar100_imbalance_cifar} an
 \todo{Include plots of head, middle and tail test splits.}
 
 \subsection{Data Augmentation}
-Not sure if this should be a section, or if it should be in the experimental setup section.
-
 Describe what data augmentation was used on the training data.
 
 \section{Long-tailed Learning Techniques}

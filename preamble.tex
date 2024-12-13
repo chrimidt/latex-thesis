@@ -1,5 +1,6 @@
 % Packages and setup code
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{caption}
 \usepackage{fancyhdr}
 \usepackage{geometry}
@@ -20,6 +21,8 @@
 \usepackage{helvet} % Use Helvetica font
 \usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
 \addbibresource{bibliography.bib} 
+% Adjust the bibliography font size
+\renewcommand{\bibfont}{\small} % Change to \scriptsize or \footnotesize if needed
 
 \usepackage{hyperref}
 \hypersetup{
@@ -47,6 +50,7 @@
     
 % Indentation    
 \setlength\parindent{0pt} % Set no indentation for the entire file
+% \setlength{\parskip}{1em}     % Add space between paragraphs
 \newcommand{\myindent}{\hspace*{2em}}
 
 
