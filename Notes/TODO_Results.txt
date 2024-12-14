@@ -10,3 +10,4 @@ x Include Benchmark results in the tables
 - Write about the findings compared to the baseline
 - Include the list of things in the summary and discussion section
 x Correct ResNet50V2 to ResNet50
+- Make bar plot of mean + std for models
