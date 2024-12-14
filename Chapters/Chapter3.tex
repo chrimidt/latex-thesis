@@ -77,22 +77,34 @@ The ImageNet-LT dataset, introduced by Liu et al. \cite{liu2019largescalelongtai
 \end{figure}
 
 
-However, investigating the CIFAR-100-LT dataset used in \emph{Learning Imbalanced Datasets with Label-Distribution-Aware Margin Loss} by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware} shows that the training dataset follows a exponential decay, and not a pareto distribution. The imbalance factor in their studies is 100, meaning that the most frequent class has 100 times more samples than the least frequent class, according to equation \eqref{eq:exp}. This means that the imbalance is not as steep as with the Pareto distribution, resulting in a middle section of classes with fewer samples than the head classes, but more samples than the tail classes, see figure \ref{fig:cifar100_imbalance_cifar}. The following section will describe the preparation of CIFAR-100 for the experiments in this thesis.
+However, investigating the CIFAR-100-LT dataset used in \emph{Learning Imbalanced Datasets with Label-Distribution-Aware Margin Loss} by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware} shows that the training dataset follows a exponential decay, and not a pareto distribution. The imbalance factor in their studies is 100, meaning that the most frequent class has 100 times more samples than the least frequent class, following equation \eqref{eq:exp}. This means that the imbalance is not as steep as with the Pareto distribution, resulting in a middle section of classes with fewer samples than the head classes, but more samples than the tail classes, see figure \ref{fig:cifar100_train_450_imb}. The following section will describe the preparation of CIFAR-100 for the experiments in this thesis.
 
 
-\subsection{Preparation: CIFAR100-LT}
-\textit{A list of subjects to include in this section:}
-
-\begin{itemize}
-    \item Explain why the dataset was saved, and not generated in run-time, like in LDAM-DRW.
-    \item Explain why the dataset was split into 450 samlpes per class for training and 50 samples per class for testing.
-    \item Describe the head, middle, and tail classes.
-    \item Insert plot of the division of the long-tailed test dataset: head, middle, and tail classes.
-\end{itemize}
-
+\subsection{CIFAR-100-LT}
 The experiments conducted in this thesis are trained and evaluated on the CIFAR-100 dataset. This was downloaded using the PyTorch torchvision.datasets.CIFAR100 \cite{pytorch_cifar100}. The training and test datasets were preprocessed by converting the images to tensors using the ToTensor transformation and saved as .pth files for efficient loading during experiments. 
 
-To address the needs of the experiments in this thesis, the original CIFAR-100 dataset was modified to create a new split of the training data. Specifically, the training data was split into 450 samples per class for training and 50 samples per class for testing, mirroring the test data for the ImageNet, maintaining the class distribution within these splits. The original test set of the CIFAR-100 dataset was retained as the validation set for evaluation during training. 
+The class distributions used in experiments in this thesis: Balanced training set, balanced test set, balanced validation set, long-tailed training set, long-tailed test set, long-tailed test set split into head, middle and tail. The class distributions can be seen in table \ref{tab:class_distributions}.
+
+\begin{table}[h!]
+    \centering
+    \caption{Class Distributions Used in Experiments}
+    \label{tab:class_distributions}
+    \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Dataset Type}                       & \textbf{Samples}                                                                 \\ \hline
+    Balanced Training Set                       & 45,000        \\ \hline
+    Balanced Validation Set                     & 10,000    \\ \hline
+    Balanced Test Set                           & 5,000    \\ \hline
+    Long-Tailed Training Set                    & \todo{-}      \\ \hline
+    Long-Tailed Test Set                        & \todo{-} \\ \hline
+    Head  & \todo{-} \\ \hline
+    Middle   & \todo{-} \\ \hline
+    Tail  & \todo{-} \\ \hline
+    \end{tabular}
+    \end{table}
+    
+
+To address the needs of the experiments in this thesis, the original CIFAR-100 dataset was modified to create a new split from the training data. Specifically, the training data was split into 450 samples per class for training and 50 samples per class for testing, mirroring the test data for the ImageNet. The original test set of the CIFAR-100 dataset was retained as the validation set for evaluation during training. All datasets were saved locally to maintain reproducibility.
 
 % \begin{figure}[h!]
 %     \centering
@@ -108,9 +120,7 @@ To address the needs of the experiments in this thesis, the original CIFAR-100 d
 %     \label{fig:cifar100val}
 % \end{figure}
 
-\textbf{Training Set:} To simulate real-world scenarios with class imbalances, the training dataset was modified to introduce an exponential imbalance across the 100 classes. The imbalance was created using exponential decay, where the number of samples per class decreases exponentially, controlled by the imbalance factor, see equation \eqref{eq:exp}. For this thesis, an imbalance factor of 0.01 was applied. This means that the most frequent class contains a 100 times more samples than the least frequent class. 
-
-The resulting class distribution varied from the most frequent class having 450 samples to the least frequent class having only 4 samples, as shown in figure \ref{fig:cifar100_train_450_imb}. This imbalance ensured no class was left with zero samples, maintaining the integrity of all classes for training.
+\textbf{Long-tailed Training Set:} To simulate real-world scenarios with class imbalances, the training dataset was modified to introduce an exponential imbalance across the 100 classes. Following the procedure of \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, the imbalance was created using exponential decay. Here, the number of samples per class decreases exponentially, controlled by the imbalance factor, following equation \eqref{eq:exp}. For this thesis, an imbalance factor of 0.01 was applied. This means that the most frequent class contains a 100 times more samples than the least frequent class. 
 
 \begin{figure}[h!]
     \centering
@@ -119,7 +129,10 @@ The resulting class distribution varied from the most frequent class having 450 
     \label{fig:cifar100_train_450_imb}
 \end{figure}
 
-\textbf{Test Set:} To evaluate the performance of the model under similar conditions to the imbalanced training set, an imbalanced test set was created from the previously split test dataset. The imbalance in the test set mirrors the exponential distribution used for the training data, with the same imbalance factor of 0.01. The class distribution in the test set follows the same order of classes (from most to least frequent) as the imbalanced training set. No class has fewer than one sample. The class distribution can be seen in figure \ref{fig:cifar100_test_imb}.
+The resulting class distribution varied from the most frequent class having 450 samples to the least frequent class having only 4 samples, as shown in figure \ref{fig:cifar100_train_450_imb}. This imbalance ensured no class was left with zero samples, maintaining the integrity of all classes for training. The dataset was saved locally to maintain reproducibility.
+
+
+\textbf{Long-Tailed Test Set:} To evaluate the performance of the model under similar conditions to the imbalanced training set, an imbalanced test set was created from the previously split test dataset. The imbalance in the test set mirrors the exponential distribution used for the training data, with the same imbalance factor of 0.01. The class distribution in the test set follows the same order of classes (from most to least frequent) as the imbalanced training set. No class has fewer than one sample. The class distribution can be seen in figure \ref{fig:cifar100_test_imb}. The dataset was saved locally to maintain reproducibility.
 
 % \begin{figure}[h!]
 %     \centering
@@ -128,8 +141,6 @@ The resulting class distribution varied from the most frequent class having 450 
 %     \label{fig:cifar100_train_450}
 % \end{figure}
 
-
-
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_imb.png}
@@ -137,35 +148,38 @@ The resulting class distribution varied from the most frequent class having 450 
     \label{fig:cifar100_test_imb}
 \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_head.png}
-    \caption{The class distribution of the CIFAR-100 long-tailed test head classes.}
-    \label{fig:cifar100_test_head}
-\end{figure}
+To further analyze performance, the test set was divided into three subsets: head, middle, and tail classes. The head classes comprised the top 33\% most frequent classes, the middle classes included the next 33\%, and the tail classes represented the bottom 33\%. See table \ref{tab:class_distributions}. This categorization allows for a detailed evaluation of the methods across different classes. 
 
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_middle.png}
-    \caption{The class distribution of the CIFAR-100 long-tailed test middle classes.}
-    \label{fig:cifar100_test_middle}
-\end{figure}
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_head.png}
+%     \caption{The class distribution of the CIFAR-100 long-tailed test head classes.}
+%     \label{fig:cifar100_test_head}
+% \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_tail.png}
-    \caption{The class distribution of the CIFAR-100 long-tailed test tail classes.}
-    \label{fig:cifar100_test_tail}
-\end{figure}
+
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_middle.png}
+%     \caption{The class distribution of the CIFAR-100 long-tailed test middle classes.}
+%     \label{fig:cifar100_test_middle}
+% \end{figure}
+
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{Images/Plots/cifar100_test_tail.png}
+%     \caption{The class distribution of the CIFAR-100 long-tailed test tail classes.}
+%     \label{fig:cifar100_test_tail}
+% \end{figure}
 
 
 \subsection{Data Augmentation}
-Data augmentation and normalization were applied to the CIFAR-100 dataset to improve model generalization and align the preprocessing with the dataset's characteristics. While the models used in this study were pretrained on ImageNet, the normalization process was based on the CIFAR-100-specific RGB statistics: mean values of [0.4914, 0.4822, 0.4465] and standard deviations of [0.2023, 0.1994, 0.2010]. This decision was made to tailor the preprocessing to the pixel value distribution of CIFAR-100, ensuring that the input normalization better reflected the properties of the dataset used for fine-tuning and evaluation.
+Data augmentation and normalization were applied to the CIFAR-100 dataset to improve the generalization capability of the models. For the CIFAR-100 dataset, the augmentations were applied using the CIFAR-100 RGB statistics, with mean values [0.4914, 0.4822, 0.4465], and standard deviations [0.2023, 0.1994, 0.2010] \cite{kaidic_ldam_drw}. These values are used to normalize the images after applying the transformations. However, the models used in this study are all pretrained on ImageNet, and choosing the ImageNet RGB statistics could potentially influence the training, as the pretrained weights are optimized for inputs with ImageNet statistics. Future work could explore the impact of using ImageNet statistics instead.
 
-Although ImageNet statistics are often used with pretrained models to maintain consistency with the original training setup, they represent a different pixel value distribution. CIFAR-100, being a smaller dataset with distinct image characteristics, benefits from normalization based on its own statistics. This approach reduces the domain gap between the preprocessing and the dataset, potentially allowing the models to learn more effectively from the CIFAR-100-specific data distribution.
+Images were resized to 224x224 pixels to match the input requirements of the ImageNet-pretrained models. Random cropping with a padding of 4 was applied to introduce spatial variations, while horizontal flipping with a 50\% probability further augmented the data. After these transformations, images were normalized using the CIFAR-100-specific mean and standard deviation values, ensuring consistency with the dataset.
 
-By using CIFAR-100 statistics, this study aims to strike a balance between leveraging the advantages of ImageNet pretraining and adapting the models to the unique properties of the target dataset. Future work could explore the impact of using ImageNet statistics instead to assess the trade-offs between these two approaches.
+For validation, a simpler approach was used, where images were resized to 224x224 pixels and normalized using the same mean and standard deviation values as the training set.
 
 \section{Long-tailed Learning Techniques}
 Description of the specific methods used to address class imbalance, such as data sampling, class re-weighting, etc. 
