@@ -1,0 +1,1 @@
+- Jeg har taget fejl af ResNet50 og ResNet50V2, så den implementerede arkitektur er ResNet50 og ikke ResNet50V2. Jeg ruller bare med det.

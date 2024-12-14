@@ -1,9 +1,9 @@
 % Chapter 5: Results and Discussion
-This chapter presents the experimental results, comparing model performances across head, middle, and tail classes, and discusses the impact of different model architechtures combined with differnt loss functions. First, the main findings are presented, followed by a detailed analysis of the results across experiments, and lastly a discussion of the results. 
+This chapter presents the experimental results, comparing model performances across head, middle, and tail classes, and discusses the impact of different model architectures combined with various loss functions. First, the main findings are presented, followed by a detailed analysis of the results across experiments, and lastly a discussion of the results. 
 
 
 \section{Main Findings}
-Across all models, Balanced Softmax Loss demonstrated the highest performance on tail classes for models trained on long-tailed datasets while maintaining consistent performance on head, middle, and overall long-tailed test sets. The highest top-1 accuracy for tail classes was achieved by the ResNet50V2 architecture (Acc1: 0.6053), closely followed by the ConvNeXt Base architecture (Acc1: 0.5789). However, this improved tail-class performance comes at the cost of head-class accuracy, where ConvNeXt Base outperforms ResNet50V2 with a top-1 accuracy of 0.8685 compared to 0.8270. Overall, ConvNeXt Base demonstrates better performance across all classes (Acc1: 0.8230) compared to ResNet50V2 (Acc1: 0.7916). See Tables \ref{tab:resnet_lt_acc1_1} and \ref{tab:conv_lt_acc1_1} for reference. These results, however, require further statistical analysis to establish their significance.
+Across all models, Balanced Softmax Loss demonstrated the highest performance on tail classes for models trained on long-tailed datasets while maintaining consistent performance on head, middle, and overall long-tailed test sets. The highest top-1 accuracy for tail classes was achieved by the ResNet50 architecture (Acc1: 0.6053), closely followed by the ConvNeXt Base architecture (Acc1: 0.5789). However, this improved tail-class performance comes at the cost of head-class accuracy, where ConvNeXt Base outperforms ResNet50 with a top-1 accuracy of 0.8685 compared to 0.8270. Overall, ConvNeXt Base demonstrates better performance across all classes (Acc1: 0.8230) compared to ResNet50 (Acc1: 0.7916). See Tables \ref{tab:resnet_lt_acc1_1} and \ref{tab:conv_lt_acc1_1} for reference. These results, however, require further statistical analysis to establish their significance.
 
 Class-Balanced Loss consistently underperformed, warranting further investigation into its implementation. Similarly, the ViT-B/16 architecture demonstrated the lowest overall accuracy when trained on both balanced and long-tailed datasets (Acc1: 59.06 \%, see Table \ref{tab:vit_bal_acc1_1}), despite having the highest reported benchmark performance (Acc1: 93.95 \%) among all model architectures investigated in this thesis \cite{Tseng_2022}. This discrepancy suggests potential limitations in its design or configuration.
 
@@ -105,56 +105,15 @@ The Class-Balanced loss exhibits the least satisfactory accuracies across all te
 
 Unlike the performance of loss functions trained on the balanced CIFAR100, there are not as many incidents of accuracies of the same value, except for the performance of Softmax Loss, Focal Loss, and Equalization loss on middle classes (Acc1: 0.5917). However, this value is not the highest, as the Balanced Softmax Loss achieves a top-1 accuracy of 0.6331. \todo{explain this.}
 
-\subsubsection{Comparison to Benchmark}
-\todo{No benchmark for MobileNetV2 trained on CIFAR-100.}
-The paper \textit{BiTAT: Neural Network Binarization
-with Task-dependent Aggregated Transformation} by Park et al. tested a MobileNetV2 architecture on CIFAR100 with the highest top 1 accuracy of 73.20 \% .
-Link to paper: \url{https://arxiv.org/pdf/2207.01394}
-
-The paper \textit{E$^2$-Train: Training State-of-the-art CNNs with Over
-80\% Energy Savings} by Wang et al. reported a top 1 accuracy of 71.91 \% with MobileNetV2 evaluated on CIFAR100.
-Link to paper: \url{https://arxiv.org/pdf/1910.13349}
-
-Mine is 80.34 \%. See table \ref{tab:mobilenet_bal_acc1_1}.
-% The comparison of my experiment to the original MobileNetV2 trained on the original CIFAR100 dataset.
-
-% Table \ref{tab:comparison_mobilenet} compares the experimental setup and results of MobileNetV2 trained on the CIFAR100 dataset with those reported in Study A3. Key differences include the loss function, optimizer, and data augmentation techniques used.
-
-% While our approach achieves competitive top-1 accuracy on balanced datasets, the performance gap on long-tailed datasets highlights potential areas for improvement in augmentation and learning rate strategies.
-
-% TODO: Move comparisons of results to a seperate section. Keep only the results, put specification in an appendix.
-
-% \begin{table}[H]
-%     \centering
-%     \begin{tabular}{lp{5cm}p{5cm}}
-%         \toprule
-%         \textbf{Aspect} & \textbf{Your Experiment} & \textbf{Their Study (A3)} \\ 
-%         \midrule
-%         Dataset            & CIFAR100 Customized                & CIFAR100                \\
-%         Loss Function      & Softmax Cross-Entropy   & Binary Cross-Entropy    \\
-%         Epochs             & 90                      & 100                     \\
-%         Optimizer          & Adam                    & LAMB                    \\
-%         Learning Rate      & Step decay at 30, 60 epochs & Cosine decay from 0.005 or 0.008 \\
-%         Augmentation       & Resize (224x224), RandomCrop, Horizontal Flip, Normalize & RandAugment, Mixup, CutMix, Normalize \\
-%         Hardware           & 4x NVIDIA TITAN X (Pascal, 12GB) & 4x NVIDIA V100 (32GB) \\
-%         Evaluation Metric  & Top-1 Accuracy          & Top-1 Accuracy          \\
-%         Top-1 Accuracy     & 79.8 \% & 86.2\%-86.9\%           \\
-%         \bottomrule
-%     \end{tabular}
-%     \caption{Comparison of MobileNetV2 on CIFAR100 with their study (Procedure A3) \cite{wightman2021resnetstrikesbackimproved}.}
-%     \label{tab:comparison_mobilenet}
-% \end{table}
-
-
-\subsection{ResNet50V2}
+\subsection{ResNet50}
 
 \subsubsection{Results from Balanced Training Dataset}
 
-Table \ref{tab:resnet_bal_acc1_1} show the top 1 accuracies for ResNet50V2 on all loss functions.
+Table \ref{tab:resnet_bal_acc1_1} show the top 1 accuracies for ResNet50 on all loss functions.
 
 \begin{table}[H]
     \centering
-    \caption{Evaluation results for ResNet50V2 trained on the custom balanced dataset, showing Acc1.}
+    \caption{Evaluation results for ResNet50 trained on the custom balanced dataset, showing Acc1.}
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -179,11 +138,11 @@ The worst performance is that of the LDAM loss across all test datasets.
 
 \subsubsection{Results from Long-Tailed Training Dataset}
 
-Table \ref{tab:resnet_lt_acc1_1} show the top 1 accuracies for ResNet50V2 on various loss functions.
+Table \ref{tab:resnet_lt_acc1_1} show the top 1 accuracies for ResNet50 on various loss functions.
 
 \begin{table}[H]
     \centering
-    \caption{Evaluation results for ResNet50V2 trained on the long-tailed dataset, showing Acc1.}
+    \caption{Evaluation results for ResNet50 trained on the long-tailed dataset, showing Acc1.}
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -206,14 +165,6 @@ From table \ref{tab:resnet_lt_acc1_1}, the performance of the Balanced Softmax L
 
 Two loss designs are competing for the worst performance with underwhelming results across all test datasets, namely the Class-Balanced loss and the LDAM loss. The LDAM loss achieved an accuracy of 0.0789 on the tail classes, while remaining stable, but unsatisfactory on the rest. The Class-balanced loss with the highest accuracy of 0.3787 across all test datasets has a performance of negligence.
 
-\subsubsection{Comparison to Benchmark}
-\todo{No benchmark for ResNet50V2 trained on CIFAR-100. Closest architecture is ResNet50 from the paper \textit{ResNet strikes back: An improved training procedure in timm} \cite{wightman2021resnetstrikesbackimproved}.}
-
-Top 1 accuracy trained on a balanced CIFAR100:
-Their: 86.9 \%.
-Mine: 83.2 \%.
-
-\todo{Describe differences.}
 
 \subsection{ViT-B/16}
 
@@ -272,11 +223,6 @@ From table \ref{tab:vit_lt_acc1}, the best perfomance on the balanced test datas
 
 In all tests, the only loss design achieving a higher accuracy than 50 \% is the Softmax loss on the head classes, meaning that the model underperforms across all loss designs.
 
-\subsubsection{Comparison to Benchmark}
-The best result from ViT-B/16 trained with CIFAR100 is obtained in \textit{Perturbated Gradients Updating within Unit Space for Deep Learning} \cite{Tseng_2022} with the best accuracy of 93.95 \%. In comparison, the highest achieved accuracy on a balanced test dataset in this experiment on ViT-B/16 trained with a balanced CIFAR100 was 59.1 \%. See table \ref{tab:vit_bal_acc1_1}. \todo{Compare methods.}
-Link to paper: \url{https://arxiv.org/pdf/2110.00199v2}
-
-\todo{Make a table with results.}
 
 % \todo{Move comparisons of results to a seperate section. Keep only the results, put specification in an appendix.}
 
@@ -364,11 +310,31 @@ Noticably, both Softmax loss and focal loss performs with equal accuracies on bo
 
 The worst performance is achieved by the Class-Balanced loss, with accuracies far below the second worst performances. The Class-balanced loss should be disregarded for training with a long-tailed dataset, as it is most likely a fault in implementation. \todo{investigate this and return to this conclusion.}
 
+\section{Comparison with Benchmarks}
+Table \ref{tab:benchmark_comparison} compares the best results from the models trained on the balanced CIFAR-100 dataset in this thesis with published benchmarks using the same or similar architectures. This comparison serves as a reference to ensure the results align with expectations and to identify any potential discrepancies. 
 
-\subsubsection{Comparison to Benchmark}
-\todo{No benchmark found for ConvNeXt Base trained with CIFAR100.}
-Closest is \textit{Conv2NeXt: Reconsidering Conv NeXt Network Design for Image Recognition} by Feng et al. with top 1 accuracy of 83.82 \% in CIFAR-100. Mine is 83.64 \%.
-Link: \url{https://ieeexplore.ieee.org/document/10072172}
+\begin{table}[H]
+    \centering
+    \caption{Comparison of model performance on balanced CIFAR-100 with published benchmarks.}
+    \begin{tabular}{|l|c|c|}
+    \hline
+    \textbf{Model}        & \textbf{Result (Acc1)} & \textbf{Benchmark Result (Acc1)}  \\ \hline
+    MobileNetV2           & 80.34\%               & 73.20\% \cite{park2022bitatneuralnetworkbinarization}  \\ \hline
+    ResNet50            & 83.24\%               & 86.90\% \cite{wightman2021resnetstrikesbackimproved}  \\ \hline
+    ViT-B/16              & 59.06\%               & 93.95\% \cite{Tseng_2022} \\ \hline
+    ConvNeXt Base         & 83.64\%               & 83.82\% \cite{10072172}  \\ \hline
+    \end{tabular}
+    \label{tab:benchmark_comparison}
+\end{table}
+
+Notably, there are no published benchmarks for ConvNeXt Base trained on CIFAR-100. The closest benchmark available is from Feng et al. \cite{10072172}, where Conv2NeXt achieved a top-1 accuracy of 83.82\%, which is highly similar to the result obtained here.
+
+For MobileNetV2, the results in this thesis surpass the published benchmarks. This could be attributed to improved loss function designs. On the other hand, ResNet50 exhibits a slightly lower accuracy compared to benchmarks, which may be explained by differences in optimization strategies, such as the use of Adam optimizer instead of SGD \cite{menon2021longtaillearninglogitadjustment}.
+
+The most significant deviation is observed with ViT-B/16, where the accuracy falls far short of the benchmark. This discrepancy suggests that the configuration for ViT-B/16 may not be well-suited for the smaller-scale CIFAR-100 dataset. 
+
+Overall, these results indicate that the experimental setup is effective for most models but highlights potential limitations for transformer-based architectures such as ViT-B/16. Future investigation is necessary to understand and address these discrepancies.
+
 
 \section{Comparison of Models}
 
@@ -385,7 +351,7 @@ The model are compared by taking the mean of the results of the loss functions f
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Images/Plots/resnet_lt_loss_comparison.png}
-    \caption{ResNet50V2 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \caption{ResNet50 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
     \label{fig:resnet_lt_loss_comparison}
 \end{figure}
 
@@ -405,9 +371,8 @@ The model are compared by taking the mean of the results of the loss functions f
 
 \subsubsection{Mean and Standard Deviation}
 
-\todo{Make a table for the mean and standard deviations.}
 
-The plots on figures \ref{fig:mean_loss_comparison_line} and \ref{fig:mean_loss_comparison_line_noCB} compares the performance of the models MobileNetV2, ResNet50V2, ViT-B/16, and ConvNeXt Base across the evaluation categories: balanced, long-tailed, head, middle, and tail. Each model is slightly offset along the x-axis to avoid overlap. The mean and standard deviation in figure \ref{fig:mean_loss_comparison_line} include the Class-Balanced Loss while figure \ref{fig:mean_loss_comparison_line_noCB} does not.
+The plots on figures \ref{fig:mean_loss_comparison_line} and \ref{fig:mean_loss_comparison_line_noCB} compares the performance of the models MobileNetV2, ResNet50, ViT-B/16, and ConvNeXt Base across the evaluation categories: balanced, long-tailed, head, middle, and tail. Each model is slightly offset along the x-axis to avoid overlap. The mean and standard deviation in figure \ref{fig:mean_loss_comparison_line} include the Class-Balanced Loss while figure \ref{fig:mean_loss_comparison_line_noCB} does not.
 
 Each point represents the mean accuracy of a model for a specific category and the bars represent the standard deviation. A model with higher mean accuracy is performing better in that category, and a smoother or higher line indicates consistent performance across all categories.
 
@@ -415,21 +380,21 @@ The error bars show the variability in accuracy across different loss functions 
 
 The plot in figure \ref{fig:mean_loss_comparison_line_noCB} shows that the model with the best average performance on tail classes is the ConvNeXt Base architecture, while also showing a strong performance in other categories. 
 
-MobileNetV2 is the least dependent on loss functions, exhibiting the smallest standard deviation, while the ResNet50V2 architecture, compared with figures \ref{fig:resnet_bal_loss_comparison_line} and \ref{fig:conv_bal_loss_comparison_line}, is the most dependent on loss functions when exhibiting tail performance, as the Balanced Softmax Loss outperforms the remaining loss functions, as seen in figure \ref{fig:resnet_bal_loss_comparison_line} and table \ref{tab:resnet_lt_acc1_1}.
+MobileNetV2 is the least dependent on loss functions, exhibiting the smallest standard deviation, while the ResNet50 architecture, compared with figures \ref{fig:resnet_bal_loss_comparison_line} and \ref{fig:conv_bal_loss_comparison_line}, is the most dependent on loss functions when exhibiting tail performance, as the Balanced Softmax Loss outperforms the remaining loss functions, as seen in figure \ref{fig:resnet_bal_loss_comparison_line} and table \ref{tab:resnet_lt_acc1_1}.
 
 The model exhibiting the worst performance is the ViT-B/16 with a significant lower mean than the other three models. \todo{reference to figures and tables.}
 
 % \begin{figure}[h!]
 %     \centering
 %     \includegraphics[width=\textwidth]{Images/Plots/mean_loss_comparison.png}
-%     \caption{Mean Accuracy with Standard Deviation Across Categories for MobileNetV2, ResNet50V2, ViT-B/16, and ConvNeXt Base.}
+%     \caption{Mean Accuracy with Standard Deviation Across Categories for MobileNetV2, ResNet50, ViT-B/16, and ConvNeXt Base.}
 %     \label{fig:mean_loss_comparison_line}
 % \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{Images/Plots/mean_loss_comparison_noCB.png}
-    \caption{Mean Accuracy with Standard Deviation Across Categories for MobileNetV2, ResNet50V2, ViT-B/16, and ConvNeXt Base without Class-Balanced Loss.}
+    \caption{Mean Accuracy with Standard Deviation Across Categories for MobileNetV2, ResNet50, ViT-B/16, and ConvNeXt Base without Class-Balanced Loss.}
     \label{fig:mean_loss_comparison_line_noCB}
 \end{figure}
 
@@ -456,12 +421,29 @@ From figure \ref{fig:loss_comparison_bars} it can be seen that the Balanced Soft
     \label{fig:loss_comparison_bars}
 \end{figure}
 
-\section{Comparison with Benchmarks}
-The results are compared to the best published results for MobileNetV2, ResNet50V2, ViT-B/16 and ConvNeXt Base on CIFAR-100.
 
-To contextualize the performance of models, the results are compared against the best posted results for the same architecture on CIFAR-100, reported by Author/Source.
+\begin{table}[h!]
+    \centering
+    \caption{Performance Summary Across Categories (Mean ± Std)}
+    \scriptsize
+    \begin{tabular}{lccccc}
+        \toprule
+        Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\
+        \midrule
+        Balanced Softmax & $0.5156 \pm 0.1577$ & $0.7010 \pm 0.1610$ & $0.7462 \pm 0.1540$ & $0.5385 \pm 0.1881$ & $0.4211 \pm 0.2097$ \\
+        Weighted Softmax & $0.3841 \pm 0.1522$ & $0.5671 \pm 0.2290$ & $0.6123 \pm 0.2462$ & $0.4320 \pm 0.1761$ & $0.1645 \pm 0.0819$ \\
+        Softmax & $0.4758 \pm 0.1466$ & $0.7093 \pm 0.1587$ & $0.7710 \pm 0.1537$ & $0.5163 \pm 0.1970$ & $0.1974 \pm 0.1061$ \\
+        Focal Loss & $0.4701 \pm 0.1462$ & $0.7008 \pm 0.1624$ & $0.7598 \pm 0.1599$ & $0.5178 \pm 0.1876$ & $0.2039 \pm 0.1211$ \\
+        Equalization & $0.4721 \pm 0.1494$ & $0.7010 \pm 0.1629$ & $0.7571 \pm 0.1558$ & $0.5252 \pm 0.2072$ & $0.2368 \pm 0.1289$ \\
+        LDAM & $0.3504 \pm 0.1224$ & $0.5187 \pm 0.1443$ & $0.5548 \pm 0.1792$ & $0.3947 \pm 0.1886$ & $0.1587 \pm 0.1078$ \\
+        Class-balanced & $0.1172 \pm 0.0814$ & $0.0711 \pm 0.0841$ & $0.0490 \pm 0.0624$ & $0.1628 \pm 0.1477$ & $0.1513 \pm 0.0946$ \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:performance_summary}
+\end{table}
+   
 
-\todo{Move benchmark results into a table.}
+% \todo{Move benchmark results into a table.}
 
 % Highlight Key Differences
 % If there are differences in training conditions (e.g., data augmentation, optimization strategies, or hardware), acknowledge them:
@@ -488,7 +470,7 @@ Things for discussion:
 
 The Balanced Softmax Loss proved to be the most effective loss function for tail classes, consistently achieving the highest accuracy on these classes across all models while also achieving competing results on other datasets. This results highlight its strenght in re-weighting logits to account for imbalanced datasets, particular for tail classes, where the Softmax baseline loss function falter. The synergy between Balanced Softmax and certain architectures, such as ConvNeXt Base, was espicially notable, suggesting that specific combinations of models and loss functions can achieve superior performance.
 
-However, this improvement in tail-class accuracy often came with trade-offs. For example, while ResNet50V2 achieved a top 1 accuracy of 0.6053 on tail classes using Balanced Softmax, its head-class accuracy (0.8270) lagged behind ConvNeXt Base (0.8685). This trade-off highlights the challenge of optimizing for both head and tail classes simultaneously and indicates that Balanced Softmax prioritizes tail-class adjustments at the expense of head-class performance. \todo{mention statistical significance.}
+However, this improvement in tail-class accuracy often came with trade-offs. For example, while ResNet50 achieved a top 1 accuracy of 0.6053 on tail classes using Balanced Softmax, its head-class accuracy (0.8270) lagged behind ConvNeXt Base (0.8685). This trade-off highlights the challenge of optimizing for both head and tail classes simultaneously and indicates that Balanced Softmax prioritizes tail-class adjustments at the expense of head-class performance. \todo{mention statistical significance.}
 
 Class-Balanced Loss, in contrast, consistently underperformed across all models and datasets. This discrepancy between its intended purpose and observed results suggests possible issues with its weighting strategy or implementation. Further investigation is necessary to understand these limitations and determine whether its performance can be improved.
 
@@ -497,3 +479,5 @@ Notably, the ViT-B/16 architecture underperformed significantly across all loss 
 While Balanced Softmax stood out as the most robust loss function overall, statistical validation is required to confirm the significance of these findings, particularly when comparing closely performing configurations. % For instance, the performance gap between Balanced Softmax and Softmax Loss on middle classes or long-tailed datasets could reflect inherent dataset characteristics rather than the superiority of the loss function alone.
 
 Overall, these findings emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the challenges of deep long-tailed learning. % They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
+
+\todo{Influence of optimizer} \url{https://arxiv.org/pdf/2007.07314v2} \url{https://openreview.net/pdf?id=rk6qdGgCZ}
