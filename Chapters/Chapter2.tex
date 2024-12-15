@@ -79,8 +79,6 @@ However, this simple neural network becomes insufficient for more complex proble
 
 \subsection{Convolutional Neural Networks}
 \label{sec:CNNs}
-\todo{finish this section.}
-
 % What are CNNs?
 % Historical context.
 % Input data.
@@ -273,6 +271,7 @@ Table \ref{tab:loss_summary} summarizes the loss functions employed for class-se
 % begin with class re-weighting as follows.
 
 \paragraph{Softmax Cross-Entropy Loss}
+The softmax function 
 
 The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. 
 
@@ -317,6 +316,7 @@ Where \( w_i \) is the weight for class \( i \), reflecting its relative importa
 For a single example where the true class is \( c \), the loss simplifies to:
 
 \begin{equation}
+    \label{eq:ce_loss}
     \mathcal{L}_{\text{WCE}} = -w_c \log(P(y = c \mid \mathbf{z}))
 \end{equation}
 
@@ -335,13 +335,37 @@ This weighted formulation ensures that minority classes contribute more to the o
 This mechanism increases the weight of misclassified examples, ensuring the model prioritizes learning from challenging samples. 
 
 \paragraph{Class-Balanced Loss}
-Instead of simply using raw class frequencies, \emph{Class-Balanced (CB) Loss} \cite{cui2019classbalancedlossbasedeffective} estimates how much additional information new samples provide, acknowledging that adding redundant data from majority classes will diminish the benefit. The CB loss introduces the concept of the effective number of samples to guide the re-weighting process, which is an exponential function of their training label number. The CB loss then enforces a class-balanced re-weighting term, inversely proportional to the effective numer of classes. The CB loss function is as follows:
+\emph{Class-Balanced (CB) Loss} \cite{cui2019classbalancedlossbasedeffective} introduces a re-weighting strategy based on the effective number of samples per class to re-balance the loss.
+
+Instead of simply using raw class frequencies, CB Loss estimates how much additional information new samples provide, acknowledging an information overlap among data, and as the number of samples increases, the marginal benefit of extracted features from new data diminishes. As illustrated in figure \ref{fig:cb_featue_space}, the feature space is the map of all possible data, and each sample occupies a part of the space. Collecting more samples of a class means that there is a probability that their features overlap, meaning that additional samples diminishes new information.
+In feature space, the probability of newly sampled data with volume 1 is overlapping $p$, which means that the probability of adding new information to the feature space is $(1-p)$. 
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/CB_feature_space.png}
+    \caption{Figure from \cite{cui2019classbalancedlossbasedeffective}. \todo{Make this figure}}
+    \label{fig:cb_featue_space}
+\end{figure}
+
+Cui et al. \cite{cui2019classbalancedlossbasedeffective} introduced the effective number of samples as the expected volume of samples, denoted $E_n$, where $n \in \mathbb{Z}_{>0}$ is the number of sampels. The effective number of samples 
+is defined as:
 
 \begin{equation}
-    L_{cb} = - \frac{1 - \gamma}{1 - \gamma^{n_y}} \log(p_y)
+    \label{eq:eff_num}
+    E_n = \frac{1-\beta^n}{1-\beta}
 \end{equation}
 
-\todo{Explain the components of this equation.}
+where $\beta = (N-1)/N$. The hyperparameter $\beta \in [0,1)$ determines how fast $E_n$ grows.
+
+As a result, the CB loss introduces a class-balanced re-weighting term, inversely proportional to the effective number of classes. Adding the CB term to the standard softmax cross-entropy given in equation \eqref{eq:ce_loss} yield the following:
+
+\begin{equation}
+    \label{eq:cb_loss}
+    L_{cb} = - \frac{1 - \beta}{1 - \beta^{n_y}} \log(p_y)
+\end{equation}
+
+where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in equation \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
 
 \paragraph{Balanced Softmax Loss}
 The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. The BS loss function is as follows:

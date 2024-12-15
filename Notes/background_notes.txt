@@ -1,0 +1,26 @@
+----------------------------
+Notes for Background Section
+----------------------------
+
+
+
+-----------------------------------------------------------------------------
+-------------------------------- Focal Loss ---------------------------------
+
+Link to article explaining it:
+https://towardsdatascience.com/review-retinanet-focal-loss-object-detection-38fba6afabe4
+
+
+-----------------------------------------------------------------------------
+---------------------------- Class-Balanced Loss ----------------------------
+
+Class-Balanced Loss Based on Effective Number of Samples by Cui et al. (2019)
+
+Link to article:
+https://arxiv.org/pdf/1901.05555
+
+Link to article explaining it:
+https://medium.com/nerd-for-tech/review-cb-loss-class-balanced-loss-based-on-effective-number-of-samples-image-classification-3056a1a1a001
+
+Link to implementation with PyTorch:
+https://github.com/vandit15/Class-balanced-loss-pytorch/blob/master/class_balanced_loss.py
