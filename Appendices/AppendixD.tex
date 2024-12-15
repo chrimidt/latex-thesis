@@ -1,0 +1,28 @@
+\chapter{Loss Implementation}
+\label{app:implementation}
+This appendix provides pseudo code for the implementation of the deep long-tailed learning strategies used in this thesis.
+
+\paragraph{Balanced Softmax Loss}
+\begin{algorithm}
+    \caption{BalancedSoftmaxLoss}\label{alg:balanced_softmax_loss}
+    \begin{algorithmic}[1]
+    \Require Logits $\mathbf{Z} \in \mathbb{R}^{N \times C}$, Targets $\mathbf{y} \in \{1,\dots,C\}^N$, Class counts $\mathbf{N} = [N_1, \dots, N_C]$
+    \Ensure Loss value $\ell$
+    \State Compute class priors: $p_i \gets \frac{N_i}{\sum_{j=1}^{C} N_j}, \forall i \in \{1, \dots, C\}$
+    \State Initialize a small constant $\epsilon \gets 10^{-6}$
+    \For{$n = 1$ to $N$}
+        \For{$i = 1$ to $C$}
+            \State $\widetilde{Z}_{n,i} \gets Z_{n,i} + \log(p_i + \epsilon)$
+        \EndFor
+    \EndFor
+    \State Compute the balanced softmax probabilities:
+    \[
+        P_{n,i} \gets \frac{\exp(\widetilde{Z}_{n,i})}{\sum_{k=1}^C \exp(\widetilde{Z}_{n,k})}
+    \]
+    \State Compute cross-entropy loss:
+    \[
+        \ell \gets -\frac{1}{N}\sum_{n=1}^{N} \log(P_{n,y_n})
+    \]
+    \State \textbf{return} $\ell$
+    \end{algorithmic}
+\end{algorithm}

@@ -2,13 +2,36 @@
 Notes for Background Section
 ----------------------------
 
+-----------------------------------------------------------------------------
+----------------------------- Softmax Function ------------------------------
 
+Link to reference:
+https://d2l.ai/chapter_linear-classification/softmax-regression.html#equation-eq-l-cross-entropy
+
+Link to article explaining it:
+https://medium.com/@hunter-j-phillips/a-simple-introduction-to-softmax-287712d69bac
+
+-----------------------------------------------------------------------------
+---------------------------- Cross-Entropy Loss -----------------------------
+
+Link to article explaining it:
+https://medium.com/@l228104/understanding-cross-entropy-loss-and-its-role-in-classification-problems-d2550f2caad5
 
 -----------------------------------------------------------------------------
 -------------------------------- Focal Loss ---------------------------------
 
-Link to article explaining it:
-https://towardsdatascience.com/review-retinanet-focal-loss-object-detection-38fba6afabe4
+Focal Loss for Dense Object Detection by Lin et al. (2018)
+
+Link to article:
+https://arxiv.org/pdf/1708.02002
+
+Link to articles explaining it:
+- https://towardsdatascience.com/review-retinanet-focal-loss-object-detection-38fba6afabe4
+- https://medium.com/data-science-ecom-express/focal-loss-for-handling-the-issue-of-class-imbalance-be7addebd856
+
+Links to implementation:
+- https://github.com/clcarwin/focal_loss_pytorch/blob/master/focalloss.py
+- https://github.com/Vanint/Awesome-LongTailed-Learning/blob/main/Main-codebase/loss/FocalLoss.py
 
 
 -----------------------------------------------------------------------------
@@ -24,3 +47,24 @@ https://medium.com/nerd-for-tech/review-cb-loss-class-balanced-loss-based-on-eff
 
 Link to implementation with PyTorch:
 https://github.com/vandit15/Class-balanced-loss-pytorch/blob/master/class_balanced_loss.py
+
+-----------------------------------------------------------------------------
+----------------------------- Equalization Loss -----------------------------
+
+Equalization Loss for Long-Tailed Object Recognition by Tan et al. (2020)
+
+Link to article:
+https://arxiv.org/pdf/2003.05176
+
+Link to article explaining it:
+-
+
+Link to implementation with PyTorch:
+https://github.com/Vanint/Awesome-LongTailed-Learning/blob/main/Main-codebase/loss/SEQLLoss.py
+
+
+-----------------------------------------------------------------------------
+---------------------------------- ResNet -----------------------------------
+
+Link to article explaining it:
+https://towardsdatascience.com/review-resnet-winner-of-ilsvrc-2015-image-classification-localization-detection-e39402bfa5d8
