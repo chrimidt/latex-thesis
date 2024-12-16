@@ -1,12 +1,11 @@
 % Chapter 6: Conclusion and Future Work
 
-Summary of the work, contributions, and suggestions for future improvements or research directions.
+The findings from the experiments conducted in this thesis underlines the difficulty of achieving strong performances with deep long-tailed learning. Specifically, the results emphasizes the importance of thoughtfully combining model architectures, loss design, and choice of configurations. Among the evaluated approaches, the Balanced Softmax Loss consistently achieved the best performance on tail classes, while maintaining a comparable performance on other categories across multiple CNN backbones. In contrast, Class-Balanced Loss underperformed across all models and categories, suggesting a fault in implementation \todo{investigate}. Likewise, ViT-B/16's performance gap from both CNN-based architectures and its own benchmark imply that vision transformer architectures may require extensive adaptations to reach their full potential.  
 
 \section{Revisiting the Goals of the Thesis}
-The goal of this thesis was to investigate the impact of loss functions combined with different backbones trained with long-tailed datasets in order to see the impact of the different methods on tail-class accuracy. 
-
+In revisiting the goals of this thesis, it has become clear that the investigation of the deep long-tailed learning technique, Class Re-Balancing, has yielded valuable insight. The findings included that performance on tail classes often comes with a trade-off in performance on head classes. Similarly, adequate performances on all classes was often attributed to the performance on head classes and not necessarily less frequent classes, although the Balanced Softmax Loss consistently overcame this challenge across all models.  
 
 \section{Future Work}
-Conduct experiments on ImageNet or other larger datasets. Train ViT-B/16 with larger dataset and change some of the parameters.
+Conduct experiments on ImageNet or other larger datasets. Train ViT-B/16 with larger dataset and carefully consider the configurations.
 
 Train CIFAR-100-LT with LDAM-DRW and different loss functions. 
