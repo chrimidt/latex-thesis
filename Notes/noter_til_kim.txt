@@ -1,2 +1,3 @@
 - Jeg har taget fejl af ResNet50 og ResNet50V2, så den implementerede arkitektur er ResNet50 og ikke ResNet50V2. Jeg ruller bare med det.
 - Implementeringen af EQL er ikke korrekt. Jeg kan prøve at re-implementere og køre forsøget igen.
+- Hvorfor får focal loss ikke de samme resultater som softmax.

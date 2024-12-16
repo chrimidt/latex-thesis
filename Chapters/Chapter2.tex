@@ -290,6 +290,7 @@ The \textit{Cross-Entropy loss} measures the difference between the predicted pr
 For a single example where the true class is \( c \), this simplifies to:
 
 \begin{equation}
+    \label{eq:ce_loss}
     \mathcal{L}_{\text{CE}} = -\log(p_y)
 \end{equation}
 
@@ -302,7 +303,7 @@ While this approach provides a robust and stable training objective, it inherent
 The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (equation \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
 
 \begin{equation}
-    \label{eq:ce_loss}
+    \label{eq:wce_loss}
     \mathcal{L}_{\text{WCE}} = -w \log(p_y) = - \frac{1}{\pi_y} \log(p_y)
 \end{equation}
 
@@ -313,6 +314,7 @@ This weighted CE loss ensures that minority classes contribute more to the overa
 \emph{Focal Loss} \cite{lin2018focallossdenseobject} addresses class imbalance by improving model performance on hard-to-classify examples by focusing on wrongly classified examples. The technique for this is called down-weighting, and uses the prediction probabilities to dynamically adjust the contribution of each sample to the loss. Well-classified examples with high probabilities $p_y$ are down-weighted by adding a modulating factor $(1 - p_y)^\gamma$ to the cross-entropy loss (eq. \eqref{eq:ce_loss}). Here, $\gamma \geq 0$ is a tunable focusing parameter. The Focal Loss modifies the CE loss by applying the inverse prediction probability as follows:
 
 \begin{equation}
+    \label{eq:focal_loss}
     L_{fl} = -(1 - p_y)^\gamma \log(p_y)
 \end{equation}
 
