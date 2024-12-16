@@ -17,6 +17,7 @@ Each model was trained on both a balanced training set and a long-tailed trainin
 In what follows, each step of the methodology will be explained in detail.
 
 \section{Dataset Preparation and Specifications}
+\label{sec:dataset_specs}
 A description of this section here.
 
 Following the dataset structure used in \textit{Deep Long-Tailed Learning: A Survey}, the CIFAR100 dataset was modified to create a long-tailed training set and a balanced test set. 
@@ -201,61 +202,61 @@ Justification for selecting these techniques, potentially referencing prior rese
  \end{itemize}
 
  \paragraph{Softmax Loss}
- Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
+%  Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
 
  \paragraph{Weighted Softmax Loss}
- (1) In scenarios of severe imbalance, minority classes are often overshadowed by the abundant head classes. WCE addresses this by scaling the loss for each class according to a class-dependent factor, typically the inverse of its frequency, thereby placing a heavier penalty on misclassification of rare classes \cite{zhang2023deep}.
-(2) By elevating the importance of tail classes in the loss, the model is incentivized to allocate more representational capacity to them, improving recall and reducing class-specific error rates.
-(3) Although simple, WCE provides a direct and intuitive method for re-weighting: each class’s contribution to the parameter updates is modulated to reflect its scarcity or importance in the dataset distribution.
-(4) This helps maintain a more balanced gradient flow during training, preventing head classes from monopolizing the optimization trajectory.
-(5) However, one limitation is that the choice of class weights is often empirical. Naively using the inverse class frequency may not always yield optimal results, and more sophisticated weighting heuristics or data-driven methods can be employed \cite{zhang2023deep}.
-(6) WCE sets a straightforward precedent for other re-weighting schemes, serving as a baseline for more elaborate methods that try to adapt the weights dynamically during training.
-(7) As it is easy to implement and understand, WCE is frequently considered as an initial step towards handling imbalance before exploring more complex techniques.
-(8) Overall, WCE exemplifies how re-weighting can effectively guide the model to learn less-represented categories more robustly, thereby improving long-tailed recognition performance.
+%  (1) In scenarios of severe imbalance, minority classes are often overshadowed by the abundant head classes. WCE addresses this by scaling the loss for each class according to a class-dependent factor, typically the inverse of its frequency, thereby placing a heavier penalty on misclassification of rare classes \cite{zhang2023deep}.
+% (2) By elevating the importance of tail classes in the loss, the model is incentivized to allocate more representational capacity to them, improving recall and reducing class-specific error rates.
+% (3) Although simple, WCE provides a direct and intuitive method for re-weighting: each class’s contribution to the parameter updates is modulated to reflect its scarcity or importance in the dataset distribution.
+% (4) This helps maintain a more balanced gradient flow during training, preventing head classes from monopolizing the optimization trajectory.
+% (5) However, one limitation is that the choice of class weights is often empirical. Naively using the inverse class frequency may not always yield optimal results, and more sophisticated weighting heuristics or data-driven methods can be employed \cite{zhang2023deep}.
+% (6) WCE sets a straightforward precedent for other re-weighting schemes, serving as a baseline for more elaborate methods that try to adapt the weights dynamically during training.
+% (7) As it is easy to implement and understand, WCE is frequently considered as an initial step towards handling imbalance before exploring more complex techniques.
+% (8) Overall, WCE exemplifies how re-weighting can effectively guide the model to learn less-represented categories more robustly, thereby improving long-tailed recognition performance.
 
 \paragraph{Focal Loss}
-Focal Loss modifies the CE loss by including a focusing parameter that down-weights well-classified examples, thus reducing the dominance of easily recognized classes or samples \cite{lin2018focallossdenseobject}.
-(2) By concentrating on hard examples—often those from underrepresented classes—Focal Loss ensures that the model’s parameter updates focus on improving performance where it struggles the most.
-(3) This dynamic weighting effectively reduces the overwhelming influence of head classes, since these classes tend to produce more confidently correct predictions that are down-weighted.
-(4) Consequently, tail classes, which inherently present more challenging classification problems, receive increased attention and a larger share of meaningful updates.
-(5) The intuition is that by penalizing confident yet trivial predictions less, the model has “budget” to allocate its learning capacity towards harder or rarer samples, thereby mitigating the imbalance effect.
-(6) Empirical results have shown that this approach can significantly boost performance on minority classes without severely degrading performance on majority classes \cite{zhang2023deep}.
-(7) Since Focal Loss does not depend solely on class frequency, it can adapt to the evolving difficulty distribution of samples during training, making it more flexible than static frequency-based weights.
-(8) Though originally introduced in the context of object detection, it has been widely adopted in image classification tasks with long-tailed distributions.
-(9) Thus, Focal Loss stands as a prime example of a re-weighting strategy that leverages model feedback (prediction confidence) rather than static priors (class frequencies) to balance training.
+% Focal Loss modifies the CE loss by including a focusing parameter that down-weights well-classified examples, thus reducing the dominance of easily recognized classes or samples \cite{lin2018focallossdenseobject}.
+% (2) By concentrating on hard examples—often those from underrepresented classes—Focal Loss ensures that the model’s parameter updates focus on improving performance where it struggles the most.
+% (3) This dynamic weighting effectively reduces the overwhelming influence of head classes, since these classes tend to produce more confidently correct predictions that are down-weighted.
+% (4) Consequently, tail classes, which inherently present more challenging classification problems, receive increased attention and a larger share of meaningful updates.
+% (5) The intuition is that by penalizing confident yet trivial predictions less, the model has “budget” to allocate its learning capacity towards harder or rarer samples, thereby mitigating the imbalance effect.
+% (6) Empirical results have shown that this approach can significantly boost performance on minority classes without severely degrading performance on majority classes \cite{zhang2023deep}.
+% (7) Since Focal Loss does not depend solely on class frequency, it can adapt to the evolving difficulty distribution of samples during training, making it more flexible than static frequency-based weights.
+% (8) Though originally introduced in the context of object detection, it has been widely adopted in image classification tasks with long-tailed distributions.
+% (9) Thus, Focal Loss stands as a prime example of a re-weighting strategy that leverages model feedback (prediction confidence) rather than static priors (class frequencies) to balance training.
 
 \paragraph{Class-Balanced Loss}
-The key insight is that each class’s influence should not be linearly scaled by its frequency alone. Instead, it considers that as class size grows, its incremental value decreases, suggesting that fewer samples are needed from frequently seen classes to establish robust representations. By formulating a class-specific weight derived from the effective sample number, CB Loss prevents large classes from dominating the training gradient simply due to their sheer volume of examples. This leads to a more stable and theoretically grounded re-weighting mechanism than naive inverses of class frequency, and can yield better generalization on minority classes. The concept of effective number is computed using a parameter $\gamma$ to determine how quickly the marginal benefit of additional samples decreases. This approach balances the training signal by giving classes a weight proportional to the inverse of their effective number, essentially normalizing the influence of different classes to a more comparable scale \cite{zhang2023deep}. As a result, CB Loss ensures that each class, regardless of its raw frequency, contributes meaningful gradients that reflect both its representation level and its effective complexity. This method elegantly merges the ideas of frequency-based weighting with a diminishing return model, acknowledging that overly abundant classes do not linearly improve overall performance. With this refined weighting scheme, CB Loss tends to improve recognition of rare categories without unduly harming head class accuracy. 
+% The key insight is that each class’s influence should not be linearly scaled by its frequency alone. Instead, it considers that as class size grows, its incremental value decreases, suggesting that fewer samples are needed from frequently seen classes to establish robust representations. By formulating a class-specific weight derived from the effective sample number, CB Loss prevents large classes from dominating the training gradient simply due to their sheer volume of examples. This leads to a more stable and theoretically grounded re-weighting mechanism than naive inverses of class frequency, and can yield better generalization on minority classes. The concept of effective number is computed using a parameter $\gamma$ to determine how quickly the marginal benefit of additional samples decreases. This approach balances the training signal by giving classes a weight proportional to the inverse of their effective number, essentially normalizing the influence of different classes to a more comparable scale \cite{zhang2023deep}. As a result, CB Loss ensures that each class, regardless of its raw frequency, contributes meaningful gradients that reflect both its representation level and its effective complexity. This method elegantly merges the ideas of frequency-based weighting with a diminishing return model, acknowledging that overly abundant classes do not linearly improve overall performance. With this refined weighting scheme, CB Loss tends to improve recognition of rare categories without unduly harming head class accuracy. 
 
 \paragraph{Balanced Softmax Loss}
-Balanced softmax loss applies a correction to the logits rather than just weighting the final loss terms can more directly counter the skewed gradient flow that results from class imbalance \cite{ren2020balancedmetasoftmaxlongtailedvisual}. By multiplying logits by the class frequencies, it effectively adjusts the decision boundaries, ensuring that classes with fewer samples are not overshadowed by the dense representation of majority classes. This adjustment encourages the model to produce a more uniform posterior distribution that accurately reflects true class priors, both during training and inference. Consequently, the network learns a more balanced internal representation, improving recognition of tail classes without overly penalizing head classes. It can be seen as a more direct approach to re-weighting at the logit level, contrasting with methods that focus on re-weighting the loss function after probability computation. Empirical results show that BS Loss can be more effective than other re-weighting methods, as it corrects the bias at its source rather than compensating after the fact. 
+% Balanced softmax loss applies a correction to the logits rather than just weighting the final loss terms can more directly counter the skewed gradient flow that results from class imbalance \cite{ren2020balancedmetasoftmaxlongtailedvisual}. By multiplying logits by the class frequencies, it effectively adjusts the decision boundaries, ensuring that classes with fewer samples are not overshadowed by the dense representation of majority classes. This adjustment encourages the model to produce a more uniform posterior distribution that accurately reflects true class priors, both during training and inference. Consequently, the network learns a more balanced internal representation, improving recognition of tail classes without overly penalizing head classes. It can be seen as a more direct approach to re-weighting at the logit level, contrasting with methods that focus on re-weighting the loss function after probability computation. Empirical results show that BS Loss can be more effective than other re-weighting methods, as it corrects the bias at its source rather than compensating after the fact. 
 
 The implementation details for the balanced softmax loss can be viewed in algorithm \ref{alg:balanced_softmax_loss} in appendix \ref{app:implementation}.
 
 \paragraph{Equalization Loss}
-(1) In highly imbalanced scenarios, each positive sample from a head class can produce negative gradients for all other classes, including tail classes. Over time, this can discourage the network from correctly identifying these minority classes.
-(2) EQ Loss counteracts this by selectively down-weighting the negative gradients that arise when tail classes appear as negative samples for majority classes \cite{zhang2023deep}.
-(3) By reducing the negative influence on tail classes, EQ Loss ensures that the model does not develop an overly “head-biased” representation that fails to recognize minority categories.
-(4) This strategy highlights a subtlety in the re-weighting paradigm: it is not only about boosting tail class importance, but also about preventing undue suppression of these classes through negative gradients.
-(5) However, excessively down-weighting negative gradients may impair the model’s discriminative power. To address this, adaptive variants, such as ACSL and Equalization v2, adjust the amount of gradient suppression based on the model’s prediction confidence \cite{tan2020equalizationlosslongtailedobject, zhang2023deep}.
-(6) This adaptive mechanism allows the network to selectively protect tail classes when needed, while still maintaining a strong discriminative boundary between classes.
-(7) The result is a more balanced training signal that prevents rare classes from being “washed out,” thereby improving long-tailed recognition.
-(8) EQ Loss exemplifies a more fine-grained approach to re-weighting, intervening at the gradient level to ensure fair treatment of minority categories.
-(9) By focusing on the gradient flow rather than just the static weighting of loss values, EQ Loss and its successors illustrate the evolving sophistication of class-sensitive re-weighting techniques.
+% (1) In highly imbalanced scenarios, each positive sample from a head class can produce negative gradients for all other classes, including tail classes. Over time, this can discourage the network from correctly identifying these minority classes.
+% (2) EQ Loss counteracts this by selectively down-weighting the negative gradients that arise when tail classes appear as negative samples for majority classes \cite{zhang2023deep}.
+% (3) By reducing the negative influence on tail classes, EQ Loss ensures that the model does not develop an overly “head-biased” representation that fails to recognize minority categories.
+% (4) This strategy highlights a subtlety in the re-weighting paradigm: it is not only about boosting tail class importance, but also about preventing undue suppression of these classes through negative gradients.
+% (5) However, excessively down-weighting negative gradients may impair the model’s discriminative power. To address this, adaptive variants, such as ACSL and Equalization v2, adjust the amount of gradient suppression based on the model’s prediction confidence \cite{tan2020equalizationlosslongtailedobject, zhang2023deep}.
+% (6) This adaptive mechanism allows the network to selectively protect tail classes when needed, while still maintaining a strong discriminative boundary between classes.
+% (7) The result is a more balanced training signal that prevents rare classes from being “washed out,” thereby improving long-tailed recognition.
+% (8) EQ Loss exemplifies a more fine-grained approach to re-weighting, intervening at the gradient level to ensure fair treatment of minority categories.
+% (9) By focusing on the gradient flow rather than just the static weighting of loss values, EQ Loss and its successors illustrate the evolving sophistication of class-sensitive re-weighting techniques.
 
 \paragraph{LDAM Loss}
-(1) Margin-based losses generally improve generalization by enforcing a minimum separation between class decision boundaries.
-(2) LDAM incorporates class-dependent margins that are inversely related to class frequencies, providing larger margins to tail classes and smaller margins to head classes \cite{zhang2023deep}.
-(3) By increasing the margin for minority classes, it effectively lowers their decision boundary threshold, making it easier for the model to confidently classify these classes and reducing their misclassification rates.
-(4) This approach contrasts with re-weighting methods: while re-weighting modifies the magnitude of the loss contributions, re-margining directly influences how decision boundaries are formed in the embedding space.
-(5) The motivation behind LDAM is that the imbalance problem is not solely a matter of loss amplitude, but also how easily minority classes can carve out their own regions in the feature space.
-(6) With larger margins for tail classes, LDAM encourages more robust and discrimination-friendly representations for these classes, thereby counteracting the bias induced by uneven sample distributions.
-(7) As a result, the final classifier tends to perform better on rare categories, as it learns to keep them well-separated from other classes, even when their sample counts are low.
-(8) Combining LDAM with re-weighting or re-sampling techniques can yield even stronger improvements, as each method addresses a complementary aspect of the imbalance issue.
-(9) LDAM underscores that balancing the training process can be achieved not only by adjusting loss weights, but also by reshaping the geometry of the decision boundaries in class-sensitive ways.
+% (1) Margin-based losses generally improve generalization by enforcing a minimum separation between class decision boundaries.
+% (2) LDAM incorporates class-dependent margins that are inversely related to class frequencies, providing larger margins to tail classes and smaller margins to head classes \cite{zhang2023deep}.
+% (3) By increasing the margin for minority classes, it effectively lowers their decision boundary threshold, making it easier for the model to confidently classify these classes and reducing their misclassification rates.
+% (4) This approach contrasts with re-weighting methods: while re-weighting modifies the magnitude of the loss contributions, re-margining directly influences how decision boundaries are formed in the embedding space.
+% (5) The motivation behind LDAM is that the imbalance problem is not solely a matter of loss amplitude, but also how easily minority classes can carve out their own regions in the feature space.
+% (6) With larger margins for tail classes, LDAM encourages more robust and discrimination-friendly representations for these classes, thereby counteracting the bias induced by uneven sample distributions.
+% (7) As a result, the final classifier tends to perform better on rare categories, as it learns to keep them well-separated from other classes, even when their sample counts are low.
+% (8) Combining LDAM with re-weighting or re-sampling techniques can yield even stronger improvements, as each method addresses a complementary aspect of the imbalance issue.
+% (9) LDAM underscores that balancing the training process can be achieved not only by adjusting loss weights, but also by reshaping the geometry of the decision boundaries in class-sensitive ways.
 
-\subsection{Excluded Long-Tailed Learning Methods}
-This section will explain why some deep long-tailed learning techniques, like re-sampling, was not the focus of this thesis.
+\subsection{Optimizer}
+\todo{Influence of optimizer. Find SGD references.} \cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}. 
 
 \section{Evaluation Metrics}
 \textit{A list of subjects to include in this section:}
@@ -267,10 +268,7 @@ This section will explain why some deep long-tailed learning techniques, like re
     \item Explain the choice of F1-score.
 \end{itemize}
 
-
-
-\subsection{Model Comparison}
-Metrics for comparison of overall model performance. Example: harmonic mean, geometric mean, min score. Mention why these metrics are suitable for balancing performance across head, middle, and tail classes.
+Describe how the models are compared, e.g. with top-1 accuracy. Reference articles in image classification tasks and how they compare.
 
 \section{Reproducibility}
 \textit{A list of subjects to include in this section:}
@@ -282,7 +280,9 @@ Metrics for comparison of overall model performance. Example: harmonic mean, geo
 \end{itemize}
 
 \section{Implementation Details}
-Technical explanations of any unique or customized methods implemented in code, for example the custom dataset.
+Describe the choice of the custom split of the CIFAR-100 dataset.
+
+Describe here the implementation of EQ Loss.
 
 \textit{A list of subjects to include in this section:}
 

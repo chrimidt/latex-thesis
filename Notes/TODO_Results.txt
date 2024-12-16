@@ -7,10 +7,11 @@ x Make a table for the mean and standard deviation
 - Make table for the mean and std dev for models
 x Include Benchmark results in the tables
 - Begin an appendix for the benchmark comparisons
-- Write about the findings compared to the baseline
-- Include the list of things in the summary and discussion section
+x Write about the findings compared to the baseline
+x Include the list of things in the summary and discussion section
 x Correct ResNet50V2 to ResNet50
-- Make bar plot of mean + std for models
+(- Make bar plot of mean + std for models)
+- Include a table with the findings from the original loss papers.
 
 - Hvis jeg finder long-tailed metoderne testet på cifar-100-lt, sæt dem ind i en tabel, og så inkluder backbone.
 

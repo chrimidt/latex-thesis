@@ -1,0 +1,14 @@
+- Results
+- Conclusion
+- Check CB loss
+- Check EQ loss
+- Introduction
+- Experimental Setup
+- Model Selection
+- Loss Selection
+- ViTs
+- Logit Adjustment
+- ResNet50
+- Evaluation Metrics
+- ViT-B/16
+- ConvNext Base
