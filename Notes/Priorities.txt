@@ -1,9 +1,9 @@
 x Results
-- Conclusion
+x Conclusion
 - Check CB loss
 - Check EQ loss
 - Introduction
-- Experimental Setup
+x Experimental Setup
 - Model Selection
 - Loss Selection
 - ViTs

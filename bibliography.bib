@@ -33,6 +33,19 @@
     year         = {2024}
 }
 
+
+% Gradients
+@ARTICLE{279181,
+  author={Bengio, Y. and Simard, P. and Frasconi, P.},
+  journal={IEEE Transactions on Neural Networks}, 
+  title={Learning long-term dependencies with gradient descent is difficult}, 
+  year={1994},
+  volume={5},
+  number={2},
+  pages={157-166},
+  doi={10.1109/72.279181}}
+
+
 % ===============================================================================
 % Loss Functions
 
@@ -314,16 +327,25 @@ author = {Kurt Hornik and Maxwell Stinchcombe and Halbert White},
 }
 
 % ResNet
-@INPROCEEDINGS{he2016,
-  author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
-  booktitle={2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 
-  title={Deep Residual Learning for Image Recognition}, 
-  year={2016},
-  volume={},
-  number={},
-  pages={770-778},
-  keywords={Training;Degradation;Complexity theory;Image recognition;Neural networks;Visualization;Image segmentation},
-  doi={10.1109/CVPR.2016.90}}
+@misc{he2015deepresiduallearningimage,
+      title={Deep Residual Learning for Image Recognition}, 
+      author={Kaiming He and Xiangyu Zhang and Shaoqing Ren and Jian Sun},
+      year={2015},
+      eprint={1512.03385},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/1512.03385}, 
+}
+
+% ResNet50 PyTorch:
+@misc{pytorch_resnet50,
+  title = {ResNet-50 model — Torchvision 0.17.1 documentation},
+  author = {{PyTorch Team}},
+  year = {2024},
+  howpublished = {\url{https://pytorch.org/vision/main/models/generated/torchvision.models.resnet50.html}},
+  note = {Accessed: 2024-06-17}
+}
+
 
 % ConvNeXt
 @inproceedings{todi2023convnext,
@@ -484,6 +506,17 @@ title={Fixing Weight Decay Regularization in Adam},
 author={Ilya Loshchilov and Frank Hutter},
 year={2018},
 url={https://openreview.net/forum?id=rk6qdGgCZ},
+}
+
+Adam
+@misc{kingma2017adammethodstochasticoptimization,
+      title={Adam: A Method for Stochastic Optimization}, 
+      author={Diederik P. Kingma and Jimmy Ba},
+      year={2017},
+      eprint={1412.6980},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1412.6980}, 
 }
 
 % ===============================================================================
@@ -719,4 +752,16 @@ url={https://openreview.net/forum?id=rk6qdGgCZ},
       archivePrefix={arXiv},
       primaryClass={cs.CV},
       url={https://arxiv.org/abs/2010.01809}, 
+}
+%=================================================================================
+% PyTorch
+
+@misc{paszke2019pytorchimperativestylehighperformance,
+      title={PyTorch: An Imperative Style, High-Performance Deep Learning Library}, 
+      author={Adam Paszke and Sam Gross and Francisco Massa and Adam Lerer and James Bradbury and Gregory Chanan and Trevor Killeen and Zeming Lin and Natalia Gimelshein and Luca Antiga and Alban Desmaison and Andreas Köpf and Edward Yang and Zach DeVito and Martin Raison and Alykhan Tejani and Sasank Chilamkurthy and Benoit Steiner and Lu Fang and Junjie Bai and Soumith Chintala},
+      year={2019},
+      eprint={1912.01703},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/1912.01703}, 
 }

@@ -34,9 +34,6 @@ Other long-tailed datasets follow a Pareto distribution with number of samplers 
 
 Here, $\alpha$ is the shape parameter, $C_{\text{m}}$ is the scale parameter representing the minimum possible class index, and $C$ is the class index. A larger $\alpha$ results in a more severe imbalance.
 
-    
-
-
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{Images/long_tail_distribution.png} 
@@ -83,7 +80,10 @@ However, this simple neural network becomes insufficient for more complex proble
 \label{sec:CNNs}
 Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. 
 
-CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}. They have three main layers: convolutional layers, pooling layers, and a fully connected layer. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image, while pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. The CNN can be made up of multiple convolution and pooling layers, but the fully connected layer will be the final layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation.
+CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}. 
+
+\todo{write this section}
+They have three main layers: convolutional layers, pooling layers, and a fully connected layer. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image, while pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. The CNN can be made up of multiple convolution and pooling layers, but the fully connected layer will be the final layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation.
 
 
 \begin{figure}[ht]
@@ -96,21 +96,33 @@ CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_i
 \todo{Tie to the models used for experiments in this thesis.}
 \url{https://www.ibm.com/topics/convolutional-neural-networks}
 
-CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998} that demonstrated the potential of CNNs by recognizing handwritten digits. Later, AlexNet \cite{NIPS2012_c399862d} achieved a breakthrough by winning the ImageNet Challenge in 2012, demonstrating the potential of CNNs to handle large-scale image recognition tasks by deepening the architechtures and utilizing multiple GPUs for training. Subsequently, the evolution of CNNs has progressed through architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and ResNet \cite{he2016}, which have set the stage for the advancements seen in modern CNNs.
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998} that demonstrated the potential of CNNs by recognizing handwritten digits. Later, AlexNet \cite{NIPS2012_c399862d} achieved a breakthrough by winning the ImageNet Challenge in 2012, demonstrating the potential of CNNs to handle large-scale image recognition tasks by deepening the architechtures and utilizing multiple GPUs for training. Subsequently, the evolution of CNNs has progressed through architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and ResNet \cite{he2015deepresiduallearningimage}, which have set the stage for the advancements seen in modern CNNs.
 
 % ===============================================================================
 % ResNet50
 
 \subsubsection{ResNet50 Architecture}
 \label{sec:resnet}
-\todo{write this section.}
-ResNet50 is a variant of the ResNet (Residual Network) architecture, which introduced the concept of residual learning to address the vanishing gradient problem in deep networks \cite{he2016}. 
+ResNet50 is a variant of the Residual Network (ResNet) architecture, developed by Microsoft Research (He et al.) in 2015 \cite{he2015deepresiduallearningimage}. The ResNet architecture was designed to address the vanishing and exploding gradient problem in deep networks. When training a deep neural network, as the number of layers increases, the gradients of the loss function with respect to the weight can potentially vanish or explode during backpropagation \cite{he2015deepresiduallearningimage}. This can lead to slow convergence or unstable updates.
+
+In traditional CNNs, stacked layers learn a direct mapping $\mathcal{H}(x)$ of the input $x$ to the output. The introduction of residual layers, however, allows for the layer to fit a residual mapping, as illustrated in figure \ref{fig:res_learning}, where the network learns the residual function $\mathcal{F}(x) = \mathcal{H}(x) - X$. Isolating $\mathcal{H}(x)$ yields $\mathcal{H}(x) = \mathcal{F}(x) + x$, meaning that the input $x$ is passed through a skip connection. This architecure reduces the complexity of the optimization process, as the network only has to model the residual component $\mathcal{F}(x)$ rather than the full mapping $\mathcal{H}(x)$ \cite{he2015deepresiduallearningimage}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{example-image} 
-    \caption{Placeholder Image \todo{Make this figure.}}
-    \label{fig:placeholder1}
+    \includegraphics[width=0.5\textwidth]{Images/res_learn.png} 
+    \caption{Residual Learning. Figure from \cite{he2015deepresiduallearningimage}. \todo{Make this figure.}}
+    \label{fig:res_learning}
+\end{figure}
+
+The residual network is formed by stacking multiple layers of residual blocks, as the one depicted in figure \ref{fig:res_learning}. The ResNet architecture can have a varying number of layers, and, as the name implies, the ResNet50 variant has 50 layers. Other architecures include ResNet-34, ResNet-101, and ResNet-152 \cite{he2016identitymappingsdeepresidual}. 
+
+The complete ResNet50 architechture consist of: see figure \ref{fig:resnet50} \todo{complete this.}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/resnet50.png} 
+    \caption{ResNet50 Architecture. Figure from \url{https://towardsdatascience.com/the-annotated-resnet-50-a6c536034758}. \todo{Make this figure.}}
+    \label{fig:resnet50}
 \end{figure}
 
 % ===============================================================================
@@ -128,7 +140,7 @@ MobileNetV2 introduced by Sandler et al. \cite{sandler2018mobilenetv2} is a ligh
 % \end{figure}
 
 \paragraph{Inverted Residual Blocks}
-While traditional residual connections, introduced in Residual Networks (ResNets) \cite{he2016} \todo{as discussed in the previous section}, allow for identity mapping and improved gradient flow, MobileNetV2 employs an inverted residual structure \cite{sandler2018mobilenetv2}. Instead of mapping from a high-dimensional representation down to a lower-dimensional bottleneck, then reconstructing features at the output, inverted residual blocks begin with a low-dimensional input and expand it to a higher-dimensional space before applying a depthwise convolution. After spatial filtering, the representation is projected back down to a low-dimensional space. This approach, illustrated in Figure \ref{fig:residual}, helps preserve crucial information and maintain a rich feature space without substantially increasing computational cost. The use of a linear bottleneck (i.e., no nonlinear activation in the low-dimensional projection) also helps prevent the destruction of useful information, further improving efficiency and accuracy.  
+While traditional residual connections, introduced in Residual Networks (ResNets) \cite{he2015deepresiduallearningimage} \todo{as discussed in the previous section}, allow for identity mapping and improved gradient flow, MobileNetV2 employs an inverted residual structure \cite{sandler2018mobilenetv2}. Instead of mapping from a high-dimensional representation down to a lower-dimensional bottleneck, then reconstructing features at the output, inverted residual blocks begin with a low-dimensional input and expand it to a higher-dimensional space before applying a depthwise convolution. After spatial filtering, the representation is projected back down to a low-dimensional space. This approach, illustrated in Figure \ref{fig:residual}, helps preserve crucial information and maintain a rich feature space without substantially increasing computational cost. The use of a linear bottleneck (i.e., no nonlinear activation in the low-dimensional projection) also helps prevent the destruction of useful information, further improving efficiency and accuracy.  
 
 \begin{figure}[ht]
     \centering
@@ -290,6 +302,8 @@ Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss f
 
 From equation \eqref{eq:gradient_update}, the choice of loss function is critical as it influences the model's interpretation of prediction errors and parameter adjustment. For image classification tasks, the standard loss function is the cross-entropy loss combined with the softmax activation function \cite{zhang2023dive} described in the following.
 
+\todo{This is the SGD. Include the Adam Optimizer.}
+
 \paragraph{Softmax Cross-Entropy Loss}
 The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The softmax loss, as it is commonly known as, is the combination of the cross-entropy loss and the softmax activation function \cite{zhang2023dive,Goodfellow-et-al-2016}. First, the need of the softmax activation function will be decribed.
 
@@ -406,6 +420,7 @@ Here, $y_j$ is the ground truth class, $z_j$ is the logit for class $j$, $f_k$ i
 
 \subsubsection{Logit Adjustment}
 Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the prediction logits \cite{menon2021longtaillearninglogitadjustment}, typically based on prior class probabilities. 
+\todo{This is not finished}
 
 \paragraph{Balanced Softmax Loss}
 The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. The BS loss function is as follows:
@@ -416,6 +431,7 @@ The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation 
 
 where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
 
+\todo{This is not finished}
 
 \subsubsection{Re-margining}
 Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes.
@@ -426,6 +442,8 @@ Re-margining aims to solve class imbalance by improving classification by introd
 The \emph{Label-Distribution-Aware Margin (LDAM)} Loss represents a class-sensitive approach based on re-margining rather than re-weighting \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
 
 Instead of altering the loss directly, LDAM modifies the margin applied to each class’ decision boundary, ensuring that minority classes have more “space” in the representation space to reduce misclassification.
+
+\todo{This is not finished.}
 
 "First, we propose a theoretically-principled label-distribution-aware margin (LDAM) loss motivated by minimizing a margin-based generalization bound. This loss replaces the standard cross-entropy objective during training and can be applied with prior strategies for training with class-imbalance such as re-weighting or re-sampling." 
 
