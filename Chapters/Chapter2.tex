@@ -87,6 +87,8 @@ They have three main layers: convolutional layers, pooling layers, and a fully c
 
 \todo{What is a convolution?}
 \todo{Inductive bias}
+\todo{Translation equivariance}
+\todo{Stem cells, kernel, stride, convolution.}
 
 
 \begin{figure}[ht]
@@ -187,7 +189,7 @@ Transformers were introduced by Vaswani et al. in 2017 \cite{vaswani2023attentio
 
 Unlike CNNs, ViTs have much less image-specific inductive bias \cite{dosovitskiy2021imageworth16x16words}. While the inductive bias in CNNs help the model generalize to unseen data \cite{kim2020inductivebias}, the ViT architecture does not include built-in assumptions about the structure of the data, only the MLP layers are local an translationally equivalent \cite{dosovitskiy2021imageworth16x16words}. As a result, ViTs require more training data to learn spacial relations compared with CNNs.
 
-\todo{What made the ViT get SOTA? Why were they better than CNNs? \url{https://www.youtube.com/watch?v=QqejV0LNDHA}.}
+\todo{What made the ViT get SOTA? Why were they better than CNNs? Scalability. \url{https://www.youtube.com/watch?v=QqejV0LNDHA}.}
 
 % ===============================================================================
 % ViT-B/16
@@ -202,24 +204,26 @@ the ViT-B/16 is a Vision Transformer that leverages the transformer architecture
 
 \subsubsection{ConvNeXt Base Architecture}
 \label{sec:convnext}
-ConvNext evolutionized the traditional CNN architecture by incorporating elements from ViTs, and was introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}. 
+ConvNext, introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}, evolutionized the traditional CNN architecture by incorporating elements from ViTs. Starting with the stem cell, the ConvNeXts employ a patchify stem, as seen in figure \ref{fig:stem}. By setting the kernel to $4 \times 4$ and the stride to 4, the result is a non-overlapping convolution where no information is shared between them. However, these are later combined in the final layers of the network.  
 
-
-ConvNeXt Base is a modernized CNN architecture inspired by insights from transformer-based models, designed to achieve competitive performance while retaining the efficiency of CNNs \cite{todi2023convnext}. Notable features include:
-
-Simplified Design: Incorporates architectural refinements such as depthwise convolutions and LayerNorm.
-Enhanced Efficiency: Balances accuracy and computational cost, bridging the gap between traditional CNNs and transformer-based models. 
-
-Improvement from predecessors: integrating insights from ViTs.
-
-\begin{figure}[ht]
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{example-image} 
-    \caption{Placeholder Image \todo{Make this figure.}}
-    \label{fig:placeholder2}
+    \includegraphics[width=0.6\textwidth]{Images/stem.png} 
+    \caption{ResNet stem vs ConvNeXt stem. Figure from \url{https://www.kungfu.ai/blog-post/convnext-a-transformer-inspired-cnn-architecture} \todo{Make this figure.}}
+    \label{fig:stem}
 \end{figure}
 
-"The "Roaring 20s" of visual recognition began with the introduction of Vision Transformers (ViTs), which quickly superseded ConvNets as the state-of-the-art image classification model. A vanilla ViT, on the other hand, faces difficulties when applied to general computer vision tasks such as object detection and semantic segmentation. It is the hierarchical Transformers (e.g., Swin Transformers) that reintroduced several ConvNet priors, making Transformers practically viable as a generic vision backbone and demonstrating remarkable performance on a wide variety of vision tasks. However, the effectiveness of such hybrid approaches is still largely credited to the intrinsic superiority of Transformers, rather than the inherent inductive biases of convolutions. In this work, we reexamine the design spaces and test the limits of what a pure ConvNet can achieve. We gradually "modernize" a standard ResNet toward the design of a vision Transformer, and discover several key components that contribute to the performance difference along the way. The outcome of this exploration is a family of pure ConvNet models dubbed ConvNeXt. Constructed entirely from standard ConvNet modules, ConvNeXts compete favorably with Transformers in terms of accuracy and scalability, achieving 87.8 \% ImageNet top-1 accuracy and outperforming Swin Transformers on COCO detection and ADE20K segmentation, while maintaining the simplicity and efficiency of standard ConvNets." \url{https://paperswithcode.com/paper/a-convnet-for-the-2020s}
+Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, the ConvNeXt use depthwise convolution, already described in the MobileNetV2 section \ref{sec:mobilenet}, to increase the FLOPs/accuracy trade-off. Likewise, the ConvNext incorporates inverted bottleneck block, which are an important design in transformers as well as MobileNetV2 \cite{liu2022convnet2020s}. Additionally, the ConvNext architecure uses a $7 time 7$ depthwise convultion in each block on the condition of moving the depthwise convolution layer up. See figure \ref{fig:conv_block}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/convnext_block_mod.png} 
+    \caption{Block modifications. Figure from \cite{liu2022convnet2020s} \todo{Make this figure.}}
+    \label{fig:conv_block}
+\end{figure}
+
+Instead of using the commonly used activation function in ResNets, the Rectified Linear Unit (ReLU), the ConvNeXt use Gaussian Error Linear Unit (GeLU). This activation function has shown to perform better than ReLU for transformers \cite{liu2022convnet2020s}. Additionally, ConvNext draws inspiration from transformers by removing most instances of normalization layers, only leaving them after depthwise convolutions and furhter replacing the Batch Normalization with Layer Normalization. Finally, ConvNeXt introduces separate downsampling layers between blocks rather than implementing downsampling within the blocks themselves. 
+
 
 
 %====================================================================================

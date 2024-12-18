@@ -188,6 +188,9 @@ Justification for selecting these techniques, potentially referencing prior rese
     \item Mention the model architectures chosen for training, and describe why they are appropriate for deep long-tailed learning with reference to the background section.
     \item Discuss the strengths and limitations of these models in addressing the challenges posed by imbalanced data.
     \item Describe how they were pretrained (ImageNet-1K, ImageNet-21K) and what that means for the training on CIFAR100.
+    \item Write about their implementation. The implementation is the same for all models. 
+    \item Include the training loss for both balanced and imbalanced data.
+    \item Compare to the results in their original paper. 
 \end{itemize}
 
 \paragraph{ResNet50}
@@ -197,10 +200,15 @@ Resnet outperformed other architectures by winning winning the image classificat
 PyTorch \cite{pytorch_resnet50} \todo{check the correct version}.
 
 \paragraph{MobileNetV2}
+The MobileNetV2 model  is a successor to the ResNet architecure, adjusted to run on mobile devices as it requires fewer computational resources (see section \ref{sec:mobilenet}).
 
-\paragraph{ConvNeXt Base}
 
 \paragraph{ViT-B/16}
+The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. 
+
+
+\paragraph{ConvNeXt Base}
+In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022convnet2020s} the auhtors presents the ConvNeXt model architecture, a CNN with elements of ViTs (see section \ref{sec:convnext}), which achieved state-of-the-art performance in image classification tasks \todo{was it image classification?}. 
 
 \subsection{Selection of Loss Function}
 \label{sec:loss_selection}
@@ -211,6 +219,8 @@ PyTorch \cite{pytorch_resnet50} \todo{check the correct version}.
     \item Rationale for each loss function's inclusion, focusing on its expected benefits for imbalanced classes and how it adresses the bias toward majority classes.
     \item Write pseudo code of the implementations
  \end{itemize}
+
+ 
 
  \paragraph{Softmax Loss}
 %  Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
