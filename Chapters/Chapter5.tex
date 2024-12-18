@@ -233,6 +233,7 @@ Overall, these results indicate that the experimental setup is effective for mos
     \label{tab:benchmark_comparison}
 \end{table}
 
+\todo{The original ViT paper has a CIFAR-100 benchmark as well \cite{dosovitskiy2021imageworth16x16words}.}
 
 \section{Performance Comparisons}
 
@@ -318,7 +319,7 @@ Although the CB Loss' overall superior performance on tail classes, this perform
 
 Class-Balanced Loss, in contrast, consistently underperformed across all models and datasets. This discrepancy between its intended purpose and observed results suggests possible issues with its implementation \todo{investigate}. Further investigation is necessary to understand these limitations and determine whether its performance can be improved. \todo{Make a table with original findings for comparison.}
 
-Likewise, the ViT-B/16 architecture underperformed significantly across all loss functions, categories, and training datasets, with the best accuracy of 59.06\% on a balanced training dataset compared to its benchmark of 93.95\% \todo{reference}. These results indicate that the default ViT-B/16 architecture may not be well-suited for long-tailed datasets without further optimization \cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}. These could include a carefully chosen optimizer, longer training, or larger dataset. Comparatively, the CNN architectures displayed overall better performance with the same setup.
+Likewise, the ViT-B/16 architecture underperformed significantly across all loss functions, categories, and training datasets, with the best accuracy of 59.06\% on a balanced training dataset compared to its benchmark of 93.95\% \todo{reference}. These results indicate that the default ViT-B/16 architecture may not be well-suited for long-tailed datasets without further optimization \cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}. These could include a carefully chosen optimizer, longer training, or larger dataset. Comparatively, the CNN architectures displayed overall better performance with the same setup. \todo{here's another reference \url{https://arxiv.org/pdf/2205.01580v1}.}
 
 \todo{Include discussion of the choice of adam optimizer over the SGD.}
 

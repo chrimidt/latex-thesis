@@ -68,3 +68,23 @@ https://github.com/Vanint/Awesome-LongTailed-Learning/blob/main/Main-codebase/lo
 
 Link to article explaining it:
 https://towardsdatascience.com/review-resnet-winner-of-ilsvrc-2015-image-classification-localization-detection-e39402bfa5d8
+
+
+-----------------------------------------------------------------------------
+---------------------------- Vision Transforer ------------------------------
+
+AN IMAGE IS WORTH 16X16 WORDS:
+TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE by Dosovitskiy et al. (2021)
+
+Link to article:
+https://arxiv.org/pdf/2010.11929
+
+
+-----------------------------------------------------------------------------
+--------------------------------- Vit-B/16 ----------------------------------
+
+AN IMAGE IS WORTH 16X16 WORDS:
+TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE by Dosovitskiy et al. (2021)
+
+Link to article:
+https://arxiv.org/pdf/2010.11929
