@@ -47,7 +47,7 @@ With its 100 classes and only 60,000 samples, the CIFAR-100 dataset was chosen a
 \subsection{Data Characteristics: Class Distribution}
 Understanding the class distribution in long-tailed datasets is essential for evaluating the impact of the class imbalance on model performance. This section analyzes the class distribution of the benchmark ImageNet-LT used in \cite{zhang2023deep}, which serves as a reference for creating a similar distribution across the CIFAR-100-LT training, evaluation, and test datasets.  
 
-The ImageNet-LT dataset, introduced by Liu et al. \cite{liu2019largescalelongtailedrecognitionopen}, has been widely used in empirical studies, including \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}. The class distributions of its training, validation, and test sets are shown in Figures~\ref{fig:IN-train}, \ref{fig:IN-val}, and \ref{fig:IN-test}, respectively. The ImageNet-LT is constructed from the original ImageNet-2012 following the Pareto-distribution (Eq. \eqref{eq:pareto}) with power value $\alpha=6$ \cite{liu2019largescalelongtailedrecognitionopen}, resulting in an imbalance ratio of 256, meaning that the most frequent class has 256 times more samples than the least frequent class. As suggested in figure \ref{fig:IN-train}, the most frequent class has 1280 images, and the least frequent class 5 images \cite{liu2019largescalelongtailedrecognitionopen}. The power value of 6 is relatively large, resulting in the steep imbalance and very few samples in the tail, as seen in figure \ref{fig:IN-train}. The underrepresentation in the tail classes poses a significant challenge for models to learn from tail classes. Both the validation and test sets are balanced, as shown in figures \ref{fig:IN-val} and \ref{fig:IN-test}, respectively. There are 20 samples per class in the validation set, and 50 samples per class in the test set.
+The ImageNet-LT dataset, introduced by Liu et al. \cite{liu2019largescalelongtailedrecognitionopen}, has been widely used in empirical studies, including \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}. The class distributions of its training, validation, and test sets are shown in Figures~\ref{fig:IN-train}, \ref{fig:IN-val}, and \ref{fig:IN-test}, respectively. The ImageNet-LT is constructed from the original ImageNet-2012 following the Pareto-distribution (Eq. \eqref{eq:pareto}) with power value $\alpha=6$ \cite{liu2019largescalelongtailedrecognitionopen}, resulting in an imbalance ratio of 256, meaning that the most frequent class has 256 times more samples than the least frequent class. As suggested in figure \ref{fig:IN-train}, the most frequent class has 1280 images, and the least frequent class 5 images \cite{liu2019largescalelongtailedrecognitionopen}. The power value of 6 is relatively large, resulting in the steep imbalance and very few samples in the tail, as seen in figure \ref{fig:IN-train}. The underrepresentation in the tail classes poses a significant challenge for models to learn from tail classes. Both the validation and test sets are balanced, as shown in figures \ref{fig:IN-val} and \ref{fig:IN-test}, respectively. There are 20 samples per class in the validation set, and 50 samples per class in the test set. \todo{remove the figures, and just leave it in writing.}
 
 
 \begin{figure}[h!]
@@ -194,17 +194,17 @@ Justification for selecting these techniques, potentially referencing prior rese
 \end{itemize}
 
 \paragraph{ResNet50}
-"Resnet achieved unprecedented results by addressing the challenges associated with training very deep neural networks.
+Resnet achieved unprecedented results by addressing the challenges associated with training very deep neural networks.
 Resnet outperformed other architectures by winning winning the image classification task in ILVRSC 2015 by a substantial margin with top 5 error rate of 3.57 \% and achieved remarkable results." \url{https://medium.com/@ibtedaazeem/understanding-resnet-architecture-a-deep-dive-into-residual-neural-network-2c792e6537a9}
 
-PyTorch \cite{pytorch_resnet50} \todo{check the correct version}.
+PyTorch \cite{torchvision-resnet} \todo{check the correct version}.
 
 \paragraph{MobileNetV2}
 The MobileNetV2 model  is a successor to the ResNet architecure, adjusted to run on mobile devices as it requires fewer computational resources (see section \ref{sec:mobilenet}).
 
 
 \paragraph{ViT-B/16}
-The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. 
+The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
 
 
 \paragraph{ConvNeXt Base}
@@ -252,7 +252,7 @@ In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022co
 \paragraph{Balanced Softmax Loss}
 % Balanced softmax loss applies a correction to the logits rather than just weighting the final loss terms can more directly counter the skewed gradient flow that results from class imbalance \cite{ren2020balancedmetasoftmaxlongtailedvisual}. By multiplying logits by the class frequencies, it effectively adjusts the decision boundaries, ensuring that classes with fewer samples are not overshadowed by the dense representation of majority classes. This adjustment encourages the model to produce a more uniform posterior distribution that accurately reflects true class priors, both during training and inference. Consequently, the network learns a more balanced internal representation, improving recognition of tail classes without overly penalizing head classes. It can be seen as a more direct approach to re-weighting at the logit level, contrasting with methods that focus on re-weighting the loss function after probability computation. Empirical results show that BS Loss can be more effective than other re-weighting methods, as it corrects the bias at its source rather than compensating after the fact. 
 
-The implementation details for the balanced softmax loss can be viewed in algorithm \ref{alg:balanced_softmax_loss} in appendix \ref{app:implementation}.
+The implementation details for the balanced softmax loss can be viewed in algorithm \ref{alg:balanced_softmax_loss} in appendix \ref{app:implementation}. \todo{just reference the paper.}
 
 \paragraph{Equalization Loss}
 % (1) In highly imbalanced scenarios, each positive sample from a head class can produce negative gradients for all other classes, including tail classes. Over time, this can discourage the network from correctly identifying these minority classes.
@@ -292,6 +292,7 @@ The implementation details for the balanced softmax loss can be viewed in algori
 Describe how the models are compared, e.g. with top-1 accuracy. Reference articles in image classification tasks and how they compare.
 
 \section{Reproducibility}
+\todo{Put this in an appendix.}
 \textit{A list of subjects to include in this section:}
 
 \begin{itemize}
@@ -300,16 +301,4 @@ Describe how the models are compared, e.g. with top-1 accuracy. Reference articl
     \item Availability of scripts for dataset preparation and model training.
 \end{itemize}
 
-\section{Implementation Details}
-Describe the choice of the custom split of the CIFAR-100 dataset.
-
-Describe here the implementation of EQ Loss.
-
-\textit{A list of subjects to include in this section:}
-
-\begin{itemize}
-    \item Explain how the models where implemented.
-    \item Rationale for implementing the loss functions manually instead of copy existing repositories.
-    \item Describe the benefits of copying existing repositories.
-\end{itemize}
 
