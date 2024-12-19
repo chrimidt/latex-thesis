@@ -1,6 +1,8 @@
 % Chapter 5: Results and Discussion
 This chapter presents the experimental results, comparing model performances across head, middle, and tail classes, and discusses the impact of different model architectures combined with different loss functions. First, the main findings are presented, followed by a detailed analysis of the results across experiments, and lastly a summary and discussion of the results. 
 
+\todo{Compare the different types of losses against each other. See \cite{menon2021longtaillearninglogitadjustment}.}
+
 \section{Main Findings}
 Across all models, Balanced Softmax Loss demonstrated the highest performance on tail classes for models trained on long-tailed datasets while maintaining consistent performance on head, middle, and overall long-tailed test sets. The highest top-1 accuracy for tail classes was achieved by the ResNet50 architecture (Acc1: 0.6053), closely followed by the ConvNeXt Base architecture (Acc1: 0.5789). However, this improved tail-class performance comes at the cost of head-class accuracy, where ConvNeXt Base outperforms ResNet50 with a top-1 accuracy of 0.8685 compared to 0.8270. Overall, ConvNeXt Base demonstrates better performance across all classes (Acc1: 0.8230) compared to ResNet50 (Acc1: 0.7916). See Tables \ref{tab:resnet_lt_acc1_1} and \ref{tab:conv_lt_acc1_1} for reference. These findings, however, require further statistical analysis to confirm their significance and that the observed differences are not simply due to random variability.
 
@@ -34,7 +36,7 @@ This section presents the overall results of all experiments conducted in this t
     \label{tab:mobilenet_bal_acc1_1}
 \end{table}
 
-From Table \ref{tab:mobilenet_bal_acc1_1}, Balanced Softmax Loss achieves the best accuracy on the balanced test dataset (Acc1: 0.8034) and the highest accuracy on tail classes (Acc1: 0.9211). Not surprisingly, Softmax, Weighted Softmax, and Class-Balanced Loss yield the same accuracies across all test datasets due to shared cross-entropy-based designs that become indistinguishable when trained on balanced data according to equations \eqref{eq:ce_loss}, \eqref{eq:wce_loss}, and \eqref{eq:cb_loss} described in section \ref{sec:class_rebal}. Overall, all methods achieve comparable results to the softmax baseline, while outperforming the best published result for MobileNetV2 trained with CIFAR-100, as seen in table \ref{tab:benchmark_comparison}.
+From Table \ref{tab:mobilenet_bal_acc1_1}, Balanced Softmax Loss achieves the best accuracy on the balanced test dataset (Acc1: 0.8034) and the highest accuracy on tail classes (Acc1: 0.9211). Not surprisingly, Softmax, Weighted Softmax, and Class-Balanced Loss yield the same accuracies across all test datasets due to shared cross-entropy-based designs that become indistinguishable when trained on balanced data according to equations \eqref{eq:ce_loss}, \eqref{eq:wce_loss}, and \eqref{eq:cb_loss} described in section \ref{sec:lt_methods}. Overall, all methods achieve comparable results to the softmax baseline, while outperforming the best published result for MobileNetV2 trained with CIFAR-100, as seen in table \ref{tab:benchmark_comparison}.
 
 \todo{This paragraph could potentially be moved to an overall discussion section, as it includes a discussion of other model behavior.}
 Although LDAM Loss demonstrates lower overall accuracy, its high tail-class accuracy matches that of Balanced Softmax and Equalization Loss, suggesting that tail-class performance may have reached a saturation point due to the limited number of samples in tail classes. This notion is further supported by identical performance across multiple long-tailed subsets with other backbones (see tables \ref{tab:resnet_bal_acc1_1} and \ref{tab:conv_bal_acc1_1}), suggesting potential limitations in class-specific data quality or quantity. These limitations could be investigated through testing on a larger dataset. 
@@ -325,7 +327,7 @@ Likewise, the ViT-B/16 architecture underperformed significantly across all loss
 
 \todo{Include a discussion of the implementation of the EQ Loss.}
 
-The performance of the LDAM could potentially improve by including the deferred re-weighting scheme (DRW), also introduced by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. Accroding to related work \todo{find this reference}, the DRW significanlty improves performance on long-tailed datasets in contrast to relying solely on LDAM for effective class re-balancing. \todo{reference benchmark performance.}
+The performance of the LDAM could potentially improve by including the deferred re-weighting scheme (DRW), also introduced by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. According to related work \cite{menon2021longtaillearninglogitadjustment}, the DRW significanlty improves performance on long-tailed datasets in contrast to relying solely on LDAM for effective class re-balancing. \todo{reference benchmark performance.}
 
 The decision to derive test data from the training set, rather than splitting the validation set to match the class distribution to that of the ImageNet-LT (see section \ref{sec:dataset_specs}), could also influence the results, since the training data would include more samples. Likewise, the performance of the combinations of model architectures and loss designs could benefit from training with a larger dataset, like ImageNet and ImageNet-LT. Furthermore, these larger long-tailed benchmarks follow the Pareto distribution rather than an exponential decay, mirroring a natural occuring long-tailed dataset, as discussed in sections \ref{sec:lt-datasets} and \ref{sec:dataset_specs}.  
 
@@ -333,3 +335,11 @@ While Balanced Softmax stood out as the most robust loss function overall with t
 
 Overall, these findings emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the challenges of deep long-tailed learning. They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
 
+\todo{Adam optimization:}
+Figure 1: Mean and standard deviation over 5 runs of per-class weight norms for a ResNet-32 under
+momentum and Adam optimisers. We use long-tailed (“LT”) versions of CIFAR-10 and CIFAR-100,
+and sort classes in descending order of frequency; the first class is 100 times more likely to appear
+than the last class. Both optimisers yield solutions with comparable balanced error. However, the
+weight norms have incompatible trends: under momentum, the norms are strongly correlated with
+class frequency, while with Adam, the norms are anti-correlated or independent of the class frequency.
+Consequently, weight normalisation under Adam is ineffective for combatting class imbalance \cite{menon2021longtaillearninglogitadjustment}.

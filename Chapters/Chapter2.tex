@@ -229,11 +229,10 @@ Instead of using the commonly used activation function in ResNets, the Rectified
 %====================================================================================
 % Long-Tailed Methods
 
-\section{Classic Long-Tailed Methods}
+\section{Class Re-balancing Methods for Long-Tailed Learning}
 \label{sec:lt_methods}
-\todo{Introduce the three methods (CR, IA, MI) with a brief explanation of their purpose.}
 
-Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis does not aim to examine all long-tailed methods, but aims to find a deep learning approach to a specific problem. The backgrounds of the methods used in this thesis are described in this section.
+Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis will focus on class re-balancing long-tailed learning. The backgrounds of the methods used in this thesis are described in this section.
 
 \todo{consider if it makes sense to mention all the methods in the survey paper, or just mention the class re-balancing.}
 
@@ -241,24 +240,25 @@ Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023
     \centering
     \includegraphics[width=0.8\textwidth]{Images/lt_methods_categories.png} 
     \caption{Long-tailed categories as described by \textit{Zhang et al.} \cite{zhang2023deep}.}
-    \label{fig:lt_main_categories} % Use a unique label for referencing the figure
+    \label{fig:lt_main_categories} 
 \end{figure}
 
-\subsection{Class Re-balancing}
-\label{sec:class_rebal}
-The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment \cite{zhang2023deep}. 
+%\subsection{Class Re-balancing}
+%\label{sec:class_rebal}
+The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment, according to Zhang et al. \cite{zhang2023deep}. 
 
 \todo{Include little about re-sampling, and focus on class-sensitive learning and an little on logit adjustment.}
 
-\subsubsection{Re-sampling}
+\subsection{Data Modification}
 The traditional way to sample when training deep networks is using mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
 
 \todo{Rewrite this section to closer resemble the related work.}
 
-\subsubsection{Class-sensitive Learning}
-Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function to pay more attention to minority classes, thus improving overall performance.
+\subsection{Loss Modification}
+\label{sec:loss_mod}
+Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}, as described later in this section. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function \todo{or how losses er calculated} to pay more attention to minority classes, thus improving overall performance.
 
-Two prominent categories of class-sensitive strategies are \emph{re-weighting} and \emph{re-margining}. Re-weighting involves adjusting the contribution of each class to the loss by multiplying them with different weights. By carefully selecting these weights, the model allocates a higher penalty to misclassification of underrepresented classes, thus re-balancing the training process \cite{zhang2023deep}. Re-margining, on the other hand, modifies the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}.
+The three categories of class re-balancing strategies explored in this thesis are \emph{re-weighting}, \emph{re-margining}, and \emph{logit adjustement}. Re-weighting involves adjusting the contribution of each class to the loss by multiplying them with different weights. By multiplying weights to the loss function, the model allocates a higher penalty to misclassification of underrepresented classes, thus re-balancing the training process \cite{zhang2023deep}. Re-margining, on the other hand, modifies the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}. 
 
 In what follows, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
 
@@ -276,15 +276,16 @@ Table \ref{tab:loss_summary} summarizes the loss functions employed for class-se
     Focal loss \cite{lin2018focallossdenseobject}     & $\mathcal{L}_{fl} = -(1 - p_y)^\gamma \log(p_y)$                             & re-weighting        \\
     Weighted Softmax loss \cite{zhang2023deep}    & $\mathcal{L}_{wce} = - \frac{1}{\pi_y} \log(p_y)$                           & re-weighting        \\
     Class-balanced loss \cite{cui2019classbalancedlossbasedeffective} & $\mathcal{L}_{cb} = - \frac{1 - \gamma}{1 - \gamma^{n_y}} \log(p_y)$         & re-weighting        \\
-    Balanced Softmax loss \cite{ren2020balancedmetasoftmaxlongtailedvisual} & $\mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)$ & re-weighting        \\
-    Equalization loss \cite{tan2020equalizationlosslongtailedobject} & $\mathcal{L}_{eq} = - \log\left( \frac{\exp(z_y)}{\sum_j \omega_j \exp(z_j)} \right)$    & re-weighting        \\
+    Balanced Softmax loss \cite{ren2020balancedmetasoftmaxlongtailedvisual} & $\mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)$ & logit adjustment        \\
+    Equalization loss \cite{tan2020equalizationlosslongtailedobject} & $\mathcal{L}_{eq} = - \log\left( \frac{\exp(z_y)}{\sum_j \omega_j \exp(z_j)} \right)$    & re-margining        \\
     LDAM loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}      & $\mathcal{L}_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)$ & re-margining        \\
     \hline
     \end{tabular}
 \end{table}
 
 
-\paragraph{Introduction to Loss Functions}
+\subsubsection{Introduction to Loss Functions}
+\label{sec:intro_losses}
 Loss functions are a fundamental component in machine learning and deep learning \cite{zhang2023dive,Goodfellow-et-al-2016}. They serve as a measure of how far a model's predictions are from the actual values, where higher loss indicates greater prediction error, whereas a lower loss implies more accurate predictions. Thus, the goal of training a model is to minimize the loss. 
 
 The loss function plays a crucial role, as it guides the model to adjust its parameters (weights and biases) through an optimization algorithm \cite{Goodfellow-et-al-2016}. The algorithm calculates the gradient of the loss function with respect to each parameter to determine how the parameter affect the loss. Afterwards, the model update its parameter to reduce the loss, following:
@@ -326,9 +327,13 @@ For a single example where the true class is \( c \), this simplifies to:
 
 This equation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
 
-While this approach provides a robust and stable training objective, it inherently treats all classes equally and does not account for class imbalance.
+While this approach provides a robust and stable training objective, it treats all classes equally and does not account for class imbalance.
 
+\paragraph{Bias}
+The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
 
+\subsubsection{Re-Weighting}
+\label{sec:re-weighting}
 \paragraph{Weighted Softmax Cross-Entropy Loss}
 The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (equation \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
 
@@ -390,8 +395,39 @@ As a result, the CB loss introduces a class-balanced re-weighting term, inversel
 
 where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in equation \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
 
+
+\subsubsection{Margin Modification}
+\label{sec:margin_mod}
+Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes.
+
+\todo{Describe margins in detail, and how they impact long-tailed learning.}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/decision_boundary.png} 
+    \caption{Margins \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. \todo{make this figure.}}
+    \label{fig:decision_boundaries} 
+\end{figure}
+
+From \cite{zhang2023deep}: To handle the class imbalance, re-margining
+attempts to adjust losses by subtracting different margin factors for
+different classes, so that they have a different minimal margin (i.e.,
+distance) between features and the classifier. Directly using existing
+soft margin losses [138], [139] is unfeasible, since they ignore the
+issue of class imbalance. To address this, Label-Distribution-Aware
+Margin (LDAM) [18] enforces class-dependent margin factors for
+different classes based on their training label frequencies, which
+encourages tail classes to have larger margins.
+
 \paragraph{Equalization Loss}
-\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. 
+\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/gradient_analysis.png} 
+    \caption{Gradient analysis. \cite{tan2020equalizationlosslongtailedobject}.}
+    \label{fig:eql_gradients} 
+\end{figure}
 
 The EQ loss was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization (SEQ) Loss}, defined as: 
 
@@ -412,27 +448,8 @@ and the weight term is given by:
     \tilde{w}_k = (1 - \beta T_\lambda(f_k))(1 - y_k)
 \end{equation}
 
-Here, $y_j$ is the ground truth class, $z_j$ is the logit for class $j$, $f_k$ is the frequency of class $k$, \(T_\lambda(\cdot)\) is the threshold on class frequency, and \(\beta\) is a random variable taking value 1 with probability \(\gamma\) and 0 with probability \(1 - \gamma\).
+Here, $y_j$ is the ground truth class, $z_j$ is the logit for class $j$, $f_k$ is the frequency of class $k$, \(T_\lambda(\cdot)\) is the threshold on class frequency. As there is no background category for image classification tasks, $\beta$ is introduced to randomly maintain the gradient of negative samplers. \(\beta\) is a random variable with probability \(\gamma\) of taking value 1 and probability \(1 - \gamma\) of taking value 0.
 
-\subsubsection{Logit Adjustment}
-Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the prediction logits \cite{menon2021longtaillearninglogitadjustment}, typically based on prior class probabilities. 
-\todo{This is not finished}
-
-\paragraph{Balanced Softmax Loss}
-The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax formulation by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. The BS loss function is as follows:
-
-\begin{equation}
-    L_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
-\end{equation}
-
-where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
-
-\todo{This is not finished}
-
-\subsubsection{Re-margining}
-Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes.
-
-\todo{Describe margins in detail, and how they impact long-tailed learning.}
 
 \paragraph{LDAM Loss}
 The \emph{Label-Distribution-Aware Margin (LDAM)} Loss represents a class-sensitive approach based on re-margining rather than re-weighting \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
@@ -447,13 +464,48 @@ Instead of altering the loss directly, LDAM modifies the margin applied to each 
     L_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)
 \end{equation}
 
-From \cite{zhang2023deep}: To handle the class imbalance, re-margining
-attempts to adjust losses by subtracting different margin factors for
-different classes, so that they have a different minimal margin (i.e.,
-distance) between features and the classifier. Directly using existing
-soft margin losses [138], [139] is unfeasible, since they ignore the
-issue of class imbalance. To address this, Label-Distribution-Aware
-Margin (LDAM) [18] enforces class-dependent margin factors for
-different classes based on their training label frequencies, which
-encourages tail classes to have larger margins.
 
+
+\subsubsection{Logit Adjustment}
+\label{sec:logit_adjust}
+Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the model outputs, i.e. prediction logits, typically based on prior class probabilities \cite{menon2021longtaillearninglogitadjustment,ren2020balancedmetasoftmaxlongtailedvisual}. \todo{Write about the label distribution shifts between training and test data.} 
+
+The output model outputs are computed by the following equation:
+
+\begin{equation}
+    \label{eq:logits}
+    \eta_j = \theta^T_j f(x)
+\end{equation}
+
+where $\theta_j$ are the weights for the last layer for class $j$, and $f(x)$ is the feature extractor function \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
+
+\paragraph{Balanced Softmax Loss}
+The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax loss (eq. \eqref{eq:ce_loss}) by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. 
+
+In \emph{Balanced Meta-Softmax for Long-Tailed Visual Recognition}, the authors represent Softmax regression as a multinomial distribution, $\phi$, dependent on $\eta$, defined as:
+
+\begin{equation}
+    \phi_j = \frac{e^{\eta_j}}{\sum_{i=1}^{k}e^{\eta_i}}
+\end{equation}
+
+where $k$ are the number of classes.
+
+The Balanced Softmax uses the output logits $\eta$ (eq. \eqref{eq:logits}) to parametize two separate probabilities: $\phi$ for testing, and $\hat{\phi}$ for training. This separation is used when training with an imbalanced dataset to eliminate the discrepancy between training and testing distributions \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
+
+Assume $\phi$ to be the desired conditional probability of the balanced dataset, with the form $\phi_j = p(y = j \mid x) = \frac{p(x \mid y=j)}{p(x)} \cdot \frac{1}{k}$, and $\hat{\phi}$ to be the desired conditional probability of the imbalanced training set, with the form $\hat{\phi}_j = \hat{p}(y = j \mid x) = \frac{p(x \mid y=j)}{\hat{p}(x)} \cdot \frac{n_j}{\sum_{i=1}^{k} n_i}$. If $\phi$ is expressed by the standard Softmax function of the model output $\eta$, then $\hat{\phi}$ can be expressed as:
+
+\begin{equation}
+    \hat{\phi}_j = \frac{n_j e^{\eta_j}}{\sum_{i=1}^{k} n_i e^{\eta_i}}.
+\end{equation}
+
+where $n_j$ is the number of samples in class $j$.
+
+The authors proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. ultimately, the Balanced Softmax loss function is becomes:
+
+\begin{equation}
+    \mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
+\end{equation}
+
+where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
+
+\todo{make the notation consistent.}
