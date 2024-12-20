@@ -199,16 +199,76 @@ Resnet outperformed other architectures by winning winning the image classificat
 
 PyTorch \cite{torchvision-resnet} \todo{check the correct version}.
 
+Inspection of pre-training:
+\begin{verbatim}
+    'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#convnext', 
+    '_docs': "These weights improve upon the results of the original paper by using a modified version of TorchVision's
+    `new training recipe <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`.",
+    'num_params': 88591464, 
+    '_metrics': {'ImageNet-1K': {'acc@1': 84.062, 'acc@5': 96.87}}, 
+    '_ops': 15.355, 
+    '_file_size': 338.064
+\end{verbatim}
+    
+
 \paragraph{MobileNetV2}
 The MobileNetV2 model  is a successor to the ResNet architecure, adjusted to run on mobile devices as it requires fewer computational resources (see section \ref{sec:mobilenet}).
 
+Inspection of pre-training:
+\begin{verbatim}
+    'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#mobilenetv2', 
+    '_metrics': {'ImageNet-1K': {'acc@1': 71.878, 'acc@5': 90.286}}, 
+    '_ops': 0.301, 
+    '_file_size': 13.555, 
+    '_docs': 'These weights reproduce closely the results of the paper using a simple training recipe.'
+\end{verbatim}
+    
 
 \paragraph{ViT-B/16}
 The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
 
+Inspection of pre-training:
+
+\begin{verbatim}
+    {
+        'url': '', 
+        'hf_hub_id': 'timm/vit_base_patch16_224.augreg2_in21k_ft_in1k', 
+        'architecture': 'vit_base_patch16_224', 
+        'tag': 'augreg2_in21k_ft_in1k', 
+        'custom_load': False, 
+        'input_size': (3, 224, 224), 
+        'fixed_input_size': True, 
+        'interpolation': 'bicubic', 
+        'crop_pct': 0.9, 
+        'crop_mode': 'center', 
+        'mean': (0.5, 0.5, 0.5), 
+        'std': (0.5, 0.5, 0.5), 
+        'num_classes': 1000, 
+        'pool_size': None, 
+        'first_conv': 'patch_embed.proj', 
+        'classifier': 'head'
+    }
+\end{verbatim}
+    
+
 
 \paragraph{ConvNeXt Base}
 In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022convnet2020s} the auhtors presents the ConvNeXt model architecture, a CNN with elements of ViTs (see section \ref{sec:convnext}), which achieved state-of-the-art performance in image classification tasks \todo{was it image classification?}. 
+
+Inspection of pre-training:
+\begin{verbatim}
+    'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#convnext', 
+    '_docs': "
+        These weights improve upon the results of the original paper by using a modified version of TorchVision's
+        `new training recipe
+        <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`_.
+    ", 
+    'num_params': 88591464, 
+    '_metrics': {'ImageNet-1K': {'acc@1': 84.062, 'acc@5': 96.87}}, 
+    '_ops': 15.355, 
+    '_file_size': 338.064
+\end{verbatim}
+    
 
 \subsection{Selection of Loss Function}
 \label{sec:loss_selection}

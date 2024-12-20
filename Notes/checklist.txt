@@ -1,0 +1,64 @@
+### Checklist for Completing Your Thesis
+
+#### 1. Front Matter
+- [ ] Finalize the title, abstract, and acknowledgments.
+- [ ] Ensure all front matter pages (title page, table of contents, list of figures/tables) are accurate and up to date.
+
+---
+
+#### 2. Chapters and Content
+
+**Chapter 1: Introduction**
+- [ ] Address TODOs about head and tail classes.
+- [ ] Add references for claimed accuracies and large datasets (e.g., ImageNet).
+- [ ] Clearly state the problem, goals, and hypothesis.
+- [ ] Finalize the "Approach" section with detailed steps.
+- [ ] Review and refine the scope of the thesis.
+
+**Chapter 2: Background**
+- [ ] Complete missing explanations (e.g., convolution, inductive bias).
+- [ ] Create and add the missing figures (e.g., CNN layers, ResNet blocks).
+- [ ] Include explanations on chosen architectures (why and their relevance).
+- [ ] Revise the section on Vision Transformers to highlight their advantages.
+
+**Chapter 3: Methodology**
+- [ ] Finalize the dataset preparation section with complete descriptions of splits and class distributions.
+- [ ] Add missing class distribution plots and data characteristics for CIFAR-100.
+- [ ] Write and format the pseudo-code for loss function implementations.
+- [ ] Justify model selection and loss function choices with references.
+
+**Chapter 4: Experimental Setup**
+- [ ] Ensure detailed configurations (e.g., batch size, learning rate, hardware) are specified.
+
+**Chapter 5: Results and Discussion**
+- [ ] Complete the analysis of results for all models and datasets (balanced and imbalanced).
+- [ ] Include comparisons of head, middle, and tail class performances.
+- [ ] Discuss findings in light of the stated hypothesis and prior work.
+
+**Chapter 6: Conclusion and Future Work**
+- [ ] Revisit the goals and ensure they align with the presented results.
+- [ ] Outline specific future work directions and potential improvements.
+
+---
+
+#### 3. Appendix and Bibliography
+- [ ] Include complete and correctly formatted references for all citations.
+- [ ] Add any supplementary material (e.g., algorithms, detailed results, tables).
+
+---
+
+#### 4. Technical and Formatting Tasks
+- [ ] Check for consistency in notation and terminology.
+- [ ] Ensure all figures and tables are properly labeled and referenced in the text.
+- [ ] Double-check for grammar, spelling, and clarity.
+- [ ] Validate the reproducibility of experiments (e.g., include necessary code snippets in the appendix).
+- [ ] Align formatting with university guidelines.
+
+---
+
+#### 5. Submission Readiness
+- [ ] Proofread the entire document multiple times.
+- [ ] Seek feedback from your supervisor or peers.
+- [ ] Save and back up the document in multiple formats.
+- [ ] Prepare for the thesis defense (if applicable).
+
