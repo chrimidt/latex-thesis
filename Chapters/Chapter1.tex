@@ -84,6 +84,8 @@ This thesis focuses on applying deep long-tailed learning methods to image class
 \section{Related Work}
 The challenge of long-tailed datasets has been extensively studied in the literature \cite{zhang2023deep,zhang2024systematicreviewlongtailedlearning}. % Zhang et al. \cite{zhang2023deep} conducted a comprehensive survey on long-tailed learning techniques, categorizing them into three main strategies: class re-balancing, information augmentation, and module improvement. This section explores class re-balancing approaches that are beyond the scope of this thesis, as well as other related methodologies commonly employed to address the issues of long-tailed datasets.
 
+\todo{Add references to re-weighting papers.}
+
 \paragraph{Data Re-sampling}
 Data re-sampling techniques aim to modify the training dataset to mitigate class imbalance by simulating a balanced dataset. The most popular methods for re-sampling are random over-sampling (ROS) and random under-sampling (RUS) \cite{Chawla_2002,han2005}. ROS involves duplicating random samples from the minority classes, whereas RUS involves removing samples from the majority classes \cite{zhang2023deep,han2005}. However, these techniques have their weaknesses: over-sampling the minority classes will eventually lead to overfitting tail classes, and under-sampling can lead to underperformance on head classes \cite{zhang2023deep}. Another re-sampling technique, called Synthetic Minority Over-Sampling Technique (SMOTE) \cite{Chawla_2002}, involves synthetical generation of instances of the minority classes based on the existing data. 
 
@@ -100,6 +102,20 @@ Decoupled training \cite{kang2020decouplingrepresentationclassifierlongtailed} s
 Ensemble learning is a technique that combines multiple network modules (i.e. experts) to solve long-tailed problems. By doing so, the predictions of the different models can be combined, ultimately outperforming a single model \cite{zhou2020bbnbilateralbranchnetworkcumulative,wang2022longtailedrecognitionroutingdiverse}.
 
 % Few Shot Learning
+
+\todo{Margin Loss}
+\begin{quote}
+Margin loss. The hinge loss is often used to obtain a “max-margin” classifier, most notably in
+SVMs [Suykens and Vandewalle, 1999]. Recently, Large-Margin Softmax [Liu et al., 2016], Angular
+Softmax [Liu et al., 2017a], and Additive Margin Softmax [Wang et al., 2018a] have been proposed
+to minimize intra-class variation in predictions and enlarge the inter-class margin by incorporating
+the idea of angular margin. In contrast to the class-independent margins in these papers, our approach
+encourages bigger margins for minority classes. Uneven margins for imbalanced datasets are also
+proposed and studied in [Li et al., 2002] and the recent work [Khan et al., 2019, Li et al., 2019]. Our
+theory put this idea on a more theoretical footing by providing a concrete formula for the desired
+margins of the classes alongside good empirical progress. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}
+\end{quote}
+
 
 \section{Reading Guide}
 \todo{Mention what each chapter will cover and how they relate to each other.}
