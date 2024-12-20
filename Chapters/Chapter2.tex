@@ -256,6 +256,8 @@ The traditional way to sample when training deep networks is using mini-batch gr
 
 \subsection{Loss Modification}
 \label{sec:loss_mod}
+\todo{make the notation consistent.}
+
 Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}, as described later in this section. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function \todo{or how losses er calculated} to pay more attention to minority classes, thus improving overall performance.
 
 The three categories of class re-balancing strategies explored in this thesis are \emph{re-weighting}, \emph{re-margining}, and \emph{logit adjustement}. Re-weighting involves adjusting the contribution of each class to the loss by multiplying them with different weights. By multiplying weights to the loss function, the model allocates a higher penalty to misclassification of underrepresented classes, thus re-balancing the training process \cite{zhang2023deep}. Re-margining, on the other hand, modifies the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}. 
@@ -396,28 +398,7 @@ As a result, the CB loss introduces a class-balanced re-weighting term, inversel
 where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in equation \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
 
 
-\subsubsection{Margin Modification}
-\label{sec:margin_mod}
-Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes.
 
-\todo{Describe margins in detail, and how they impact long-tailed learning.}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Images/decision_boundary.png} 
-    \caption{Margins \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. \todo{make this figure.}}
-    \label{fig:decision_boundaries} 
-\end{figure}
-
-From \cite{zhang2023deep}: To handle the class imbalance, re-margining
-attempts to adjust losses by subtracting different margin factors for
-different classes, so that they have a different minimal margin (i.e.,
-distance) between features and the classifier. Directly using existing
-soft margin losses [138], [139] is unfeasible, since they ignore the
-issue of class imbalance. To address this, Label-Distribution-Aware
-Margin (LDAM) [18] enforces class-dependent margin factors for
-different classes based on their training label frequencies, which
-encourages tail classes to have larger margins.
 
 \paragraph{Equalization Loss}
 \emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
@@ -450,19 +431,6 @@ and the weight term is given by:
 
 Here, $y_j$ is the ground truth class, $z_j$ is the logit for class $j$, $f_k$ is the frequency of class $k$, \(T_\lambda(\cdot)\) is the threshold on class frequency. As there is no background category for image classification tasks, $\beta$ is introduced to randomly maintain the gradient of negative samplers. \(\beta\) is a random variable with probability \(\gamma\) of taking value 1 and probability \(1 - \gamma\) of taking value 0.
 
-
-\paragraph{LDAM Loss}
-The \emph{Label-Distribution-Aware Margin (LDAM)} Loss represents a class-sensitive approach based on re-margining rather than re-weighting \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
-
-Instead of altering the loss directly, LDAM modifies the margin applied to each class’ decision boundary, ensuring that minority classes have more “space” in the representation space to reduce misclassification.
-
-\todo{This is not finished.}
-
-"First, we propose a theoretically-principled label-distribution-aware margin (LDAM) loss motivated by minimizing a margin-based generalization bound. This loss replaces the standard cross-entropy objective during training and can be applied with prior strategies for training with class-imbalance such as re-weighting or re-sampling." 
-
-\begin{equation}
-    L_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)
-\end{equation}
 
 
 
@@ -508,4 +476,86 @@ The authors proved that this method can accomodate the label distribution shifts
 
 where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
 
-\todo{make the notation consistent.}
+
+\subsubsection{Margin Modification}
+\label{sec:margin_mod}
+Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes. 
+
+The margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in the $i$-th class to the decision boundary. Figure \ref{fig:decision_boundaries} illustrates how the margin affects the decision boundary for binary classification. As the decision boundary separates the regions of input space corresponding to different class predictions, by increasing the margin, the model becomes more confident in classification.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/decision_boundary.png} 
+    \caption{Margins \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. \todo{make this figure.}}
+    \label{fig:decision_boundaries} 
+\end{figure}
+
+The margin is defined as:
+
+\begin{equation}
+    \label{eq:margin_def}
+    \gamma(x,y) = f(x)_y - \max_{j \neq y}f(x)_j
+\end{equation}
+
+which is the distance between the prediction of the sample $(x,y)$ and the decision boundary.
+
+The training margin for class $j$ is defined as:
+
+\begin{equation}
+    \label{eq:margin_class_def}
+    \gamma_j = f(x)_y - \max_{i \in S_j}\gamma(x_i,y_i)
+\end{equation}
+
+The classical generalization bound is defined as
+
+\begin{equation}
+    \label{eq:gen_bound}
+    \text{imbalanced test error}\lesssim \frac{1}{\gamma_{min}}\sqrt{\frac{C(\mathcal{F})}{n}}
+\end{equation}
+
+In a balanced setting:
+
+\begin{equation}
+    \frac{1}{2}\text{err}[\text{class1}]+\frac{1}{2}\text{err}[\text{class2}] \lesssim \left(\frac{1}{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}\right)\sqrt{C(\mathcal{F})}
+\end{equation}
+
+This boundary can be shifted by taking the minimum: $\min{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}$, such that $\gamma_1+\gamma_2=C$. This yields the optimal solution:
+
+\begin{equation}
+    \label{eq:opt_margin}
+    \gamma_i\varpropto n^{-1/4}_i 
+\end{equation}
+
+with the standard solution being $\gamma_1=\gamma_2$ \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.
+
+\paragraph{LDAM Loss}
+The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class’ decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in equation \eqref{eq:opt_margin} by increasing the distance between the largest and secon largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
+
+
+The class-dependent margin for multiple classes is defined as:
+
+\begin{equation}
+    \label{eq:margin}
+    \gamma_j = \frac{C}{n^{1/4}_j}
+\end{equation}
+
+where $C$ is a tunable hyper-parameter, and $n_j$ is the number of samples in class $j$. Applying the margin through the loss function, inspired by the Hinge Loss \todo{reference}, will encourage the model to respect the margins in equation \eqref{eq:margin}:
+
+\begin{equation}
+    \label{eq:ldam-hg}
+    \mathcal{L}_{ldam-hg} = \max\left(\max_{j \neq y}\{z_j\} - z_y + \Delta_y, 0\right)
+\end{equation}
+
+where
+
+\begin{equation}
+    \Delta_j = \frac{C}{n_j^{1/4}} \quad \text{for } j \in \{1, \dots, k\}.
+\end{equation}
+
+and $z_y$ is the model output (logit) for the true class $y$, and $\max_{j \neq y}\{z_j\}$ is the highest score among incorrect classes. Adding the margin $\Delta_j$ ensures that the true class logit is separated from the highest incorrect score by the at least $\Delta_j$. However, since the function in equation \eqref{eq:ldam-hg} is non-differentiable at certain points, a modifications to the cross-entropy loss is used to address this. Here, the class-dependent margins are introduced directly into the logits as follows:
+
+\begin{equation}
+    \label{eq:ldam}
+    L_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)
+\end{equation}
