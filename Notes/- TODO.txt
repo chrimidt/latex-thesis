@@ -1,55 +1,70 @@
-
- 
-- Make notes in the beginning of each section of what I think is missing
-
 Experiments:
-- Investigate why Class-Balanced loss is so bad 
-- Investigate module improvement for the two best models.
-- Ditch iNaturalist
+- Run CB loss
+- Run SEQL
+
+- Abstract
+- Acknowledgement
 
 Introduction:
+- Introduction
+- Problem Definition
+- Goals
 - Hypothesis
-- Related work
+- Related work: re-weighting, logit adjustment, re-margining
+- Reading Guide
+- Approach
 
 Background:
 - Convolutional Neural Networks
-- Vision Transformers
-- Focal loss
-- Class-balanced loss
-- Balanced SoftMax loss
-- LDAM
-- Equalization loss
-- Module Improvement
-- Information Augmentation
-- Transfer Learning
-
+- Adam optimizer
+- Logit adjustment
+- Make figures
+- Detailed architecture of ResNet-50
+- Detailed architecture of MobileNetV2
+- Detailed architectire of ViT-B/16
+- Detailed architecture of ConvNeXt
+- Sort out sections
+- Remove the long-tailed category figure
 
 Methodology:
 - Read all notes from earlier
-x Check the minimum number of samples in a class for the CIFAR100 training dataset.
-- Make plot of ImageNet distribution into bar plots
+- Make plot of ImageNet distribution into bar plot
+- Model Selection
+- Loss Selection
 - Explain choice of optimizer
-- Explain not freezing layers
+- Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
+- Explain freezing layers
+- Insert the results from the reference papers for the models and losses 
 
 Experimental Setup:
-- Make it prettier
-
+- Rephrasing
+- Check for redundancy
 
 Results and Discussion:
-- Compare models to state-of-the-art for CIFAR100 on paperswithcode.com
-- Write the differences from my experiments and their experiments
-- Why is middle class lower than head an tail classes
-- Investigate why Class-Balanced loss is so bad 
-- What is the best method and compare to the others
-- How should the methods be compared in order to find the best method 
-- The state-of-the-art method on ResNet is better than the loss functions. Would ConvNext also be better with module improvement. Is module improvement overall better?
-- Qualitative results.
-- Move comparisons with state-of-the-art results in seperate section.
-
+x Compare models to state-of-the-art for CIFAR100 on paperswithcode.com
+x Write the differences from my experiments and their experiments
+x Why is middle class lower than head an tail classes
+x Investigate why Class-Balanced loss is so bad 
+x What is the best method and compare to the others
+x How should the methods be compared in order to find the best method 
+x Move comparisons with state-of-the-art results in seperate section.
+- Calculate variance of the mean of the loss functions (fig 5.6)
+- Describe the kernel and stride size of ViT-B/16 and how it affects the results on the 32x32 cifar-100
+- Find the kernel and stride sizes for other ViT-B/16 trained with CIFAR-100
+- Confusion matrix?
+- Table for the mean and standard deviation across all loss designs for each model in figure 5.1
+- Include the new found CBL and SEQL 
 
 Conclusion and Future Work:
+- Write the goals again and the answer below
+
+References:
+- Align with formalia
 
 Appendix:
+- Remove F1 scores
+- Make the tables pretty
+- Arrange experimental setup
 
 Rangering:
 - Balanced SoftMax
@@ -60,4 +75,8 @@ Rangering:
 - LDAM
 - CB
 
-Boxplot for figur 5.9 ligesom figur 5.1
+Finisher:
+- Finish TODOs
+- Notations are the same 
+- Correct references 
+- Layout
