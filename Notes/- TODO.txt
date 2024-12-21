@@ -77,6 +77,8 @@ Rangering:
 
 Finisher:
 - Finish TODOs
-- Notations are the same 
+- Notations are consistent 
+- Check for consistent past/present
 - Correct references 
 - Layout
+- Front page

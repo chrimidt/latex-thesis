@@ -352,3 +352,6 @@ Performance under class imbalance is analyzed by calculating top-1 accuracy for 
 Baselines are crucial when evaluating the performance of deep learning methods \todo{reference?}, especially in tasks involving class imabalance. In this thesis, the Softmax Cross-Entropy Loss, which is widely recognized for its simplicity and effectiveness in balanced image classificaion (see section \ref{sec:intro_losses}) \todo{references}, serves as the primary baseline for both balanced and long-tailed training. This ensures a consistent benchmark for understanding the performance of the proposed long-tailed methods while also facilitating comparability with prior research.
 
 Additional to the softmax baseline, all methods across all models are trained on the balanced CIFAR-100 dataset to establish performance baselines. This allows for direct comparisons of the results when trained on the CIFAR-100-LT data with the same models and loss functions. This setup represents the optimal training conditions where all classes are equally represented, serving as a benchmark for the best achievable performance across all test sets.
+
+\section{Model Training and Evaluation}
+All models are trained on all loss functions with both the balanced and long-tailed versions of the CIFAR-100 dataset.
