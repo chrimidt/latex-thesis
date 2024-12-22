@@ -192,7 +192,7 @@ This section outlines the methods employed to address the challenges posed by a 
     \item Compare to the results in their original paper. 
 \end{itemize}
 
-This section will discuss the choice of model architectures addressing the challenges of long-tailed datasets. The models evaluated in this thesis, namely ResNet50, MobileNetV2, ViT-B/16, and ConvNeXt-Base, were selected to represent a diverse range of architectures for solving image classification tasks. These models were chosen based on their to cover traditional convolutional neural networks (CNNs), lightweight architectures for efficiency, transformer-based models, and hybrid approaches that combine both CNN and transformer elements. Their selection pose a balance between computational efficiency and state-of-the-art performance.
+This section will discuss the choice of model architectures addressing the challenges of long-tailed datasets. The models evaluated in this thesis, namely ResNet-50, MobileNetV2, ViT-B/16, and ConvNeXt-Base, were selected to represent a diverse range of architectures for solving image classification tasks. These models were chosen based on their to cover traditional convolutional neural networks (CNNs), lightweight architectures for efficiency, transformer-based models, and hybrid approaches that combine both CNN and transformer elements. Their selection pose a balance between computational efficiency and state-of-the-art performance. Model details can be viewed in table \ref{tab:model_performance}.
 
 
 
@@ -216,14 +216,12 @@ This section will discuss the choice of model architectures addressing the chall
 
 
 
-\paragraph{ResNet50}
-Resnet-50 \cite{he2015deepresiduallearningimage} is a convolutional neural network build with residual connections that mitigates the vanishing gradient problem, as discussed in section \ref{sec:resnet}. Introduced by He et al. in 2015, achieved unprecedented results by addressing the challenges associated with training very deep neural networks. 
+\paragraph{ResNet-50}
+Resnet-50 \cite{he2015deepresiduallearningimage} is a convolutional neural network build with residual connections that mitigates the vanishing gradient problem, as discussed in section \ref{sec:resnet}. Introduced by He et al. in 2015, the ResNet architecure achieved unprecedented results at the time and won ILSVRC 2015 in image classification tasks \cite{towardsdatascience_resnet}. 
 
-Resnet outperformed other architectures by winning winning the image classification task in ILVRSC 2015 by a substantial margin with top 5 error rate of 3.57 \% and achieved remarkable results." \url{https://medium.com/@ibtedaazeem/understanding-resnet-architecture-a-deep-dive-into-residual-neural-network-2c792e6537a9}
+With its 50 layers, the ResNet-50 is capable of strong feature extraction, making it a solid choice for image classification on long-tailed datasets. Furthermore, ResNet-50 benefits from transfer learning, ensuring rich hierarchical features learned from a large-scale dataset, enabling better generalization on the imbalanced CIFAR-100 dataset. Transfer learning was initialized with weights pre-trained on ImageNet-1K, and the corresponding top-1 accuracy can be viewed in table \ref{tab:model_performance}.
 
 
-
-    
 
 \paragraph{MobileNetV2}
 The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices as it requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern, efficient CNN architecture that has achieved state-of-the-art performance \todo{reference}. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices.
