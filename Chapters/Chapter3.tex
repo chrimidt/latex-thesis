@@ -177,9 +177,7 @@ Images were resized to 224x224 pixels to match the input requirements of the Ima
 For validation, a simpler approach was used, where images were resized to 224x224 pixels and normalized using the same mean and standard deviation values as the training set.
 
 \section{Long-tailed Learning Techniques}
-Description of the specific methods used to address class imbalance, such as data sampling, class re-weighting, etc. 
-Justification for selecting these techniques, potentially referencing prior research (from Deep Long-Tailed Learning: A Survey by Zhang et al.).
-
+This section outlines the methods employed to address the challenges posed by a long-tailed data distribution. Specifically, it discusses the choice of model architecture and class re-balancing methods, including their strengths, limitations, and rationale based on prior research and feasible implementations.  
 
 \subsection{Model Selection}
 \label{sec:model_selection}
@@ -194,81 +192,111 @@ Justification for selecting these techniques, potentially referencing prior rese
     \item Compare to the results in their original paper. 
 \end{itemize}
 
+This section will discuss the selection of the four backbone architectures ResNet50, MobileNetV2, ViT-B/16, and ConvNeXt-Base. 
+
+These models were chosen based on their suitability for image classification tasks and high performance on benchmarks. The CNN based architectures utilize convolutional layers to extract features while preserving the spacial relationships of pixels in 2D images, as described in section \ref{sec:CNNs}. 
+
+% The chosen models represent a diverse set of architectures, each offering unique strengths in terms of feature extraction, computational efficiency, and adaptability to imbalance-aware methods.
+
+\begin{table}[ht]
+    \centering
+    \caption{Models. \todo{caption}}
+    \scriptsize
+    \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Model} & \textbf{Type} & \textbf{Pre-trained} & \makecell{\textbf{Parameters} \\ \textbf{(millions)}} & \textbf{top-1 accuracy} \\
+    \midrule
+    MobileNetV2 \cite{sandler2018mobilenetv2} & CNN  & ImageNet-1K & - & 72.154 \cite{pytorch_mobilenetv2}\\
+    ResNet50 \cite{he2015deepresiduallearningimage} & CNN & ImageNet-1K & - & 	
+    80.858 \cite{torchvision-resnet}\\
+    ViT-B/16 \cite{dosovitskiy2021imageworth16x16words}   & ViT & \makecell{ImageNet-21K \\ (ft on ImageNet-1K)} & - & 	
+    81.072 \cite{torchvision2024vitb16}\\
+    ConvNeXt-Base \cite{todi2023convnext}  & Hybrid & ImageNet-1K & 88.591.464 & 84.062 \cite{torchvision-convnext}\\
+    \bottomrule
+    \end{tabular}
+    \label{tab:model_performance}
+\end{table}
+
+
+
 \paragraph{ResNet50}
 Resnet achieved unprecedented results by addressing the challenges associated with training very deep neural networks.
 Resnet outperformed other architectures by winning winning the image classification task in ILVRSC 2015 by a substantial margin with top 5 error rate of 3.57 \% and achieved remarkable results." \url{https://medium.com/@ibtedaazeem/understanding-resnet-architecture-a-deep-dive-into-residual-neural-network-2c792e6537a9}
 
 PyTorch \cite{torchvision-resnet} \todo{check the correct version}.
 
-Inspection of pre-training:
-\begin{verbatim}
-    'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#convnext', 
-    '_docs': "These weights improve upon the results of the original paper by using a modified version of TorchVision's
-    `new training recipe <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`.",
-    'num_params': 88591464, 
-    '_metrics': {'ImageNet-1K': {'acc@1': 84.062, 'acc@5': 96.87}}, 
-    '_ops': 15.355, 
-    '_file_size': 338.064
-\end{verbatim}
+% Inspection of pre-training:
+% \begin{verbatim}
+%     'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#convnext', 
+%     '_docs': "These weights improve upon the results of the original paper by using a modified version of TorchVision's
+%     `new training recipe <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`.",
+%     'num_params': 88591464, 
+%     '_metrics': {'ImageNet-1K': {'acc@1': 84.062, 'acc@5': 96.87}}, 
+%     '_ops': 15.355, 
+%     '_file_size': 338.064
+% \end{verbatim}
     
 
 \paragraph{MobileNetV2}
-The MobileNetV2 model  is a successor to the ResNet architecure, adjusted to run on mobile devices as it requires fewer computational resources (see section \ref{sec:mobilenet}).
+The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices as it requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern, efficient CNN architecture that has achieved state-of-the-art performance \todo{reference}. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices.
 
-Inspection of pre-training:
-\begin{verbatim}
-    'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#mobilenetv2', 
-    '_metrics': {'ImageNet-1K': {'acc@1': 71.878, 'acc@5': 90.286}}, 
-    '_ops': 0.301, 
-    '_file_size': 13.555, 
-    '_docs': 'These weights reproduce closely the results of the paper using a simple training recipe.'
-\end{verbatim}
+
+
+% Inspection of pre-training:
+% \begin{verbatim}
+%     'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#mobilenetv2', 
+%     '_metrics': {'ImageNet-1K': {'acc@1': 71.878, 'acc@5': 90.286}}, 
+%     '_ops': 0.301, 
+%     '_file_size': 13.555, 
+%     '_docs': 'These weights reproduce closely the results of the paper using a simple training recipe.'
+% \end{verbatim}
     
 
 \paragraph{ViT-B/16}
 The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
 
-Inspection of pre-training:
+The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K. This implementation of the model was a mistake, and should have been done through the PyTorch library, which has a version of the ViT-B/16 trained on ImageNet-1K \cite{torchvision2024vitb16}. For consistency and direct comparison, the implementation of ViT-B/16 pre-trained on ImageNet-1k would be preferred, however, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias, as discussed in section \ref{sec:ViTs}.
 
-\begin{verbatim}
-    {
-        'url': '', 
-        'hf_hub_id': 'timm/vit_base_patch16_224.augreg2_in21k_ft_in1k', 
-        'architecture': 'vit_base_patch16_224', 
-        'tag': 'augreg2_in21k_ft_in1k', 
-        'custom_load': False, 
-        'input_size': (3, 224, 224), 
-        'fixed_input_size': True, 
-        'interpolation': 'bicubic', 
-        'crop_pct': 0.9, 
-        'crop_mode': 'center', 
-        'mean': (0.5, 0.5, 0.5), 
-        'std': (0.5, 0.5, 0.5), 
-        'num_classes': 1000, 
-        'pool_size': None, 
-        'first_conv': 'patch_embed.proj', 
-        'classifier': 'head'
-    }
-\end{verbatim}
+% Inspection of pre-training:
+% \begin{verbatim}
+%     {
+%         'url': '', 
+%         'hf_hub_id': 'timm/vit_base_patch16_224.augreg2_in21k_ft_in1k', 
+%         'architecture': 'vit_base_patch16_224', 
+%         'tag': 'augreg2_in21k_ft_in1k', 
+%         'custom_load': False, 
+%         'input_size': (3, 224, 224), 
+%         'fixed_input_size': True, 
+%         'interpolation': 'bicubic', 
+%         'crop_pct': 0.9, 
+%         'crop_mode': 'center', 
+%         'mean': (0.5, 0.5, 0.5), 
+%         'std': (0.5, 0.5, 0.5), 
+%         'num_classes': 1000, 
+%         'pool_size': None, 
+%         'first_conv': 'patch_embed.proj', 
+%         'classifier': 'head'
+%     }
+% \end{verbatim}
     
 
 
 \paragraph{ConvNeXt Base}
 In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022convnet2020s} the auhtors presents the ConvNeXt model architecture, a CNN with elements of ViTs (see section \ref{sec:convnext}), which achieved state-of-the-art performance in image classification tasks \todo{was it image classification?}. 
 
-Inspection of pre-training:
-\begin{verbatim}
-    'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#convnext', 
-    '_docs': "
-        These weights improve upon the results of the original paper by using a modified version of TorchVision's
-        `new training recipe
-        <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`_.
-    ", 
-    'num_params': 88591464, 
-    '_metrics': {'ImageNet-1K': {'acc@1': 84.062, 'acc@5': 96.87}}, 
-    '_ops': 15.355, 
-    '_file_size': 338.064
-\end{verbatim}
+% Inspection of pre-training:
+% \begin{verbatim}
+%     'recipe': 'https://github.com/pytorch/vision/tree/main/references/classification#convnext', 
+%     '_docs': "
+%         These weights improve upon the results of the original paper by using a modified version of TorchVision's
+%         `new training recipe
+%         <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`_.
+%     ", 
+%     'num_params': 88591464, 
+%     '_metrics': {'ImageNet-1K': {'acc@1': 84.062, 'acc@5': 96.87}}, 
+%     '_ops': 15.355, 
+%     '_file_size': 338.064
+% \end{verbatim}
     
 
 \subsection{Selection of Loss Function}

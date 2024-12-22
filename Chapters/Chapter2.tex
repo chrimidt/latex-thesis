@@ -43,6 +43,9 @@ Here, $\alpha$ is the shape parameter, $C_{\text{m}}$ is the scale parameter rep
 
 Class imbalance has a profound impact on model performance compared to evenly distributed datasets \cite{vanhorn2017deviltailsfinegrainedclassification, cui2019classbalancedlossbasedeffective}. Deep networks trained on long-tailed datasets often exhibit biased performance, favoring head classes while performing poorly on tail classes \cite{zhang2023deep}. Zhang et al. (2023) provide a comprehensive survey of methods addressing this challenge, categorizing current approaches into three main groups: class re-balancing, information augmentation, and module improvement. These methods will be further explored in section \ref{sec:lt_methods}. 
 
+\todo{Write something of the following:}
+"Let $\{x_i, y_i\}_{i=1}^n$ be the long-tailed training set, where each sample $x_i$ has a corresponding class label $y_i$. The total number of training samples over $K$ classes is $n = \sum_{k=1}^K n_k$, where $n_k$ denotes the number of samples in class $k$. Let $\pi$ denote the vector of label frequencies, where $\pi_k = \frac{n_k}{n}$ indicates the label frequency of class $k$. Without loss of generality, a common assumption in long-tailed learning \cite{31, 32} is that the classes are sorted by cardinality in decreasing order (i.e., if $i_1 < i_2$, then $n_{i_1} \geq n_{i_2}$, and $n_1 \gg n_K$). The imbalance ratio is then defined as $\frac{n_1}{n_K}$." \cite{zhang2023deep}
+
 
 % ===============================================================================
 % Model architechtures
@@ -165,9 +168,6 @@ Following MobileNetV1, MobileNetV2 relies on depthwise separable convolutions to
 \end{figure}
 
 
-\paragraph{Relevance}
-\todo{Move to Methodology?}
-In this thesis, MobileNetV2 represents an example of a modern, efficient CNN architecture. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices.
 
 
 % ===============================================================================
@@ -285,6 +285,7 @@ Table \ref{tab:loss_summary} summarizes the loss functions employed for class-se
     \hline
     \end{tabular}
 \end{table}
+
 
 
 \subsubsection{Introduction to Loss Functions}
