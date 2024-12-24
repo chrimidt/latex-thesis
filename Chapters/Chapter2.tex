@@ -226,6 +226,11 @@ Instead of using the commonly used activation function in ResNets, the Rectified
 
 
 
+\subsection{Transfer Learning}
+In this thesis, transfer learning is used to 
+
+Transfer learning involves training a model on data from a source domain 200 TS = P(y|X) and then transferring it to a target domain TT = P(y|X) – typically with less data available. 
+
 %====================================================================================
 % Long-Tailed Methods
 
@@ -233,6 +238,8 @@ Instead of using the commonly used activation function in ResNets, the Rectified
 \label{sec:lt_methods}
 
 Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis will focus on class re-balancing long-tailed learning. The backgrounds of the methods used in this thesis are described in this section.
+
+\todo{Introduce the cost/loss}
 
 \todo{consider if it makes sense to mention all the methods in the survey paper, or just mention the class re-balancing.}
 \todo{Remove the figure of long-tailed categories. Potentially move it to related work.}
@@ -304,6 +311,10 @@ Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss f
 From equation \eqref{eq:gradient_update}, the choice of loss function is critical as it influences the model's interpretation of prediction errors and parameter adjustment. For image classification tasks, the standard loss function is the cross-entropy loss combined with the softmax activation function \cite{zhang2023dive} described in the following.
 
 \todo{This is the SGD. Include the Adam Optimizer.}
+The Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization} 
+Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning models.
+Adam combines the best properties of the AdaGrad and RMSProp algorithms to provide an optimization algorithm that can handle sparse gradients on noisy problems.
+Adam is relatively easy to configure where the default configuration parameters do well on most problems.
 
 \paragraph{Softmax Cross-Entropy Loss}
 The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The softmax loss, as it is commonly known as, is the combination of the cross-entropy loss and the softmax activation function \cite{zhang2023dive,Goodfellow-et-al-2016}. First, the need of the softmax activation function will be decribed.

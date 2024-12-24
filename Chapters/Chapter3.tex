@@ -192,9 +192,16 @@ This section outlines the methods employed to address the challenges posed by a 
     \item Compare to the results in their original paper. 
 \end{itemize}
 
-This section will discuss the choice of model architectures addressing the challenges of long-tailed datasets. The models evaluated in this thesis, namely ResNet-50, MobileNetV2, ViT-B/16, and ConvNeXt-Base, were selected to represent a diverse range of architectures for solving image classification tasks. These models were chosen based on their to cover traditional convolutional neural networks (CNNs), lightweight architectures for efficiency, transformer-based models, and hybrid approaches that combine both CNN and transformer elements. Their selection pose a balance between computational efficiency and state-of-the-art performance. Model details can be viewed in table \ref{tab:model_performance}.
+This section will discuss the choice of model architectures addressing the challenges of long-tailed datasets. The models evaluated in this thesis are four common state-of-the-art (SOTA) models: ResNet-50, MobileNetV2, ViT-B/16, and ConvNeXt-Base. These SOTA models were selected to represent a diverse range of architectures for solving image classification tasks and to pose a balance between computational efficiency and state-of-the-art performance. The models were modified and trained using transfer learning with pre-trained weights from ImageNet \cite{ILSVRC15}. Model complexity can be viewed in table \ref{tab:model_performance}.
 
+For all models, the fully connected layer is modified to accomodate for the CIFAR-100 dataset's 100 classes.
 
+Transfer learning:
+\url{https://www.kaggle.com/code/riteshsinha/transfer-learning-using-resnet}
+
+Fine-tuning: 
+\url{https://medium.com/@caterine/fine-tuning-a-model-using-pytorch-part-2-e86a548ac4fb}
+\url{https://www.tensorflow.org/tutorials/images/transfer_learning}
 
 \begin{table}[ht]
     \centering
@@ -207,26 +214,37 @@ This section will discuss the choice of model architectures addressing the chall
     MobileNetV2 \cite{sandler2018mobilenetv2} & CNN  & ImageNet-1K & - & 72.154 \cite{pytorch_mobilenetv2} \\
     ResNet50 \cite{he2015deepresiduallearningimage} & CNN & ImageNet-1K & - & 	
     80.858 \cite{torchvision-resnet} \\
+    ConvNeXt-Base \cite{todi2023convnext}  & CNN & ImageNet-1K & 88.591.464 & 84.062 \cite{torchvision-convnext} \\
     ViT-B/16 \cite{dosovitskiy2021imageworth16x16words}   & ViT & \makecell{ImageNet-21K \\ (ft on ImageNet-1K)} & - & 	- \\
-    ConvNeXt-Base \cite{todi2023convnext}  & Hybrid & ImageNet-1K & 88.591.464 & 84.062 \cite{torchvision-convnext} \\
     \bottomrule
     \end{tabular}
     \label{tab:model_performance}
 \end{table}
 
-
+% We have selected and evaluated seven common state-of-the-art (SOTA) CNN models: ConvNext (Tiny and Base) (Todi et al., 2023), DenseNet121 (Huang et al., 2017), EfficientNetB4 (Tan and Le, 2019), InceptionV3 (Szegedy et al., 2016), MobileNetv2 (Sandler et al., 2018) and ResNet50v2 (He et al., 2016).
+% The SOTA models were modified and trained using transfer learning with pre-trained weights from ImageNet (Russakovsky et al., 2015). Transfer learning involves training a model on data from a source domain 200 TS = P(y|X) and then transferring it to a target domain TT = P(y|X) – typically with less data available.
+% In this case, ImageNet contains 1,000 classes with 1,281,167 images for training and 50,000 for testing, while the arthropod dataset only contains 19 classes with 13,812 images. For all models, a fully connected layer with a dropout rate of 0.2 was added and trained on the dataset, followed by fine-tuning of all base CNN layers.
 
 \paragraph{ResNet-50}
 Resnet-50 \cite{he2015deepresiduallearningimage} is a convolutional neural network build with residual connections that mitigates the vanishing gradient problem, as discussed in section \ref{sec:resnet}. Introduced by He et al. in 2015, the ResNet architecure achieved unprecedented results at the time and won ILSVRC 2015 in image classification tasks \cite{towardsdatascience_resnet}. 
 
-With its 50 layers, the ResNet-50 is capable of strong feature extraction, making it a solid choice for image classification on long-tailed datasets. Furthermore, ResNet-50 benefits from transfer learning, ensuring rich hierarchical features learned from a large-scale dataset, enabling better generalization on the imbalanced CIFAR-100 dataset. Transfer learning was initialized with weights pre-trained on ImageNet-1K, and the corresponding top-1 accuracy can be viewed in table \ref{tab:model_performance}.
+With its 50 layers, the ResNet-50 is capable of strong feature extraction, making it a solid choice for image classification on long-tailed datasets. Furthermore, ResNet-50 benefits from transfer learning, ensuring rich hierarchical features learned from a large-scale dataset, enabling better generalization on the imbalanced CIFAR-100 dataset \cite{resnettransfer,RAZAVI2024123276,chan2019transfer}. Transfer learning was initialized with weights pre-trained on ImageNet-1K, and the corresponding top-1 accuracy can be viewed in table \ref{tab:model_performance}.
+
+ResNet-50 has more parameters that it's sibling architectures ResNet-16 and -34, and fewer than those of ResNet-101 and -152. The fewer layers and parameters, the model is faster to train and requires less memory \cite{he2015deepresiduallearningimage}. This architecture often performs well on small datasets. The ResNet-50 generally provides a good trade-off between accuracy and speed. The larger ResNet architectures require more computational power, but are often more acccurate on larger datasets \cite{10083966}.
+
+The ResNet-50 is a good starting point for transfer learning due to its balance of performance and efficiency. To lower computational resources and time yet still maintaining accuracy, the ResNet-50 architecture is chosen as a reference point for the CNN design.
+
+ResNets are often used in scenarios that benefit from transfer learning.
 
 
+\todo{Write this and find references}
+
+% ResNet-50 \cite{he2015deepresiduallearningimage} is a convolutional neural network known for its residual connections, which mitigate the vanishing gradient problem. With 50 layers, ResNet-50 strikes a balance between model complexity and computational efficiency. It is widely used in image classification tasks due to its ability to extract hierarchical features. Pretrained on ImageNet-1K, ResNet-50 provides strong baseline performance and serves as a standard for comparison. Its residual connections make it particularly robust for fine-tuning on smaller datasets like CIFAR-100.
 
 \paragraph{MobileNetV2}
-The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices as it requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern, efficient CNN architecture that has achieved state-of-the-art performance \todo{reference}. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices.
+The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices. It requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern and lightweight CNN architecture that has achieved state-of-the-art performance \cite{sandler2018mobilenetv2, }. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices.
 
-
+% MobileNetV2 \cite{sandler2018mobilenetv2} is a lightweight architecture designed for efficiency, employing depthwise separable convolutions and inverted residual blocks. It is well-suited for resource-constrained environments while maintaining competitive accuracy. MobileNetV2 was included to evaluate how a computationally efficient model performs on imbalanced datasets. Pretraining on ImageNet-1K further enhances its generalization capabilities, making it an excellent choice for deployment in scenarios requiring low latency or limited hardware.
 
 
     
@@ -234,16 +252,18 @@ The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to ru
 \paragraph{ViT-B/16}
 The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
 
-The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K. This implementation of the model was a mistake, and should have been done through the PyTorch library, which has a version of the ViT-B/16 trained on ImageNet-1K \cite{torchvision2024vitb16}. For consistency and direct comparison, the implementation of ViT-B/16 pre-trained on ImageNet-1k would be preferred, however, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias, as discussed in section \ref{sec:ViTs}.
+The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K, as suggested for ViTs \cite{dosovitskiy2021imageworth16x16words}. The PyTorch library has a version of the ViT-B/16 trained on ImageNet-1K \cite{torchvision2024vitb16}. For consistency and direct comparison, the implementation of ViT-B/16 pre-trained on ImageNet-1k would be preferred, however, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias \cite{dosovitskiy2021imageworth16x16words,kolesnikov2020bigtransferbitgeneral}, as discussed in section \ref{sec:ViTs}.
 
-
+% ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} is a Vision Transformer architecture that processes images as sequences of patches. Unlike CNNs, ViTs lack inductive biases such as locality, which makes them more data-hungry but highly flexible. ViT-B/16 was pretrained on ImageNet-21K and fine-tuned on ImageNet-1K, providing a robust foundation for transfer learning. Its inclusion in this study allows for a comparison between transformer-based and convolutional approaches in handling long-tailed datasets.
 
 
 \paragraph{ConvNeXt Base}
 In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022convnet2020s} the auhtors presents the ConvNeXt model architecture, a CNN with elements of ViTs (see section \ref{sec:convnext}), which achieved state-of-the-art performance in image classification tasks \todo{was it image classification?}. 
 
-
+% ConvNeXt Base \cite{liu2022convnet2020s} represents a modern convolutional architecture inspired by Vision Transformers (ViTs). It incorporates design principles such as layer normalization and patch-based processing while retaining the simplicity of convolutional operations. ConvNeXt models achieve state-of-the-art performance in image classification tasks and offer a compelling alternative to ViTs. Pretrained on ImageNet-1K, ConvNeXt Base provides insights into how modern convolutional designs handle class imbalance.
     
+\paragraph{Rationale for Model Selection}
+These models were chosen to represent a spectrum of design paradigms; from the traditional ResNet to lightweight architectures and transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
 
 \subsection{Selection of Loss Function}
 \label{sec:loss_selection}
@@ -259,6 +279,8 @@ In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022co
 
  \paragraph{Softmax Loss}
 %  Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
+
+Softmax Cross-Entropy is the standard loss function for classification tasks. It serves as a baseline in this study. However, it tends to favor head classes in imbalanced datasets because these classes dominate the gradient updates, as discussed in section \ref{sec:intro_losses}. CE loss provides a reference point to assess the improvements achieved by other loss functions.
 
  \paragraph{Weighted Softmax Loss}
 % In scenarios of severe imbalance, minority classes are often overshadowed by the abundant head classes. WCE addresses this by scaling the loss for each class according to a class-dependent factor, typically the inverse of its frequency, thereby placing a heavier penalty on misclassification of rare classes \cite{zhang2023deep}.
