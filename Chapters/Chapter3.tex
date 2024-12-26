@@ -251,20 +251,39 @@ Compared to smaller architectures like ResNet-16 and ResNet-34, ResNet-50 offers
 Chosen as a reference point for CNN design in this study, ResNet-50 exemplifies the advantages of transfer learning and remains a reliable choice for addressing class imbalance effectively. Its demonstrated versatility across various datasets underscores its value for robust image classification tasks.
 
 \paragraph{MobileNetV2}
-The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices. It requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern and lightweight CNN architecture that has achieved state-of-the-art performance \cite{sandler2018mobilenetv2}, and has shown great performance in image classification tasks, including medical imaging \cite{surya2024enhancedbreastcancertumor} and fruit classification \cite{10112802}. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices \cite{sandler2018mobilenetv2}. 
-
-
-
-% MobileNetV2 \cite{sandler2018mobilenetv2} is a lightweight architecture designed for efficiency, employing depthwise separable convolutions and inverted residual blocks. It is well-suited for resource-constrained environments while maintaining competitive accuracy. MobileNetV2 was included to evaluate how a computationally efficient model performs on imbalanced datasets. Pretraining on ImageNet-1K further enhances its generalization capabilities, making it an excellent choice for deployment in scenarios requiring low latency or limited hardware.
+The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices. It requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern and lightweight CNN architecture that has achieved state-of-the-art performance \cite{sandler2018mobilenetv2}, and has shown great performance in image classification tasks, including medical imaging \cite{surya2024enhancedbreastcancertumor} and fruit classification \cite{10112802, shahi2022fruit}. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices \cite{sandler2018mobilenetv2}. 
 
 
 \paragraph{ViT-B/16}
-The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
+The Vision Transformer (ViT-B/16) \cite{dosovitskiy2021imageworth16x16words} represents a paradigm shift in image classification by replacing convolutional operations with a transformer-based architecture. Unlike convolutional neural networks, ViTs treat images as sequences of patches, enabling the model to capture global relationships across the entire image, as described in section \ref{sec:ViTs}. ViT-B/16 divides images into 16x16 patches, which are then flattened and embedded before being processed by the transformer encoder.
 
-The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K, as suggested for ViTs \cite{dosovitskiy2021imageworth16x16words}. The PyTorch library has a version of the ViT-B/16 trained on ImageNet-1K \cite{torchvision2024vitb16}. For consistency and direct comparison, the implementation of ViT-B/16 pre-trained on ImageNet-1k would be preferred, however, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias \cite{dosovitskiy2021imageworth16x16words,kolesnikov2020bigtransferbitgeneral}, as discussed in section \ref{sec:ViTs}.
+Pretrained on large datasets like ImageNet-21K and fine-tuned on ImageNet-1K, ViT-B/16 demonstrates state-of-the-art performance on various benchmarks. Its reliance on self-attention mechanisms allows it to effectively model long-range dependencies, making it particularly suitable for complex image classification tasks. However, its data-hungry nature means that it benefits significantly from pretraining on massive datasets \cite{dosovitskiy2021imageworth16x16words}.
+
+In the context of this project, ViT-B/16 was selected to evaluate the performance of transformer-based architectures on long-tailed datasets. Its ability to generalize across diverse visual features provides a valuable comparison to traditional CNNs like ResNet-50 and lightweight models like MobileNetV2. Additionally, ViT-B/16’s flexibility in capturing non-local dependencies offers potential advantages in addressing class imbalance by leveraging the full spatial context of underrepresented classes.
+
+By including ViT-B/16 in the model evaluation, this study explores the applicability of transformer-based architectures in scenarios involving limited data or significant imbalance, providing insights into their effectiveness relative to convolutional counterparts.
+
+\todo{references}
+For ViT-B/16:
+\url{https://pmc.ncbi.nlm.nih.gov/articles/PMC10535333/}
+For ResNet-50, ViT-B/16 and ConvNeXt-B:
+\url{https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/05373.pdf}
+% The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
+
+% The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K, as suggested for ViTs \cite{dosovitskiy2021imageworth16x16words}. The PyTorch library has a version of the ViT-B/16 trained on ImageNet-1K \cite{torchvision2024vitb16}. For consistency and direct comparison, the implementation of ViT-B/16 pre-trained on ImageNet-1k would be preferred, however, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias \cite{dosovitskiy2021imageworth16x16words,kolesnikov2020bigtransferbitgeneral}, as discussed in section \ref{sec:ViTs}.
 
 % ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} is a Vision Transformer architecture that processes images as sequences of patches. Unlike CNNs, ViTs lack inductive biases such as locality, which makes them more data-hungry but highly flexible. ViT-B/16 was pretrained on ImageNet-21K and fine-tuned on ImageNet-1K, providing a robust foundation for transfer learning. Its inclusion in this study allows for a comparison between transformer-based and convolutional approaches in handling long-tailed datasets.
 
+% Limitations:
+% While ViT-B/16 has demonstrated strong performance, certain limitations should be noted. For datasets like CIFAR-100, with images of size 32x32, resizing to 224x224 is often necessary to align with the pretrained input resolution. This resizing can lead to:
+
+% Loss of Fine-Grained Details: Interpolation during resizing may blur or distort small features, which are critical for distinguishing between similar classes.
+
+% Artificial Features: Interpolation can introduce artifacts that the model may misinterpret as real patterns.
+
+% Increased Computational Overhead: Larger image sizes result in a higher memory footprint and longer training times.
+
+% Alternative strategies, such as using smaller patch sizes (e.g., 8x8) or advanced data augmentation techniques, could mitigate these drawbacks. Despite these limitations, ViT-B/16 remains a robust choice for exploring the applicability of transformer-based architectures in handling long-tailed datasets.
 
 \paragraph{ConvNeXt Base}
 In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022convnet2020s} the auhtors presents the ConvNeXt model architecture, a CNN with elements of ViTs (see section \ref{sec:convnext}), which achieved state-of-the-art performance in image classification tasks \todo{was it image classification?}. 
