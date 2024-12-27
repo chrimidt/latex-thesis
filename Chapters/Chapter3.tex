@@ -1,6 +1,6 @@
 % Chapter 3: Methodology
 
-This chapter describes the methods and approaches used in the experiments. This includes the selection of dataset, models, loss functions, and evaluation strategies.
+This chapter describes the methods and approaches used in the experiments. This includes the selection of dataset, models, loss functions, as well as training and evaluation strategies.
 
 \section{Overview of Approach}
 
@@ -27,7 +27,7 @@ There are a number of benchmark datasets for long-tailed image classification ta
 
 \begin{table}[ht]
     \centering
-    \caption{Summary of long-tailed benchmarks for image classification.}
+    \caption{Summary of long-tailed benchmarks for image classification. \todo{references}}
     \begin{tabular}{lccc}
     \hline
     \textbf{Dataset}           & \textbf{\# Classes} & \textbf{\# Training Data} & \textbf{\# Test Data} \\ \hline
@@ -57,19 +57,19 @@ The ImageNet-LT dataset, introduced by Liu et al. \cite{liu2019largescalelongtai
     \label{fig:IN-train}
 \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_val.png}
-    \caption{The class distribution of the validation images for the ImageNet-LT dataset shows that there are 20 samples of each class.}
-    \label{fig:IN-val}
-\end{figure}
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_val.png}
+%     \caption{The class distribution of the validation images for the ImageNet-LT dataset shows that there are 20 samples of each class.}
+%     \label{fig:IN-val}
+% \end{figure}
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_test.png}
-    \caption{The class distribution of the test images for the ImageNet-LT dataset shows that there are 50 samples of each class.}
-    \label{fig:IN-test}
-\end{figure}
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{Images/Plots/class_distribution_test.png}
+%     \caption{The class distribution of the test images for the ImageNet-LT dataset shows that there are 50 samples of each class.}
+%     \label{fig:IN-test}
+% \end{figure}
 
 
 However, investigating the CIFAR-100-LT dataset used in \emph{Learning Imbalanced Datasets with Label-Distribution-Aware Margin Loss} by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware} shows that the training dataset follows a exponential decay, and not a pareto distribution. The imbalance factor in their studies is 100, meaning that the most frequent class has 100 times more samples than the least frequent class, following equation \eqref{eq:exp}. This means that the imbalance is not as steep as with the Pareto distribution, resulting in a middle section of classes with fewer samples than the head classes, but more samples than the tail classes, see figure \ref{fig:cifar100_train_450_imb}. The following section will describe the preparation of CIFAR-100 for the experiments in this thesis.
@@ -181,16 +181,16 @@ This section outlines the methods employed to address the challenges posed by a 
 
 \subsection{Model Selection}
 \label{sec:model_selection}
-\textit{A list of subjects to include in this section:}
+% \textit{A list of subjects to include in this section:}
 
-\begin{itemize}
-    \item Mention the model architectures chosen for training, and describe why they are appropriate for deep long-tailed learning with reference to the background section.
-    \item Discuss the strengths and limitations of these models in addressing the challenges posed by imbalanced data.
-    \item Describe how they were pretrained (ImageNet-1K, ImageNet-21K) and what that means for the training on CIFAR100.
-    \item Write about their implementation. The implementation is the same for all models. 
-    \item Include the training loss for both balanced and imbalanced data.
-    \item Compare to the results in their original paper. 
-\end{itemize}
+% \begin{itemize}
+%     \item Mention the model architectures chosen for training, and describe why they are appropriate for deep long-tailed learning with reference to the background section.
+%     \item Discuss the strengths and limitations of these models in addressing the challenges posed by imbalanced data.
+%     \item Describe how they were pretrained (ImageNet-1K, ImageNet-21K) and what that means for the training on CIFAR100.
+%     \item Write about their implementation. The implementation is the same for all models. 
+%     \item Include the training loss for both balanced and imbalanced data.
+%     \item Compare to the results in their original paper. 
+% \end{itemize}
 
 This section will discuss the choice of model architectures addressing the challenges of long-tailed datasets. The models evaluated in this thesis are four common state-of-the-art (SOTA) models: ResNet-50, MobileNetV2, ViT-B/16, and ConvNeXt-Base. These SOTA models were selected to represent a diverse range of architectures for solving image classification tasks and to pose a balance between computational efficiency and state-of-the-art performance. The models were modified and trained using transfer learning with pre-trained weights from ImageNet \cite{ILSVRC15}. Model complexity can be viewed in table \ref{tab:model_performance}.
 
@@ -244,11 +244,11 @@ Fine-tuning:
 \paragraph{ResNet-50}
 Resnet-50 \cite{he2015deepresiduallearningimage} is a convolutional neural network designed with residual connections to mitigate the vanishing gradient problem, as detailed in section \ref{sec:resnet}. Introduced by He et al. in 2015, the ResNet architecure achieved unprecedented results and won ILSVRC 2015 for image classification tasks \cite{ILSVRC15}. 
 
-With 50 layers, ResNet-50 strikes a balance between model complexity and computational efficiency. It is highly effective for extracting robust features, making it well-suited for image classification on long-tailed datasets \cite{he2015deepresiduallearningimage}. With 50 layers, ResNet-50 strikes a balance between model complexity and computational efficiency. It is highly effective for extracting robust features, making it well-suited for image classification on long-tailed datasets. ResNet-50 has been utilized in various domains of image classification, including tasks such as medical imaging \cite{huang2022identifyingkeycomponentsresnet50, Simegn} and face detection \cite{Nyarko2022}. Leveraging pretrained weights on ImageNet-1K, it achieves better generalization on unseen datasets \cite{resnettransfer,RAZAVI2024123276,chan2019transfer,Shafiq2022}, with its top-1 accuracy shown in Table \ref{tab:model_performance}. 
+With 50 layers, ResNet-50 strikes a balance between model complexity and computational efficiency. It is highly effective for extracting robust features, making it well-suited for image classification on long-tailed datasets \cite{he2015deepresiduallearningimage}. ResNet-50 has been utilized in various domains of image classification, including tasks such as medical imaging \cite{huang2022identifyingkeycomponentsresnet50, Simegn} and face detection \cite{Nyarko2022}, and commonly serves as a baseline in research \cite{yun2019cutmixregularizationstrategytrain,cubuk2019randaugmentpracticalautomateddata,zhang2018mixupempiricalriskminimization}. Leveraging pretrained weights on ImageNet-1K, it achieves better generalization on unseen datasets \cite{resnettransfer,RAZAVI2024123276,chan2019transfer,Shafiq2022}, with its top-1 accuracy shown in Table \ref{tab:model_performance}. 
 
-Compared to smaller architectures like ResNet-16 and ResNet-34, ResNet-50 offers improved feature extraction while being more memory-efficient and faster to train than larger models such as ResNet-101 and ResNet-152 \cite{he2015deepresiduallearningimage}. This balance of performance and efficiency makes it suitable for small to medium-sized datasets \cite{10083966}.
+Compared to smaller architectures like ResNet-16 and ResNet-34, ResNet-50 offers improved feature extraction while being more memory-efficient and faster to train than larger versions, such as ResNet-101 and ResNet-152 \cite{he2015deepresiduallearningimage}. This balance of performance and efficiency makes it suitable for smaller datasets like CIFAR-100 \cite{10083966}.
 
-Chosen as a reference point for CNN design in this study, ResNet-50 exemplifies the advantages of transfer learning and remains a reliable choice for addressing class imbalance effectively. Its demonstrated versatility across various datasets underscores its value for robust image classification tasks.
+Chosen as a reference point for CNN designs in this study, ResNet-50 demoonstrate the advantages of transfer learning and remains a reliable choice for addressing class imbalance effectively. Its demonstrated versatility across various datasets underscores its value for robust image classification tasks \cite{he2015deepresiduallearningimage,yun2019cutmixregularizationstrategytrain,}.
 
 \paragraph{MobileNetV2}
 The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to run on mobile devices. It requires fewer computational resources due to the introduction of inverted residual blocks and depthwise separable convolutions, as described in section \ref{sec:mobilenet}. This architecture was chosen to represent an example of a modern and lightweight CNN architecture that has achieved state-of-the-art performance \cite{sandler2018mobilenetv2}, and has shown great performance in image classification tasks, including medical imaging \cite{surya2024enhancedbreastcancertumor} and fruit classification \cite{10112802, shahi2022fruit}. Its lightweight design makes it particularly attractive for applications where computational resources are limited. By including MobileNetV2 among the evaluated architectures, the performance is compared across varying complexity levels, providing insights into how efficiency-oriented designs fare against more complex models. This comparison is especially relevant if the application domain involves real-time processing or deployment on mobile or embedded devices \cite{sandler2018mobilenetv2}. 
@@ -286,85 +286,62 @@ For ResNet-50, ViT-B/16 and ConvNeXt-B:
 % Alternative strategies, such as using smaller patch sizes (e.g., 8x8) or advanced data augmentation techniques, could mitigate these drawbacks. Despite these limitations, ViT-B/16 remains a robust choice for exploring the applicability of transformer-based architectures in handling long-tailed datasets.
 
 \paragraph{ConvNeXt Base}
-In the paper \emph{A ConvNet for the 2020s} by Liu et al. (2022) \cite{liu2022convnet2020s} the auhtors presents the ConvNeXt model architecture, a CNN with elements of ViTs (see section \ref{sec:convnext}), which achieved state-of-the-art performance in image classification tasks \todo{was it image classification?}. 
+ConvNeXt Base \cite{liu2022convnet2020s} represents a modern CNN architecture inspired by ViTs. It incorporates architectural enhancements such as depthwise convolutions, inverted bottlenecks, and improved normalization techniques, while reatining the simplicity of convolutional operations, as discussed in section \ref{sec:convnext}. These innovations allow ConvNeXt to achieve state-of-the-art performance in image classification tasks while retaining the core efficiency of convolutional operations \cite{liu2022convnet2020s}. In its original paper \cite{liu2022convnet2020s}, ConvNeXt Base outperformed many traditional CNN architectures on ImageNet-1K, achieving competitive accuracy while maintaining computational efficiency. 
 
-% ConvNeXt Base \cite{liu2022convnet2020s} represents a modern convolutional architecture inspired by Vision Transformers (ViTs). It incorporates design principles such as layer normalization and patch-based processing while retaining the simplicity of convolutional operations. ConvNeXt models achieve state-of-the-art performance in image classification tasks and offer a compelling alternative to ViTs. Pretrained on ImageNet-1K, ConvNeXt Base provides insights into how modern convolutional designs handle class imbalance.
+Compared to smaller variants of ConvNeXt (Tiny, Small), ConvNeXt Base has a higher capacity for feature representation due to its larger parameter count and deeper architecture (see table \ref{tab:model_performance}). This is particularly advantageous for capturing the complexities of long-tailed datasets where subtle differences in tail classes require richer feature extraction \cite{liu2022convnet2020s}. ConvNeXt Base offers competitive performance while being significantly more efficient in terms of computational resources and training time, whereas larger variants (Large, XL) require considerably more memory and computational power, which might not be justified given the scale of the CIFAR-100 dataset. Additionally, for datasets like CIFAR-100, which have relatively low-resolution images, using very large models may lead to diminishing returns, as the dataset's complexity might not fully leverage the capacity of larger architectures.
+
+
     
 \paragraph{Rationale for Model Selection}
 These models were chosen to represent a spectrum of design paradigms; from the traditional ResNet to lightweight architectures and transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
 
+
+
 \subsection{Selection of Loss Function}
 \label{sec:loss_selection}
-\textit{A list of subjects to include in this section:}
+% \textit{A list of subjects to include in this section:}
 
- \begin{itemize}
-    \item Describe the different loss functions and why they are appropriate for deep long-tailed learning with reference to the background section.
-    \item Rationale for each loss function's inclusion, focusing on its expected benefits for imbalanced classes and how it adresses the bias toward majority classes.
-    \item Write pseudo code of the implementations
- \end{itemize}
+%  \begin{itemize}
+%     \item Describe the different loss functions and why they are appropriate for deep long-tailed learning with reference to the background section.
+%     \item Rationale for each loss function's inclusion, focusing on its expected benefits for imbalanced classes and how it adresses the bias toward majority classes.
+%  \end{itemize}
 
  
 
  \paragraph{Softmax Loss}
-%  Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
+Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
 
-Softmax Cross-Entropy is the standard loss function for classification tasks. It serves as a baseline in this study. However, it tends to favor head classes in imbalanced datasets because these classes dominate the gradient updates, as discussed in section \ref{sec:intro_losses}. CE loss provides a reference point to assess the improvements achieved by other loss functions.
+% Softmax Cross-Entropy is the standard loss function for classification tasks. It serves as a baseline in this study. However, it tends to favor head classes in imbalanced datasets because these classes dominate the gradient updates, as discussed in section \ref{sec:intro_losses}. CE loss provides a reference point to assess the improvements achieved by other loss functions.
 
  \paragraph{Weighted Softmax Loss}
-% In scenarios of severe imbalance, minority classes are often overshadowed by the abundant head classes. WCE addresses this by scaling the loss for each class according to a class-dependent factor, typically the inverse of its frequency, thereby placing a heavier penalty on misclassification of rare classes \cite{zhang2023deep}.
-% By elevating the importance of tail classes in the loss, the model is incentivized to allocate more representational capacity to them, improving recall and reducing class-specific error rates.
-% Although simple, WCE provides a direct and intuitive method for re-weighting: each class’s contribution to the parameter updates is modulated to reflect its scarcity or importance in the dataset distribution.
-% This helps maintain a more balanced gradient flow during training, preventing head classes from monopolizing the optimization trajectory.
-% However, one limitation is that the choice of class weights is often empirical. Naively using the inverse class frequency may not always yield optimal results, and more sophisticated weighting heuristics or data-driven methods can be employed \cite{zhang2023deep}.
-% WCE sets a straightforward precedent for other re-weighting schemes, serving as a baseline for more elaborate methods that try to adapt the weights dynamically during training.
-% As it is easy to implement and understand, WCE is frequently considered as an initial step towards handling imbalance before exploring more complex techniques.
-% Overall, WCE exemplifies how re-weighting can effectively guide the model to learn less-represented categories more robustly, thereby improving long-tailed recognition performance.
+In scenarios of severe imbalance, minority classes are often overshadowed by the abundant head classes. WCE addresses this by scaling the loss for each class according to a class-dependent factor, typically the inverse of its frequency, thereby placing a heavier penalty on misclassification of rare classes \cite{zhang2023deep}. By elevating the importance of tail classes in the loss, the model is incentivized to allocate more representational capacity to them, improving recall and reducing class-specific error rates. Although simple, WCE provides a direct and intuitive method for re-weighting: each class’s contribution to the parameter updates is modulated to reflect its scarcity or importance in the dataset distribution. This helps maintain a more balanced gradient flow during training, preventing head classes from monopolizing the optimization trajectory. However, one limitation is that the choice of class weights is often empirical. Naively using the inverse class frequency may not always yield optimal results, and more sophisticated weighting heuristics or data-driven methods can be employed \cite{zhang2023deep}. WCE sets a straightforward precedent for other re-weighting schemes, serving as a baseline for more elaborate methods that try to adapt the weights dynamically during training. As it is easy to implement and understand, WCE is frequently considered as an initial step towards handling imbalance before exploring more complex techniques. Overall, WCE exemplifies how re-weighting can effectively guide the model to learn less-represented categories more robustly, thereby improving long-tailed recognition performance.
 
 \paragraph{Focal Loss}
-% Focal Loss modifies the CE loss by including a focusing parameter that down-weights well-classified examples, thus reducing the dominance of easily recognized classes or samples \cite{lin2018focallossdenseobject}.
-% By concentrating on hard examples—often those from underrepresented classes—Focal Loss ensures that the model’s parameter updates focus on improving performance where it struggles the most.
-% This dynamic weighting effectively reduces the overwhelming influence of head classes, since these classes tend to produce more confidently correct predictions that are down-weighted.
-% Consequently, tail classes, which inherently present more challenging classification problems, receive increased attention and a larger share of meaningful updates.
-% The intuition is that by penalizing confident yet trivial predictions less, the model has “budget” to allocate its learning capacity towards harder or rarer samples, thereby mitigating the imbalance effect.
-% Empirical results have shown that this approach can significantly boost performance on minority classes without severely degrading performance on majority classes \cite{zhang2023deep}.
-% Since Focal Loss does not depend solely on class frequency, it can adapt to the evolving difficulty distribution of samples during training, making it more flexible than static frequency-based weights.
-% Though originally introduced in the context of object detection, it has been widely adopted in image classification tasks with long-tailed distributions.
-% Thus, Focal Loss stands as a prime example of a re-weighting strategy that leverages model feedback (prediction confidence) rather than static priors (class frequencies) to balance training.
+Focal Loss modifies the CE loss by including a focusing parameter that down-weights well-classified examples, thus reducing the dominance of easily recognized classes or samples \cite{lin2018focallossdenseobject}. By concentrating on hard examples—often those from underrepresented classes—Focal Loss ensures that the model’s parameter updates focus on improving performance where it struggles the most. This dynamic weighting effectively reduces the overwhelming influence of head classes, since these classes tend to produce more confidently correct predictions that are down-weighted. Consequently, tail classes, which inherently present more challenging classification problems, receive increased attention and a larger share of meaningful updates. The intuition is that by penalizing confident yet trivial predictions less, the model has “budget” to allocate its learning capacity towards harder or rarer samples, thereby mitigating the imbalance effect. Empirical results have shown that this approach can significantly boost performance on minority classes without severely degrading performance on majority classes \cite{zhang2023deep}. Since Focal Loss does not depend solely on class frequency, it can adapt to the evolving difficulty distribution of samples during training, making it more flexible than static frequency-based weights. Though originally introduced in the context of object detection, it has been widely adopted in image classification tasks with long-tailed distributions. Thus, Focal Loss stands as a prime example of a re-weighting strategy that leverages model feedback (prediction confidence) rather than static priors (class frequencies) to balance training.
 
 \paragraph{Class-Balanced Loss}
-% The key insight is that each class’s influence should not be linearly scaled by its frequency alone. Instead, it considers that as class size grows, its incremental value decreases, suggesting that fewer samples are needed from frequently seen classes to establish robust representations. By formulating a class-specific weight derived from the effective sample number, CB Loss prevents large classes from dominating the training gradient simply due to their sheer volume of examples. This leads to a more stable and theoretically grounded re-weighting mechanism than naive inverses of class frequency, and can yield better generalization on minority classes. The concept of effective number is computed using a parameter $\gamma$ to determine how quickly the marginal benefit of additional samples decreases. This approach balances the training signal by giving classes a weight proportional to the inverse of their effective number, essentially normalizing the influence of different classes to a more comparable scale \cite{zhang2023deep}. As a result, CB Loss ensures that each class, regardless of its raw frequency, contributes meaningful gradients that reflect both its representation level and its effective complexity. This method elegantly merges the ideas of frequency-based weighting with a diminishing return model, acknowledging that overly abundant classes do not linearly improve overall performance. With this refined weighting scheme, CB Loss tends to improve recognition of rare categories without unduly harming head class accuracy. 
+The key insight is that each class’s influence should not be linearly scaled by its frequency alone. Instead, it considers that as class size grows, its incremental value decreases, suggesting that fewer samples are needed from frequently seen classes to establish robust representations. By formulating a class-specific weight derived from the effective sample number, CB Loss prevents large classes from dominating the training gradient simply due to their sheer volume of examples. This leads to a more stable and theoretically grounded re-weighting mechanism than naive inverses of class frequency, and can yield better generalization on minority classes. The concept of effective number is computed using a parameter $\gamma$ to determine how quickly the marginal benefit of additional samples decreases. This approach balances the training signal by giving classes a weight proportional to the inverse of their effective number, essentially normalizing the influence of different classes to a more comparable scale \cite{zhang2023deep}. As a result, CB Loss ensures that each class, regardless of its raw frequency, contributes meaningful gradients that reflect both its representation level and its effective complexity. This method elegantly merges the ideas of frequency-based weighting with a diminishing return model, acknowledging that overly abundant classes do not linearly improve overall performance. With this refined weighting scheme, CB Loss tends to improve recognition of rare categories without unduly harming head class accuracy. 
 
 \paragraph{Balanced Softmax Loss}
-% Balanced softmax loss applies a correction to the logits rather than just weighting the final loss terms can more directly counter the skewed gradient flow that results from class imbalance \cite{ren2020balancedmetasoftmaxlongtailedvisual}. By multiplying logits by the class frequencies, it effectively adjusts the decision boundaries, ensuring that classes with fewer samples are not overshadowed by the dense representation of majority classes. This adjustment encourages the model to produce a more uniform posterior distribution that accurately reflects true class priors, both during training and inference. Consequently, the network learns a more balanced internal representation, improving recognition of tail classes without overly penalizing head classes. It can be seen as a more direct approach to re-weighting at the logit level, contrasting with methods that focus on re-weighting the loss function after probability computation. Empirical results show that BS Loss can be more effective than other re-weighting methods, as it corrects the bias at its source rather than compensating after the fact. 
-
-The implementation details for the balanced softmax loss followed \todo{just reference the paper.}
+Balanced softmax loss applies a correction to the logits rather than just weighting the final loss terms can more directly counter the skewed gradient flow that results from class imbalance \cite{ren2020balancedmetasoftmaxlongtailedvisual}. By multiplying logits by the class frequencies, it effectively adjusts the decision boundaries, ensuring that classes with fewer samples are not overshadowed by the dense representation of majority classes. This adjustment encourages the model to produce a more uniform posterior distribution that accurately reflects true class priors, both during training and inference. Consequently, the network learns a more balanced internal representation, improving recognition of tail classes without overly penalizing head classes. It can be seen as a more direct approach to re-weighting at the logit level, contrasting with methods that focus on re-weighting the loss function after probability computation. Empirical results show that BS Loss can be more effective than other re-weighting methods, as it corrects the bias at its source rather than compensating after the fact.
 
 \paragraph{Equalization Loss}
-% In highly imbalanced scenarios, each positive sample from a head class can produce negative gradients for all other classes, including tail classes. Over time, this can discourage the network from correctly identifying these minority classes.
-% EQ Loss counteracts this by selectively down-weighting the negative gradients that arise when tail classes appear as negative samples for majority classes \cite{zhang2023deep}.
-% By reducing the negative influence on tail classes, EQ Loss ensures that the model does not develop an overly “head-biased” representation that fails to recognize minority categories.
-% This strategy highlights a subtlety in the re-weighting paradigm: it is not only about boosting tail class importance, but also about preventing undue suppression of these classes through negative gradients.
-% However, excessively down-weighting negative gradients may impair the model’s discriminative power. To address this, adaptive variants, such as ACSL and Equalization v2, adjust the amount of gradient suppression based on the model’s prediction confidence \cite{tan2020equalizationlosslongtailedobject, zhang2023deep}.
-% This adaptive mechanism allows the network to selectively protect tail classes when needed, while still maintaining a strong discriminative boundary between classes.
-% The result is a more balanced training signal that prevents rare classes from being “washed out,” thereby improving long-tailed recognition.
-% EQ Loss exemplifies a more fine-grained approach to re-weighting, intervening at the gradient level to ensure fair treatment of minority categories.
-% By focusing on the gradient flow rather than just the static weighting of loss values, EQ Loss and its successors illustrate the evolving sophistication of class-sensitive re-weighting techniques.
+In highly imbalanced scenarios, each positive sample from a head class can produce negative gradients for all other classes, including tail classes. Over time, this can discourage the network from correctly identifying these minority classes. EQ Loss counteracts this by selectively down-weighting the negative gradients that arise when tail classes appear as negative samples for majority classes \cite{zhang2023deep}. By reducing the negative influence on tail classes, EQ Loss ensures that the model does not develop an overly “head-biased” representation that fails to recognize minority categories. This strategy highlights a subtlety in the re-weighting paradigm: it is not only about boosting tail class importance, but also about preventing undue suppression of these classes through negative gradients. However, excessively down-weighting negative gradients may impair the model’s discriminative power. To address this, adaptive variants, such as ACSL and Equalization v2, adjust the amount of gradient suppression based on the model’s prediction confidence \cite{tan2020equalizationlosslongtailedobject, zhang2023deep}. This adaptive mechanism allows the network to selectively protect tail classes when needed, while still maintaining a strong discriminative boundary between classes. The result is a more balanced training signal that prevents rare classes from being “washed out,” thereby improving long-tailed recognition. EQ Loss exemplifies a more fine-grained approach to re-weighting, intervening at the gradient level to ensure fair treatment of minority categories. By focusing on the gradient flow rather than just the static weighting of loss values, EQ Loss and its successors illustrate the evolving sophistication of class-sensitive re-weighting techniques.
 
 \paragraph{LDAM Loss}
-% Margin-based losses generally improve generalization by enforcing a minimum separation between class decision boundaries.
-% LDAM incorporates class-dependent margins that are inversely related to class frequencies, providing larger margins to tail classes and smaller margins to head classes \cite{zhang2023deep}.
-% By increasing the margin for minority classes, it effectively lowers their decision boundary threshold, making it easier for the model to confidently classify these classes and reducing their misclassification rates.
-% This approach contrasts with re-weighting methods: while re-weighting modifies the magnitude of the loss contributions, re-margining directly influences how decision boundaries are formed in the embedding space.
-% The motivation behind LDAM is that the imbalance problem is not solely a matter of loss amplitude, but also how easily minority classes can carve out their own regions in the feature space.
-% With larger margins for tail classes, LDAM encourages more robust and discrimination-friendly representations for these classes, thereby counteracting the bias induced by uneven sample distributions.
-% As a result, the final classifier tends to perform better on rare categories, as it learns to keep them well-separated from other classes, even when their sample counts are low.
-% Combining LDAM with re-weighting or re-sampling techniques can yield even stronger improvements, as each method addresses a complementary aspect of the imbalance issue.
-% LDAM underscores that balancing the training process can be achieved not only by adjusting loss weights, but also by reshaping the geometry of the decision boundaries in class-sensitive ways.
+Margin-based losses generally improve generalization by enforcing a minimum separation between class decision boundaries. LDAM incorporates class-dependent margins that are inversely related to class frequencies, providing larger margins to tail classes and smaller margins to head classes \cite{zhang2023deep}. By increasing the margin for minority classes, it effectively lowers their decision boundary threshold, making it easier for the model to confidently classify these classes and reducing their misclassification rates. This approach contrasts with re-weighting methods: while re-weighting modifies the magnitude of the loss contributions, re-margining directly influences how decision boundaries are formed in the embedding space. The motivation behind LDAM is that the imbalance problem is not solely a matter of loss amplitude, but also how easily minority classes can carve out their own regions in the feature space. With larger margins for tail classes, LDAM encourages more robust and discrimination-friendly representations for these classes, thereby counteracting the bias induced by uneven sample distributions. As a result, the final classifier tends to perform better on rare categories, as it learns to keep them well-separated from other classes, even when their sample counts are low. Combining LDAM with re-weighting or re-sampling techniques can yield even stronger improvements, as each method addresses a complementary aspect of the imbalance issue. LDAM underscores that balancing the training process can be achieved not only by adjusting loss weights, but also by reshaping the geometry of the decision boundaries in class-sensitive ways.
+
+
+\section{Training and Evaluation}
+
+\subsection{Implementation Details}
+All models are trained using the ImageNet-1K pretrained weights from the torchvision library \cite{torchvision-resnet,pytorch_mobilenetv2,torchvision2024convnextbase} except for ViT-B/16 that used the ImageNet-21K pretrained weights and ImageNet-1K fince-tuning from the timm library \cite{huggingface2024vitbase}. Each model is trained with a batch size of 128 and the Adam optimizer \cite{kingma2017adammethodstochasticoptimization} with default settings for 90 epochs. The inizial learning rate is set to 0.001 which is reduced by a factor
+of 0.1 every 30 epochs using a StepLR scheduler \cite{pytorch_steplr}. The training is conducted on four NVIDIA TITAN X (Pascal, 12 GB). See appendix \ref{app:B} for further specifications.
 
 \subsection{Optimizer}
 \todo{Influence of optimizer. Find SGD references.} \cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}. 
 
-\section{Evaluation Metrics}
+\subsection{Evaluation Metrics}
 The top-1 accuracy is a widely used benchmark evaluation metric in image classification tasks \cite{zhang2023deep} \todo{find more references.} It measures the proportion of samples where the model's top prediction matches the ground truth label.
 
 Due to the metric being well-suited for tasks with a single label corresponding to each input, the top-1 accuracy is used as the evaluation metric to measure the model performance on both balanced and long-tailed datasets in this thesis. Its role as a benchmark ensures compatibility with prior research, allowing direct comparisons of the results.
@@ -377,5 +354,4 @@ Baselines are crucial when evaluating the performance of deep learning methods \
 
 Additional to the softmax baseline, all methods across all models are trained on the balanced CIFAR-100 dataset to establish performance baselines. This allows for direct comparisons of the results when trained on the CIFAR-100-LT data with the same models and loss functions. This setup represents the optimal training conditions where all classes are equally represented, serving as a benchmark for the best achievable performance across all test sets.
 
-\section{Model Training and Evaluation}
-All models are trained on all loss functions with both the balanced and long-tailed versions of the CIFAR-100 dataset.
+
