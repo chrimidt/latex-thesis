@@ -257,44 +257,22 @@ The MobileNetV2 model  is a successor to the ResNet architecture, adjusted to ru
 \paragraph{ViT-B/16}
 The Vision Transformer (ViT-B/16) \cite{dosovitskiy2021imageworth16x16words} represents a paradigm shift in image classification by replacing convolutional operations with a transformer-based architecture. Unlike convolutional neural networks, ViTs treat images as sequences of patches, enabling the model to capture global relationships across the entire image, as described in section \ref{sec:ViTs}. ViT-B/16 divides images into 16x16 patches, which are then flattened and embedded before being processed by the transformer encoder.
 
-Pretrained on large datasets like ImageNet-21K and fine-tuned on ImageNet-1K, ViT-B/16 demonstrates state-of-the-art performance on various benchmarks. Its reliance on self-attention mechanisms allows it to effectively model long-range dependencies, making it particularly suitable for complex image classification tasks. However, its data-hungry nature means that it benefits significantly from pretraining on massive datasets \cite{dosovitskiy2021imageworth16x16words}.
+Its reliance on self-attention mechanisms allows it to effectively model long-range dependencies, making it particularly suitable for complex image classification tasks. However, its data-hungry nature means that it benefits significantly from pretraining on massive datasets \cite{dosovitskiy2021imageworth16x16words}.
 
-In the context of this project, ViT-B/16 was selected to evaluate the performance of transformer-based architectures on long-tailed datasets. Its ability to generalize across diverse visual features provides a valuable comparison to traditional CNNs like ResNet-50 and lightweight models like MobileNetV2. Additionally, ViT-B/16’s flexibility in capturing non-local dependencies offers potential advantages in addressing class imbalance by leveraging the full spatial context of underrepresented classes.
+The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K. However, for consistency and direct comparison, the implementation of ViT-B/16 through the PyTorch library \cite{torchvision2024vitb16}, pre-trained on ImageNet-1K, would be preferred. Especially since the none of the layers are frozen during training, allowing for fine-tuning on the CIFAR-100 dataset. This has potentially influenced the performance of the model. However, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias \cite{dosovitskiy2021imageworth16x16words,kolesnikov2020bigtransferbitgeneral}, as discussed in section \ref{sec:ViTs}.
+
+In the context of this project, ViT-B/16 was selected to evaluate the performance of transformer-based architectures on long-tailed datasets. Its ability to generalize across diverse visual features provides a valuable comparison to CNN designs, as the ViT outperformed state-of-the-art CNNs when pre-trained on large datasets \cite{dosovitskiy2021imageworth16x16words}, and has been used in image classificataion tasks, such as brain tumor classification \cite{asiri2023advancing}. Additionally, ViT-B/16’s flexibility in capturing non-local dependencies offers potential advantages in addressing class imbalance by leveraging the full spatial context of underrepresented classes.
 
 By including ViT-B/16 in the model evaluation, this study explores the applicability of transformer-based architectures in scenarios involving limited data or significant imbalance, providing insights into their effectiveness relative to convolutional counterparts.
 
-\todo{references}
-For ViT-B/16:
-\url{https://pmc.ncbi.nlm.nih.gov/articles/PMC10535333/}
 For ResNet-50, ViT-B/16 and ConvNeXt-B:
 \url{https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/05373.pdf}
-% The introduction of ViTs in 2021 \cite{dosovitskiy2021imageworth16x16words} suddently changed the status of CNNs as the state-of-the-art image classification architecture \cite{liu2022convnet2020s}. However, the CIFAR-100 images are only 32x32 pixels. The convolution and stride, as discussed in the previous section.
 
-% The implementation of the ViT-B/16 was done through the timm library \cite{huggingface2024vitbase}, trained on ImageNet-21K and fine-tuned on ImageNet-1K, as suggested for ViTs \cite{dosovitskiy2021imageworth16x16words}. The PyTorch library has a version of the ViT-B/16 trained on ImageNet-1K \cite{torchvision2024vitb16}. For consistency and direct comparison, the implementation of ViT-B/16 pre-trained on ImageNet-1k would be preferred, however, since this is a vision transformer, the model benefits from pretraining on a larger dataset and then fine-tuned due to the lack of inductive bias \cite{dosovitskiy2021imageworth16x16words,kolesnikov2020bigtransferbitgeneral}, as discussed in section \ref{sec:ViTs}.
-
-% ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} is a Vision Transformer architecture that processes images as sequences of patches. Unlike CNNs, ViTs lack inductive biases such as locality, which makes them more data-hungry but highly flexible. ViT-B/16 was pretrained on ImageNet-21K and fine-tuned on ImageNet-1K, providing a robust foundation for transfer learning. Its inclusion in this study allows for a comparison between transformer-based and convolutional approaches in handling long-tailed datasets.
-
-% Limitations:
-% While ViT-B/16 has demonstrated strong performance, certain limitations should be noted. For datasets like CIFAR-100, with images of size 32x32, resizing to 224x224 is often necessary to align with the pretrained input resolution. This resizing can lead to:
-
-% Loss of Fine-Grained Details: Interpolation during resizing may blur or distort small features, which are critical for distinguishing between similar classes.
-
-% Artificial Features: Interpolation can introduce artifacts that the model may misinterpret as real patterns.
-
-% Increased Computational Overhead: Larger image sizes result in a higher memory footprint and longer training times.
-
-% Alternative strategies, such as using smaller patch sizes (e.g., 8x8) or advanced data augmentation techniques, could mitigate these drawbacks. Despite these limitations, ViT-B/16 remains a robust choice for exploring the applicability of transformer-based architectures in handling long-tailed datasets.
 
 \paragraph{ConvNeXt Base}
 ConvNeXt Base \cite{liu2022convnet2020s} represents a modern CNN architecture inspired by ViTs. It incorporates architectural enhancements such as depthwise convolutions, inverted bottlenecks, and improved normalization techniques, while reatining the simplicity of convolutional operations, as discussed in section \ref{sec:convnext}. These innovations allow ConvNeXt to achieve state-of-the-art performance in image classification tasks while retaining the core efficiency of convolutional operations \cite{liu2022convnet2020s}. In its original paper \cite{liu2022convnet2020s}, ConvNeXt Base outperformed many traditional CNN architectures on ImageNet-1K, achieving competitive accuracy while maintaining computational efficiency. 
 
 Compared to smaller variants of ConvNeXt (Tiny, Small), ConvNeXt Base has a higher capacity for feature representation due to its larger parameter count and deeper architecture (see table \ref{tab:model_performance}). This is particularly advantageous for capturing the complexities of long-tailed datasets where subtle differences in tail classes require richer feature extraction \cite{liu2022convnet2020s}. ConvNeXt Base offers competitive performance while being significantly more efficient in terms of computational resources and training time, whereas larger variants (Large, XL) require considerably more memory and computational power, which might not be justified given the scale of the CIFAR-100 dataset. Additionally, for datasets like CIFAR-100, which have relatively low-resolution images, using very large models may lead to diminishing returns, as the dataset's complexity might not fully leverage the capacity of larger architectures.
-
-
-    
-\paragraph{Rationale for Model Selection}
-These models were chosen to represent a spectrum of design paradigms; from the traditional ResNet to lightweight architectures and transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
-
 
 
 \subsection{Selection of Loss Function}
@@ -308,12 +286,12 @@ These models were chosen to represent a spectrum of design paradigms; from the t
 
  
 
- \paragraph{Softmax Loss}
+\paragraph{Softmax Loss}
 Without any additional weighting or margin adjustments, the standard CE loss tends to give well-represented classes an advantage. Since head classes have more training examples, each of their samples also serves as a “negative” example for all other classes, providing them with a disproportionately high number of beneficial gradients. In contrast, tail classes, having fewer positive samples, are both less represented positively and more often negatively suppressed \cite{zhang2023deep, lin2018focallossdenseobject}. As a result, the model learns biased decision boundaries, performing well on frequent classes but poorly on rare ones. The CE loss thus serves as a natural starting point or baseline from which various class-sensitive modifications are derived. These modifications directly address the imbalance issue by altering the training dynamics, ensuring a more equitable distribution of gradients and improving the final model’s performance on underrepresented classes.
 
 % Softmax Cross-Entropy is the standard loss function for classification tasks. It serves as a baseline in this study. However, it tends to favor head classes in imbalanced datasets because these classes dominate the gradient updates, as discussed in section \ref{sec:intro_losses}. CE loss provides a reference point to assess the improvements achieved by other loss functions.
 
- \paragraph{Weighted Softmax Loss}
+\paragraph{Weighted Softmax Loss}
 In scenarios of severe imbalance, minority classes are often overshadowed by the abundant head classes. WCE addresses this by scaling the loss for each class according to a class-dependent factor, typically the inverse of its frequency, thereby placing a heavier penalty on misclassification of rare classes \cite{zhang2023deep}. By elevating the importance of tail classes in the loss, the model is incentivized to allocate more representational capacity to them, improving recall and reducing class-specific error rates. Although simple, WCE provides a direct and intuitive method for re-weighting: each class’s contribution to the parameter updates is modulated to reflect its scarcity or importance in the dataset distribution. This helps maintain a more balanced gradient flow during training, preventing head classes from monopolizing the optimization trajectory. However, one limitation is that the choice of class weights is often empirical. Naively using the inverse class frequency may not always yield optimal results, and more sophisticated weighting heuristics or data-driven methods can be employed \cite{zhang2023deep}. WCE sets a straightforward precedent for other re-weighting schemes, serving as a baseline for more elaborate methods that try to adapt the weights dynamically during training. As it is easy to implement and understand, WCE is frequently considered as an initial step towards handling imbalance before exploring more complex techniques. Overall, WCE exemplifies how re-weighting can effectively guide the model to learn less-represented categories more robustly, thereby improving long-tailed recognition performance.
 
 \paragraph{Focal Loss}

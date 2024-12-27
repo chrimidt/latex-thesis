@@ -213,8 +213,6 @@ From Table \ref{tab:conv_lt_acc1_1}, Balanced Softmax Loss outperforms on the ba
 \section{Benchmarks}
 Table \ref{tab:benchmark_comparison} compares the best results from the models trained on the balanced CIFAR-100 dataset in this thesis with published benchmarks using the same or similar architectures. This comparison serves as a reference to ensure the results align with expectations and to identify any potential discrepancies. 
 
-Notably, there are no published benchmarks for ConvNeXt Base trained on CIFAR-100. The closest benchmark available is from Feng et al. \cite{10072172}, where Conv2NeXt achieved a top-1 accuracy of 83.82\%, which is highly similar to the result obtained here.
-
 For MobileNetV2, the results in this thesis surpass the published benchmarks. This could be attributed to improved loss function designs. On the other hand, ResNet50 exhibits a slightly lower accuracy compared to benchmarks, which may be explained by differences in optimization strategies, such as the use of Adam optimizer instead of SGD \cite{menon2021longtaillearninglogitadjustment}.
 
 The most significant deviation is observed with ViT-B/16, where the accuracy falls far short of the benchmark. This discrepancy suggests that the configuration for ViT-B/16 may not optimized for training with small-scale datasets, see section \ref{sec:ViTs}. 
@@ -229,13 +227,13 @@ Overall, these results indicate that the experimental setup is effective for mos
     \textbf{Model}        & \textbf{Result (Acc1)} & \textbf{Benchmark Result (Acc1)}  \\ \hline
     MobileNetV2           & 80.34\%               & 73.20\% \cite{park2022bitatneuralnetworkbinarization}  \\ \hline
     ResNet50            & 83.24\%               & 86.90\% \cite{wightman2021resnetstrikesbackimproved}  \\ \hline
-    ViT-B/16              & 59.06\%               & 93.95\% \cite{Tseng_2022} \\ \hline
-    ConvNeXt Base         & 83.64\%               & 83.82\% \cite{10072172}  \\ \hline
+    ViT-B/16              & 59.06\%               & 93.51\% \cite{ye2023partialfinetuningsuccessorfinetuning} \\ \hline
+    ConvNeXt Base         & 83.64\%               & 94.04\% \cite{ye2023partialfinetuningsuccessorfinetuning}  \\ \hline
     \end{tabular}
     \label{tab:benchmark_comparison}
 \end{table}
 
-\todo{The original ViT paper has a CIFAR-100 benchmark as well \cite{dosovitskiy2021imageworth16x16words}.}
+
 
 \section{Performance Comparisons}
 
