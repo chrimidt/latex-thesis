@@ -30,15 +30,15 @@ Methodology:
 - Read all notes from earlier
 - Make plot of ImageNet distribution into bar plot
 x Model Selection
-- Loss Selection
+x Loss Selection
 - Explain choice of optimizer
-- Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
+x Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
 - Explain freezing layers
 - Insert the results from the reference papers for the models and losses 
 
 Experimental Setup:
-- Rephrasing
-- Check for redundancy
+x Rephrasing
+x Check for redundancy
 
 Results and Discussion:
 x Compare models to state-of-the-art for CIFAR100 on paperswithcode.com
@@ -82,4 +82,4 @@ Finisher:
 - Check for consistent past/present
 - Correct references 
 - Layout
-- Front page
+x Front page
