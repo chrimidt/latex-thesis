@@ -1,5 +1,5 @@
 Experiments:
-- Run CB loss
+x Run CB loss
 - Run SEQL
 
 - Abstract
@@ -29,7 +29,7 @@ Background:
 Methodology:
 - Read all notes from earlier
 - Make plot of ImageNet distribution into bar plot
-- Model Selection
+x Model Selection
 - Loss Selection
 - Explain choice of optimizer
 - Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
