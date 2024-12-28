@@ -271,26 +271,6 @@ The three categories of class re-balancing strategies explored in this thesis ar
 
 In what follows, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
 
-Table \ref{tab:loss_summary} summarizes the loss functions employed for class-sensitive learning used in this thesis, outlining their formulations and categorizations into re-weighting or re-margining strategies.
-
-
-\begin{table}[H]
-    \centering
-    \caption{Summary of losses.}
-    \label{tab:loss_summary}
-    \begin{tabular}{|l|l|c|}
-    \hline
-    \textbf{Loss Name}       & \textbf{Formulation}                                                & \textbf{Type}        \\ \hline
-    Softmax loss \cite{pytorch_crossentropy}             & $\mathcal{L}_{ce} = - \log(p_y)$                                              & -                   \\
-    Focal loss \cite{lin2018focallossdenseobject}     & $\mathcal{L}_{fl} = -(1 - p_y)^\gamma \log(p_y)$                             & re-weighting        \\
-    Weighted Softmax loss \cite{zhang2023deep}    & $\mathcal{L}_{wce} = - \frac{1}{\pi_y} \log(p_y)$                           & re-weighting        \\
-    Class-balanced loss \cite{cui2019classbalancedlossbasedeffective} & $\mathcal{L}_{cb} = - \frac{1 - \gamma}{1 - \gamma^{n_y}} \log(p_y)$         & re-weighting        \\
-    Balanced Softmax loss \cite{ren2020balancedmetasoftmaxlongtailedvisual} & $\mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)$ & logit adjustment        \\
-    Equalization loss \cite{tan2020equalizationlosslongtailedobject} & $\mathcal{L}_{eq} = - \log\left( \frac{\exp(z_y)}{\sum_j \omega_j \exp(z_j)} \right)$    & re-margining        \\
-    LDAM loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}      & $\mathcal{L}_{ldam} = - \log\left( \frac{\exp(z_y - \Delta_y)}{\sum_j \exp(z_j - \Delta_j)} \right)$ & re-margining        \\
-    \hline
-    \end{tabular}
-\end{table}
 
 
 
