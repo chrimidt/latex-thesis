@@ -52,7 +52,7 @@ Class imbalance has a profound impact on model performance compared to evenly di
 
 \section{Model Architecures}
 \label{sec:model_arch}
-Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2016}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the ViT architecture.
+Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2015deepresiduallearningimage}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the ViT architecture.
 These models were chosen to represent a spectrum of design paradigms; from the traditional ResNet to lightweight architectures and transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
 
 % ===============================================================================
@@ -73,25 +73,13 @@ To illustrate the structure of a neural network, figure \ref{fig:dnn_layers} sho
 
 However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. The limitations of MLPs were addressed by Convolutional Neural Networks (CNNs), which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
 
-\todo{Include how the weights are updated with gradients based on the loss function.}
 
 % ===============================================================================
 % CNNs
 
 \subsection{Convolutional Neural Networks}
 \label{sec:CNNs}
-Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image, preserving the idea that nearby pixels are related \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. 
-
-CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}. 
-
-\todo{write this section}
-They have three main layers: convolutional layers, pooling layers, and a fully connected layer. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image, while pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. The CNN can be made up of multiple convolution and pooling layers, but the fully connected layer will be the final layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation.
-
-\todo{What is a convolution?}
-\todo{Inductive bias}
-\todo{Translation equivariance}
-\todo{Stem cells, kernel, stride, convolution.}
-
+Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. 
 
 \begin{figure}[ht]
     \centering
@@ -100,10 +88,35 @@ They have three main layers: convolutional layers, pooling layers, and a fully c
     \label{fig:cnn_illustration}
 \end{figure}
 
-\todo{Tie to the models used for experiments in this thesis.}
-\url{https://www.ibm.com/topics/convolutional-neural-networks}
+CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a fully connected layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the fully connected layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width} \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers:
 
-CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998} that demonstrated the potential of CNNs by recognizing handwritten digits. Later, AlexNet \cite{NIPS2012_c399862d} achieved a breakthrough by winning the ImageNet Challenge in 2012, demonstrating the potential of CNNs to handle large-scale image recognition tasks by deepening the architechtures and utilizing multiple GPUs for training. Subsequently, the evolution of CNNs has progressed through architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and ResNet \cite{he2015deepresiduallearningimage}, which have set the stage for the advancements seen in modern CNNs.
+\paragraph{Convolutional Layer}
+The convolutional layer is the foundation of CNNs. It applies a set of filters (called kernels) to the input image, performing convolutions to produce feature maps \cite{cs231n}. Each filter is designed to detect specific features, such as edges or textures. The filter, which has smaller dimensions than the input, is applied to an area of the image, computing dot products between the weights of the filter and the input pixels, as illustrated in figure \todo{make this figure}. Afterwards, the filter shifts by a stride, repeating the process until the kernel has computed the dot products for entire image. This process enables the network to learn spatial hierarchies of features, with the early layers capturing patterns like edges, and later layers capturing detailed structures \todo{reference}. After each convolution, the ReLu transformation is applied to introduce non-linearity \cite{cs231n}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{example-image-a} 
+    \caption{Illustration of a convolution. \todo{Make this figure.}}
+    \label{fig:convolution}
+\end{figure}
+
+\paragraph{Pooling Layer}
+The function of the pooling layer (also known as downsampling) is to reduce the spatial dimensions of the feature maps, decreasing the number of parameters and computational load of the netwrok \cite{cs231n}. Moreover, this contributes to making the detection of features invariant to scale and orientation.  
+
+\paragraph{Fully Connected (FC) Layer}
+The FC layer, as the name implies, connects every neuron in one layer to every neuron in the next. Positioned at the end of the network, this performs the task of classification based on the features extracted from the previous layers \cite{cs231n}.
+\vspace{1em}
+
+\noindent These layers, combined with the architectural design of CNNs, introduce inductive biases that make them particularly well-suited for image-related tasks \cite{kim2020inductivebias}. 
+% For instance, the use of convolutional filters enforces local connectivity, enabling the network to focus on localized patterns such as edges and textures. Additionally, the weight-sharing mechanism in convolutional layers provides translation invariance, allowing features to be recognized regardless of their position within the image.
+
+% Pooling layers contribute to a spatial hierarchy, making the network robust to small positional changes and reducing computational complexity. Moreover, the multi-layered structure of CNNs facilitates hierarchical feature learning, where early layers capture simple features, and deeper layers learn increasingly complex representations. These inductive biases are fundamental to the effectiveness of CNNs in tasks like image classification and segmentation, as they align closely with the structure and characteristics of image data.
+
+
+
+
+
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed below.
 
 % ===============================================================================
 % ResNet50
@@ -225,10 +238,10 @@ Instead of using the commonly used activation function in ResNets, the Rectified
 
 
 
-\subsection{Transfer Learning}
-In this thesis, transfer learning is used to 
+% \subsection{Transfer Learning}
+% In this thesis, transfer learning is used to 
 
-Transfer learning involves training a model on data from a source domain 200 TS = P(y|X) and then transferring it to a target domain TT = P(y|X) – typically with less data available. 
+% Transfer learning involves training a model on data from a source domain 200 TS = P(y|X) and then transferring it to a target domain TT = P(y|X) – typically with less data available. 
 
 %====================================================================================
 % Long-Tailed Methods
@@ -236,19 +249,18 @@ Transfer learning involves training a model on data from a source domain 200 TS 
 \section{Class Re-balancing Methods for Long-Tailed Learning}
 \label{sec:lt_methods}
 
+\todo{rewrite this introduction}
 Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis will focus on class re-balancing long-tailed learning. The backgrounds of the methods used in this thesis are described in this section.
 
 \todo{Introduce the cost/loss}
 
-\todo{consider if it makes sense to mention all the methods in the survey paper, or just mention the class re-balancing.}
-\todo{Remove the figure of long-tailed categories. Potentially move it to related work.}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Images/lt_methods_categories.png} 
-    \caption{Long-tailed categories as described by \textit{Zhang et al.} \cite{zhang2023deep}.}
-    \label{fig:lt_main_categories} 
-\end{figure}
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{Images/lt_methods_categories.png} 
+%     \caption{Long-tailed categories as described by \textit{Zhang et al.} \cite{zhang2023deep}.}
+%     \label{fig:lt_main_categories} 
+% \end{figure}
 
 %\subsection{Class Re-balancing}
 %\label{sec:class_rebal}
@@ -256,12 +268,12 @@ The class re-balancing method aims to re-balance the effect of the imbalanced tr
 
 \todo{Include little about re-sampling, and focus on class-sensitive learning and an little on logit adjustment.}
 
-\subsection{Data Modification}
+\subsection{Re-Sampling}
 The traditional way to sample when training deep networks is using mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
 
 \todo{Rewrite this section to closer resemble the related work.}
 
-\subsection{Loss Modification}
+\subsection{Cost-Sensitive Learning}
 \label{sec:loss_mod}
 \todo{make the notation consistent.}
 

@@ -1,6 +1,6 @@
 Experiments:
 x Run CB loss
-- Run SEQL
+x Run SEQL
 
 - Abstract
 - Acknowledgement
@@ -15,9 +15,10 @@ Introduction:
 - Approach
 
 Background:
-- Convolutional Neural Networks
+x Convolutional Neural Networks
 - Adam optimizer
 - Logit adjustment
+- Loss preliminaries (probabilities)
 - Make figures
 - Detailed architecture of ResNet-50
 - Detailed architecture of MobileNetV2
@@ -31,10 +32,11 @@ Methodology:
 - Make plot of ImageNet distribution into bar plot
 x Model Selection
 x Loss Selection
-- Explain choice of optimizer
+x Explain choice of optimizer
 x Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
 x Explain freezing layers
 - Insert the results from the reference papers for the models and losses 
+- Parameters in model table
 
 Experimental Setup:
 x Rephrasing
