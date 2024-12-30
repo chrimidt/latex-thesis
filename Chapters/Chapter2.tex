@@ -249,65 +249,58 @@ Instead of using the commonly used activation function in ResNets, the Rectified
 \section{Class Re-balancing Methods for Long-Tailed Learning}
 \label{sec:lt_methods}
 
-\todo{rewrite this introduction}
-Following the paper \textit{Deep Long-Tailed Learning: A Survey} \cite{zhang2023deep}, the existing deep long-tailed learning methods are grouped into three main categories based on their technical approach: class re-balancing, information augmentation, and module improvement. These categories are further divided onto sub-categories: re-sampling, class-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier desing, decoupled training, and ensemble learning as shown on figure \ref{fig:lt_main_categories}. This thesis will focus on class re-balancing long-tailed learning. The backgrounds of the methods used in this thesis are described in this section.
+Class re-balancing methods in deep learning seeks to mitigate the effects of imbalanced class distributions in training data. According to Zhang et al. \cite{zhang2023deep} class re-blancing can be divided into three sub-categories: re-sampling, class-sensitive learning, and logit adjustment. In this thesis, the primary focus is on class-sensitive learning, exploring re-weighting, re-margining, and logit modification strategies. For completeness, re-sampling is briefly introduced as well.
 
-\todo{Introduce the cost/loss}
-
-
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{Images/lt_methods_categories.png} 
-%     \caption{Long-tailed categories as described by \textit{Zhang et al.} \cite{zhang2023deep}.}
-%     \label{fig:lt_main_categories} 
-% \end{figure}
-
-%\subsection{Class Re-balancing}
-%\label{sec:class_rebal}
-The class re-balancing method aims to re-balance the effect of the imbalanced training dataset, and has three main sub-categories: re-sampling, class-sensitive learning, and logit adjustment, according to Zhang et al. \cite{zhang2023deep}. 
-
-\todo{Include little about re-sampling, and focus on class-sensitive learning and an little on logit adjustment.}
 
 \subsection{Re-Sampling}
-The traditional way to sample when training deep networks is using mini-batch gradient descent with random sampling. This means that each sample has an equal probability of being sampled. When sampling from an imbalanced dataset, samples from head classes naturally occur more often, and thus have higher chance of being sampled than samples from tail classes, making the resulting deep models biased towards head classes. Re-sampling is a method that adresses this problem by adjusting the number of samples per class in each sample batch for model training. 
+\label{sec:re-sampling}
+Deep networks are commonly trained with mini-batch gradient descent using random sampling, i.e. each sample has an equal probability of being selected \cite{zhang2023deep}. When classes are imblanced, samples from head classes naturally occur more often, thus having higher chances of being selected than samples from tail classes, resulting in a bias towards head classes. Re-sampling adresseses this problem by adjusting the sample probabilites or the sample counts per class (e.g. oversampling minority classes or undersampling majority classes). While this approach seems simple and intuitive, re-sampling can lead to overfitting of tail classes or underperformance on head classes \cite{zhang2023deep}, hence the need for more sophistacated approaches.
 
-\todo{Rewrite this section to closer resemble the related work.}
-
-\subsection{Cost-Sensitive Learning}
-\label{sec:loss_mod}
-\todo{make the notation consistent.}
+\subsection{Class-Sensitive Learning}
+\label{sec:class-sensitive-learning}
 
 Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}, as described later in this section. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function \todo{or how losses er calculated} to pay more attention to minority classes, thus improving overall performance.
 
-The three categories of class re-balancing strategies explored in this thesis are \emph{re-weighting}, \emph{re-margining}, and \emph{logit adjustement}. Re-weighting involves adjusting the contribution of each class to the loss by multiplying them with different weights. By multiplying weights to the loss function, the model allocates a higher penalty to misclassification of underrepresented classes, thus re-balancing the training process \cite{zhang2023deep}. Re-margining, on the other hand, modifies the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}. 
+The three sub-categories of class-sensitive learning explored in this thesis are described in the following.
 
-In what follows, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
+\paragraph{Re-Weighting}
+Modifies the loss function, commonly the cross-entropy loss, by assigning different weights to each class \cite{zhang2023deep}. Classes with fewer samples are assigned greater weights, thus re-balancing the training process.
 
+\paragraph{Re-Margining}
+Adjusts the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}. 
 
+\paragraph{Logit Adjustment}
+Directly shifts the model's raw outputs using class priors \cite{ren2020balancedmetasoftmaxlongtailedvisual,menon2021longtaillearninglogitadjustment}. This approach normalizes the logits to account for imbalance in class distribution before computing the loss. 
+\vspace{1em}
 
+In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
 
-\subsubsection{Introduction to Loss Functions}
+\section{Loss Functions}
 \label{sec:intro_losses}
-Loss functions are a fundamental component in machine learning and deep learning \cite{zhang2023dive,Goodfellow-et-al-2016}. They serve as a measure of how far a model's predictions are from the actual values, where higher loss indicates greater prediction error, whereas a lower loss implies more accurate predictions. Thus, the goal of training a model is to minimize the loss. 
+Loss functions are a fundamental component in deep learning, as they serve as a measure of how far model predictions deviate from the actual values \cite{zhang2023dive,Goodfellow-et-al-2016}.
 
-The loss function plays a crucial role, as it guides the model to adjust its parameters (weights and biases) through an optimization algorithm \cite{Goodfellow-et-al-2016}. The algorithm calculates the gradient of the loss function with respect to each parameter to determine how the parameter affect the loss. Afterwards, the model update its parameter to reduce the loss, following:
+During training, an optimization algorithm iteratively updates the model parameters (weights and biases) with the goal of minimizing the loss using the gradient of the loss function with respect to each parameter to determine how the parameter affects the loss \cite{Goodfellow-et-al-2016}. Consequently, the loss function influences the model's interpretation of prediction errors and guides parameter updates. This process continues until the model converges or meets a stopping criterion. The experiments in this thesis are conducted using the Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization}.
 
-\begin{equation}
-    \label{eq:gradient_update}
-    w_{t+1} = w_t - \eta \frac{\partial L}{\partial w_t}
-\end{equation}
+For image classification tasks, the standard loss function is the cross-entropy loss combined with the softmax activation function \cite{zhang2023dive} described in the following.
+% Afterwards, the model update its parameter to reduce the loss, following:
 
-Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss function. This is an iterative process, and continues until the loss reaches a minimum or the model converges.
+% \begin{equation}
+%     \label{eq:gradient_update}
+%     w_{t+1} = w_t - \eta \frac{\partial L}{\partial w_t}
+% \end{equation}
 
-From equation \eqref{eq:gradient_update}, the choice of loss function is critical as it influences the model's interpretation of prediction errors and parameter adjustment. For image classification tasks, the standard loss function is the cross-entropy loss combined with the softmax activation function \cite{zhang2023dive} described in the following.
+% Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss function. This is an iterative process, and continues until the loss reaches a minimum or the model converges.
 
-\todo{This is the SGD. Include the Adam Optimizer.}
-The Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization} 
-Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning models.
-Adam combines the best properties of the AdaGrad and RMSProp algorithms to provide an optimization algorithm that can handle sparse gradients on noisy problems.
-Adam is relatively easy to configure where the default configuration parameters do well on most problems.
+% From equation \eqref{eq:gradient_update}, 
 
-\paragraph{Softmax Cross-Entropy Loss}
+
+% \todo{This is the SGD. Include the Adam Optimizer.}
+% The Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization} 
+% Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning models.
+% Adam combines the best properties of the AdaGrad and RMSProp algorithms to provide an optimization algorithm that can handle sparse gradients on noisy problems.
+% Adam is relatively easy to configure where the default configuration parameters do well on most problems.
+
+\subsection{Softmax Cross-Entropy Loss}
 The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The softmax loss, as it is commonly known as, is the combination of the cross-entropy loss and the softmax activation function \cite{zhang2023dive,Goodfellow-et-al-2016}. First, the need of the softmax activation function will be decribed.
 
 The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function for class \( i \) is defined as:
@@ -337,6 +330,9 @@ While this approach provides a robust and stable training objective, it treats a
 
 \paragraph{Bias}
 The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
+
+% \subsubsection{Summary of Class Re-Balancing}
+% Long-tailed or imbalanced datasets pose significant challenges in classification tasks, as models trained naively tend to bias toward majority classes. Class re-balancing strategies tackle this by either sampling differently (re-sampling), adjusting the loss function to emphasize minority classes (cost-sensitive re-weighting and margin-based losses), or modifying logits based on class priors (logit adjustment). These techniques all aim to improve performance on tail classes without excessively sacrificing performance on head classes. The following sections detail how each method is applied and evaluated in the context of this thesis.
 
 \subsubsection{Re-Weighting}
 \label{sec:re-weighting}
