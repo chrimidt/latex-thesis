@@ -104,7 +104,7 @@ The convolutional layer is the foundation of CNNs. It applies a set of filters (
 The function of the pooling layer (also known as downsampling) is to reduce the spatial dimensions of the feature maps, decreasing the number of parameters and computational load of the netwrok \cite{cs231n}. Moreover, this contributes to making the detection of features invariant to scale and orientation.  
 
 \paragraph{Fully Connected (FC) Layer}
-The FC layer, as the name implies, connects every neuron in one layer to every neuron in the next. Positioned at the end of the network, this performs the task of classification based on the features extracted from the previous layers \cite{cs231n}.
+The FC layer, as the name implies, connects every neuron in one layer to every neuron in the next. Positioned at the end of the network, this performs the task of classification based on the features extracted from the previous layers \cite{cs231n}. The raw output of the FC layer are called logits \cite{arora2024logits}, and refers to the $K$-dimensional output vector for $K$ classes. These have raw outputs can range from $[-R,R]$, where $R$ are real numbers. However, an activation function must be applied to the logits to get the final probabilities of the model prediction. For multi-class classification, this activation function is the Softmax function introduced later in section \ref{sec:intro_losses}.
 \vspace{1em}
 
 \noindent These layers, combined with the architectural design of CNNs, introduce inductive biases that make them particularly well-suited for image-related tasks \cite{kim2020inductivebias}. 
@@ -273,7 +273,8 @@ Adjusts the decision boundaries by introducing class-dependent margins, ensuring
 Directly shifts the model's raw outputs using class priors \cite{ren2020balancedmetasoftmaxlongtailedvisual,menon2021longtaillearninglogitadjustment}. This approach normalizes the logits to account for imbalance in class distribution before computing the loss. 
 \vspace{1em}
 
-In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
+In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. 
+% Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
 
 \section{Loss Functions}
 \label{sec:intro_losses}
@@ -300,35 +301,35 @@ For image classification tasks, the standard loss function is the cross-entropy 
 % Adam combines the best properties of the AdaGrad and RMSProp algorithms to provide an optimization algorithm that can handle sparse gradients on noisy problems.
 % Adam is relatively easy to configure where the default configuration parameters do well on most problems.
 
-\subsection{Softmax Cross-Entropy Loss}
-The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The softmax loss, as it is commonly known as, is the combination of the cross-entropy loss and the softmax activation function \cite{zhang2023dive,Goodfellow-et-al-2016}. First, the need of the softmax activation function will be decribed.
-
-The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function for class \( i \) is defined as:
+\subsection{Softmax Activation Function}
+\label{sec:softmax}
+The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function is defined as:
 
 \begin{equation}
+    \label{eq:softmax}
     P(y = i \mid \mathbf{z}) = \frac{\exp(z_i)}{\sum_{j=1}^{K} \exp(z_j)}
 \end{equation}
 
-Here, \( \exp(z_i) \) ensures that all values are positive, and dividing by the sum normalizes the probabilities so that they sum to 1. This normalization is crucial for classification, as it allows the network's outputs to represent the likelihood of each class.
+These probabilities $P(y=i)$ sum to 1, and allows the network's outputs to represent the model's confidence in each class.
 
-The \textit{Cross-Entropy loss} measures the difference between the predicted probability distribution \( \mathbf{P} \) (produced by Softmax) and the true distribution \( \mathbf{y} \) (the one-hot encoded ground truth). It is defined as:
+\subsection{Cross-Entropy Loss}
+\label{sec:ce_loss}
+The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The CE loss combines the cross-entropy loss and the softmax activation function, and thus is commonly referred to as the \emph{Softmax Loss} \cite{zhang2023dive,Goodfellow-et-al-2016,zhang2023deep}. 
+
+The CE loss measures the difference between the predicted probability distribution $P$ and the true class label $y$, defined as \cite{zhang2023dive,cs231n}:
 
 \begin{equation}
     \mathcal{L}_{\text{CE}} = -\sum_{i=1}^{K} y_i \log(P(y = i \mid \mathbf{z}))
 \end{equation}
 
-For a single example where the true class is \( c \), this simplifies to:
+Inserting the Softmax probabilites from equation \eqref{eq:softmax} yields:
 
 \begin{equation}
-    \label{eq:ce_loss}
-    \mathcal{L}_{\text{CE}} = -\log(p_y)
+    \mathcal{L}_{\text{CE}} = - \log\left(\frac{\exp(z_i)}{\sum_{j=1}^{K} \exp(z_j)}\right)
 \end{equation}
 
 This equation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
 
-While this approach provides a robust and stable training objective, it treats all classes equally and does not account for class imbalance.
-
-\paragraph{Bias}
 The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
 
 % \subsubsection{Summary of Class Re-Balancing}
