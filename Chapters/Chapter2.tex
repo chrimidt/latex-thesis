@@ -263,223 +263,12 @@ Traditional training methods using the standard loss function, cross-entropy los
 
 The three sub-categories of class-sensitive learning explored in this thesis are described in the following.
 
-\paragraph{Re-Weighting}
-Modifies the loss function, commonly the cross-entropy loss, by assigning different weights to each class \cite{zhang2023deep}. Classes with fewer samples are assigned greater weights, thus re-balancing the training process.
-
-\paragraph{Re-Margining}
-Adjusts the decision boundaries by introducing class-dependent margins, ensuring that minority classes have more room to establish discriminative features in the embedding space \cite{zhang2023deep, cao2019learningimbalanceddatasetslabeldistributionaware}. 
-
-\paragraph{Logit Adjustment}
-Directly shifts the model's raw outputs using class priors \cite{ren2020balancedmetasoftmaxlongtailedvisual,menon2021longtaillearninglogitadjustment}. This approach normalizes the logits to account for imbalance in class distribution before computing the loss. 
-\vspace{1em}
-
-In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. 
-% Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
-
-\section{Loss Functions}
-\label{sec:intro_losses}
-Loss functions are a fundamental component in deep learning, as they serve as a measure of how far model predictions deviate from the actual values \cite{zhang2023dive,Goodfellow-et-al-2016}.
-
-During training, an optimization algorithm iteratively updates the model parameters (weights and biases) with the goal of minimizing the loss using the gradient of the loss function with respect to each parameter to determine how the parameter affects the loss \cite{Goodfellow-et-al-2016}. Consequently, the loss function influences the model's interpretation of prediction errors and guides parameter updates. This process continues until the model converges or meets a stopping criterion. The experiments in this thesis are conducted using the Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization}.
-
-For image classification tasks, the standard loss function is the cross-entropy loss combined with the softmax activation function \cite{zhang2023dive} described in the following.
-% Afterwards, the model update its parameter to reduce the loss, following:
-
-% \begin{equation}
-%     \label{eq:gradient_update}
-%     w_{t+1} = w_t - \eta \frac{\partial L}{\partial w_t}
-% \end{equation}
-
-% Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss function. This is an iterative process, and continues until the loss reaches a minimum or the model converges.
-
-% From equation \eqref{eq:gradient_update}, 
-
-
-% \todo{This is the SGD. Include the Adam Optimizer.}
-% The Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization} 
-% Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning models.
-% Adam combines the best properties of the AdaGrad and RMSProp algorithms to provide an optimization algorithm that can handle sparse gradients on noisy problems.
-% Adam is relatively easy to configure where the default configuration parameters do well on most problems.
-
-\subsection{Softmax Activation Function}
-\label{sec:softmax}
-The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function is defined as:
-
-\begin{equation}
-    \label{eq:softmax}
-    P(y = i \mid \mathbf{z}) = \frac{\exp(z_i)}{\sum_{j=1}^{K} \exp(z_j)}
-\end{equation}
-
-These probabilities $P(y=i)$ sum to 1, and allows the network's outputs to represent the model's confidence in each class.
-
-\subsection{Cross-Entropy Loss}
-\label{sec:ce_loss}
-The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The CE loss combines the cross-entropy loss and the softmax activation function, and thus is commonly referred to as the \emph{Softmax Loss} \cite{zhang2023dive,Goodfellow-et-al-2016,zhang2023deep}. 
-
-The CE loss measures the difference between the predicted probability distribution $P$ and the true class label $y$, defined as \cite{zhang2023dive,cs231n}:
-
-\begin{equation}
-    \mathcal{L}_{\text{CE}} = -\sum_{i=1}^{K} y_i \log(P(y = i \mid \mathbf{z}))
-\end{equation}
-
-Inserting the Softmax probabilites from equation \eqref{eq:softmax} yields:
-
-\begin{equation}
-    \mathcal{L}_{\text{CE}} = - \log\left(\frac{\exp(z_i)}{\sum_{j=1}^{K} \exp(z_j)}\right)
-\end{equation}
-
-This equation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
-
-The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
-
-% \subsubsection{Summary of Class Re-Balancing}
-% Long-tailed or imbalanced datasets pose significant challenges in classification tasks, as models trained naively tend to bias toward majority classes. Class re-balancing strategies tackle this by either sampling differently (re-sampling), adjusting the loss function to emphasize minority classes (cost-sensitive re-weighting and margin-based losses), or modifying logits based on class priors (logit adjustment). These techniques all aim to improve performance on tail classes without excessively sacrificing performance on head classes. The following sections detail how each method is applied and evaluated in the context of this thesis.
-
 \subsubsection{Re-Weighting}
 \label{sec:re-weighting}
-\paragraph{Weighted Softmax Cross-Entropy Loss}
-The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (equation \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
+Modifies the loss function, commonly the cross-entropy loss, by assigning different weights to each class \cite{zhang2023deep}. Classes with fewer samples are assigned greater weights, thus re-balancing the training process.
 
-\begin{equation}
-    \label{eq:wce_loss}
-    \mathcal{L}_{\text{WCE}} = -w \log(p_y) = - \frac{1}{\pi_y} \log(p_y)
-\end{equation}
-
-This weighted CE loss ensures that minority classes contribute more to the overall loss, addressing the imbalance during training.
-
-
-\paragraph{Focal Loss}
-\emph{Focal Loss} \cite{lin2018focallossdenseobject} addresses class imbalance by improving model performance on hard-to-classify examples by focusing on wrongly classified examples. The technique for this is called down-weighting, and uses the prediction probabilities to dynamically adjust the contribution of each sample to the loss. Well-classified examples with high probabilities $p_y$ are down-weighted by adding a modulating factor $(1 - p_y)^\gamma$ to the cross-entropy loss (eq. \eqref{eq:ce_loss}). Here, $\gamma \geq 0$ is a tunable focusing parameter. The Focal Loss modifies the CE loss by applying the inverse prediction probability as follows:
-
-\begin{equation}
-    \label{eq:focal_loss}
-    L_{fl} = -(1 - p_y)^\gamma \log(p_y)
-\end{equation}
-
-This factor increases the weight of misclassified examples, ensuring the model prioritizes learning from challenging samples. Figure \ref{fig:focal_loss} shows how the focal loss for different values of $\gamma$. When $\gamma = 0$ the modulating factor equals 1, and the focal loss becomes the standard CE loss. The blue line in figure \ref{fig:focal_loss} represents the standard cross-entropy loss for $\gamma = 0$.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.6\textwidth]{Images/focal_loss.png}
-    \caption{Figure from \cite{lin2018focallossdenseobject}. \todo{Make this figure}}
-    \label{fig:focal_loss}
-\end{figure}
-
-\paragraph{Class-Balanced Loss}
-\emph{Class-Balanced (CB) Loss} \cite{cui2019classbalancedlossbasedeffective} introduces a re-weighting strategy based on the effective number of samples per class to re-balance the loss.
-
-Instead of simply using raw class frequencies, CB Loss estimates how much additional information new samples provide, acknowledging an information overlap among data, and as the number of samples increases, the marginal benefit of extracted features from new data diminishes. As illustrated in figure \ref{fig:cb_featue_space}, the feature space is the map of all possible data, and each sample occupies a part of the space. Collecting more samples of a class means that there is a probability that their features overlap, meaning that additional samples diminishes new information.
-In feature space, the probability of newly sampled data with volume 1 is overlapping $p$, which means that the probability of adding new information to the feature space is $(1-p)$. 
-
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.6\textwidth]{Images/CB_feature_space.png}
-    \caption{Figure from \cite{cui2019classbalancedlossbasedeffective}. \todo{Make this figure}}
-    \label{fig:cb_featue_space}
-\end{figure}
-
-Cui et al. \cite{cui2019classbalancedlossbasedeffective} introduced the effective number of samples as the expected volume of samples, denoted $E_n$, where $n \in \mathbb{Z}_{>0}$ is the number of sampels. The effective number of samples 
-is defined as:
-
-\begin{equation}
-    \label{eq:eff_num}
-    E_n = \frac{1-\beta^n}{1-\beta}
-\end{equation}
-
-where $\beta = (N-1)/N$. The hyperparameter $\beta \in [0,1)$ determines how fast $E_n$ grows.
-
-As a result, the CB loss introduces a class-balanced re-weighting term, inversely proportional to the effective number of classes. Adding the CB term to the standard softmax cross-entropy given in equation \eqref{eq:ce_loss} yield the following:
-
-\begin{equation}
-    \label{eq:cb_loss}
-    L_{cb} = - \frac{1 - \beta}{1 - \beta^{n_y}} \log(p_y)
-\end{equation}
-
-where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in equation \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
-
-
-
-
-\paragraph{Equalization Loss}
-\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.6\textwidth]{Images/gradient_analysis.png} 
-    \caption{Gradient analysis. \cite{tan2020equalizationlosslongtailedobject}.}
-    \label{fig:eql_gradients} 
-\end{figure}
-
-The EQ loss was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization (SEQ) Loss}, defined as: 
-
-\begin{equation}
-    \label{eq:EQ_loss}
-    \mathcal{L}_{SEQL} = - \sum_{j=1}^{C} y_j \log(\tilde{p}_j)
-\end{equation}
-
-where
-
-\begin{equation}
-    \tilde{p}_j = \frac{e^{z_j}}{\sum_{k=1}^{C} \tilde{w}_k e^{z_k}}
-\end{equation}
-
-and the weight term is given by:
-
-\begin{equation}
-    \tilde{w}_k = (1 - \beta T_\lambda(f_k))(1 - y_k)
-\end{equation}
-
-Here, $y_j$ is the ground truth class, $z_j$ is the logit for class $j$, $f_k$ is the frequency of class $k$, \(T_\lambda(\cdot)\) is the threshold on class frequency. As there is no background category for image classification tasks, $\beta$ is introduced to randomly maintain the gradient of negative samplers. \(\beta\) is a random variable with probability \(\gamma\) of taking value 1 and probability \(1 - \gamma\) of taking value 0.
-
-
-
-
-\subsubsection{Logit Adjustment}
-\label{sec:logit_adjust}
-Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the model outputs, i.e. prediction logits, typically based on prior class probabilities \cite{menon2021longtaillearninglogitadjustment,ren2020balancedmetasoftmaxlongtailedvisual}. \todo{Write about the label distribution shifts between training and test data.} 
-
-The output model outputs are computed by the following equation:
-
-\begin{equation}
-    \label{eq:logits}
-    \eta_j = \theta^T_j f(x)
-\end{equation}
-
-where $\theta_j$ are the weights for the last layer for class $j$, and $f(x)$ is the feature extractor function \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
-
-\paragraph{Balanced Softmax Loss}
-The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax loss (eq. \eqref{eq:ce_loss}) by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. 
-
-In \emph{Balanced Meta-Softmax for Long-Tailed Visual Recognition}, the authors represent Softmax regression as a multinomial distribution, $\phi$, dependent on $\eta$, defined as:
-
-\begin{equation}
-    \phi_j = \frac{e^{\eta_j}}{\sum_{i=1}^{k}e^{\eta_i}}
-\end{equation}
-
-where $k$ are the number of classes.
-
-The Balanced Softmax uses the output logits $\eta$ (eq. \eqref{eq:logits}) to parametize two separate probabilities: $\phi$ for testing, and $\hat{\phi}$ for training. This separation is used when training with an imbalanced dataset to eliminate the discrepancy between training and testing distributions \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
-
-Assume $\phi$ to be the desired conditional probability of the balanced dataset, with the form $\phi_j = p(y = j \mid x) = \frac{p(x \mid y=j)}{p(x)} \cdot \frac{1}{k}$, and $\hat{\phi}$ to be the desired conditional probability of the imbalanced training set, with the form $\hat{\phi}_j = \hat{p}(y = j \mid x) = \frac{p(x \mid y=j)}{\hat{p}(x)} \cdot \frac{n_j}{\sum_{i=1}^{k} n_i}$. If $\phi$ is expressed by the standard Softmax function of the model output $\eta$, then $\hat{\phi}$ can be expressed as:
-
-\begin{equation}
-    \hat{\phi}_j = \frac{n_j e^{\eta_j}}{\sum_{i=1}^{k} n_i e^{\eta_i}}.
-\end{equation}
-
-where $n_j$ is the number of samples in class $j$.
-
-The authors proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. ultimately, the Balanced Softmax loss function is becomes:
-
-\begin{equation}
-    \mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
-\end{equation}
-
-where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
-
-
-\subsubsection{Margin Modification (Re-Margining)}
-\label{sec:margin_mod}
+\subsubsection{Re-Margining}
+\label{sec:re-margining}
 Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes. 
 
 The margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in the $i$-th class to the decision boundary. Figure \ref{fig:decision_boundaries} illustrates how the margin affects the decision boundary for binary classification. As the decision boundary separates the regions of input space corresponding to different class predictions, by increasing the margin, the model becomes more confident in classification.
@@ -528,9 +317,228 @@ This boundary can be shifted by taking the minimum: $\min{\gamma_1\sqrt{n_1}}+\f
     \gamma_i\varpropto n^{-1/4}_i 
 \end{equation}
 
-with the standard solution being $\gamma_1=\gamma_2$ \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.
+with the standard solution being $\gamma_1=\gamma_2$ \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
 
-\paragraph{LDAM Loss}
+\subsubsection{Logit Adjustment}
+\label{sec:logit_adjustment}
+Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the model outputs, i.e. logits, based on prior class probabilities \cite{menon2021longtaillearninglogitadjustment,ren2020balancedmetasoftmaxlongtailedvisual}. \todo{Write about the label distribution shifts between training and test data.} 
+
+The output model outputs are computed by the following equation:
+
+\begin{equation}
+    \label{eq:logits}
+    \eta_j = \theta^T_j f(x)
+\end{equation}
+
+where $\theta_j$ are the weights for the last layer for class $j$, and $f(x)$ is the feature extractor function \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
+\vspace{1em}
+
+In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. 
+% Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
+
+\section{Loss Functions}
+\label{sec:intro_losses}
+Loss functions are a fundamental component in deep learning, as they serve as a measure of how far model predictions deviate from the actual values \cite{zhang2023dive,Goodfellow-et-al-2016}.
+
+During training, an optimization algorithm iteratively updates the model parameters (weights and biases) with the goal of minimizing the loss using the gradient of the loss function with respect to each parameter to determine how the parameter affects the loss \cite{Goodfellow-et-al-2016}. Consequently, the loss function influences the model's interpretation of prediction errors and guides parameter updates. This process continues until the model converges or meets a stopping criterion. The experiments in this thesis are conducted using the Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization}.
+
+For image classification tasks, the standard loss function is the cross-entropy loss combined with the softmax activation function \cite{zhang2023dive} described in the following.
+% Afterwards, the model update its parameter to reduce the loss, following:
+
+% \begin{equation}
+%     \label{eq:gradient_update}
+%     w_{t+1} = w_t - \eta \frac{\partial L}{\partial w_t}
+% \end{equation}
+
+% Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss function. This is an iterative process, and continues until the loss reaches a minimum or the model converges.
+
+% From equation \eqref{eq:gradient_update}, 
+
+
+% \todo{This is the SGD. Include the Adam Optimizer.}
+% The Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization} 
+% Adam is a replacement optimization algorithm for stochastic gradient descent for training deep learning models.
+% Adam combines the best properties of the AdaGrad and RMSProp algorithms to provide an optimization algorithm that can handle sparse gradients on noisy problems.
+% Adam is relatively easy to configure where the default configuration parameters do well on most problems.
+
+\subsection{Softmax Activation Function}
+\label{sec:softmax}
+The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function is defined as:
+
+\begin{equation}
+    \label{eq:softmax}
+    P(y = i \mid \mathbf{z}) = \frac{\exp(z_i)}{\sum_{j=1}^{K} \exp(z_j)}
+\end{equation}
+
+These probabilities $P(y=i)$ sum to 1, and allows the network's outputs to represent the model's confidence in each class.
+
+\subsection{Cross-Entropy Loss}
+\label{sec:ce_loss}
+The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The CE loss combines the cross-entropy loss and the softmax activation function, and thus is commonly referred to as the \emph{Softmax Loss} \cite{zhang2023dive,Goodfellow-et-al-2016,zhang2023deep}. 
+
+The CE loss measures the difference between the predicted probability distribution $P$ and the true class label $y$. For a single sample, the loss is defined as \cite{zhang2023dive,cs231n}:
+
+\begin{equation}
+    \label{eq:ce_multi}
+    \mathcal{L}_{\text{CE}} = -\sum_{i=1}^{K} y_i \log(p_i)
+\end{equation}
+
+where $y_i$ is the ground truth label, represented as a one-hot encoded vector, and $p_i$ is the predicted probability for class $i$. This simplifies for a single ground truth class $y$:
+
+\begin{equation}
+    \label{eq:ce_single}
+    \mathcal{L}_{\text{CE}} = - \log(p_y)
+\end{equation}
+
+Inserting the Softmax probabilites from equation \eqref{eq:softmax} yields:
+
+\begin{equation}
+    \label{eq:ce_loss}
+    \mathcal{L}_{\text{CE}} = - \log\left(\frac{\exp(z_y)}{\sum_{j=1}^{K} \exp(z_j)}\right)
+\end{equation}
+
+where $y$ is the true class. This equation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
+
+The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
+
+% \subsubsection{Summary of Class Re-Balancing}
+% Long-tailed or imbalanced datasets pose significant challenges in classification tasks, as models trained naively tend to bias toward majority classes. Class re-balancing strategies tackle this by either sampling differently (re-sampling), adjusting the loss function to emphasize minority classes (cost-sensitive re-weighting and margin-based losses), or modifying logits based on class priors (logit adjustment). These techniques all aim to improve performance on tail classes without excessively sacrificing performance on head classes. The following sections detail how each method is applied and evaluated in the context of this thesis.
+
+\subsection{Weighted Softmax Cross-Entropy Loss}
+\label{sec:wce_loss}
+The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (equation \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
+
+\begin{equation}
+    \label{eq:wce_loss}
+    \mathcal{L}_{\text{WCE}} = -w \log(p_y) = - \frac{1}{\pi_y} \log(p_y)
+\end{equation}
+
+This weighted CE loss ensures that minority classes contribute more to the overall loss, addressing the imbalance during training.
+
+
+\subsection{Focal Loss}
+\label{sec:fl}
+\emph{Focal Loss} \cite{lin2018focallossdenseobject} addresses class imbalance by improving model performance on hard-to-classify examples by focusing on wrongly classified examples. The technique for this is called down-weighting, and uses the prediction probabilities to dynamically adjust the contribution of each sample to the loss. Well-classified examples with high probabilities $p_y$ are down-weighted by adding a modulating factor $(1 - p_y)^\gamma$ to the cross-entropy loss (eq. \eqref{eq:ce_loss}). Here, $\gamma \geq 0$ is a tunable focusing parameter. The Focal Loss modifies the CE loss by applying the inverse prediction probability as follows:
+
+\begin{equation}
+    \label{eq:focal_loss}
+    L_{fl} = -(1 - p_y)^\gamma \log(p_y)
+\end{equation}
+
+This factor increases the weight of misclassified examples, ensuring the model prioritizes learning from challenging samples. Figure \ref{fig:focal_loss} shows how the focal loss for different values of $\gamma$. When $\gamma = 0$ the modulating factor equals 1, and the focal loss becomes the standard CE loss. The blue line in figure \ref{fig:focal_loss} represents the standard cross-entropy loss for $\gamma = 0$.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/focal_loss.png}
+    \caption{Figure from \cite{lin2018focallossdenseobject}. \todo{Make this figure}}
+    \label{fig:focal_loss}
+\end{figure}
+
+\subsection{Class-Balanced Loss}
+\label{sec:cb_loss}
+\emph{Class-Balanced (CB) Loss} \cite{cui2019classbalancedlossbasedeffective} introduces a re-weighting strategy based on the effective number of samples per class to re-balance the loss.
+
+Instead of simply using raw class frequencies, CB Loss estimates how much additional information new samples provide, acknowledging an information overlap among data, and as the number of samples increases, the marginal benefit of extracted features from new data diminishes. As illustrated in figure \ref{fig:cb_featue_space}, the feature space is the map of all possible data, and each sample occupies a part of the space. Collecting more samples of a class means that there is a probability that their features overlap, meaning that additional samples diminishes new information.
+In feature space, the probability of newly sampled data with volume 1 is overlapping $p$, which means that the probability of adding new information to the feature space is $(1-p)$. 
+
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/CB_feature_space.png}
+    \caption{Figure from \cite{cui2019classbalancedlossbasedeffective}. \todo{Make this figure}}
+    \label{fig:cb_featue_space}
+\end{figure}
+
+Cui et al. \cite{cui2019classbalancedlossbasedeffective} introduced the effective number of samples as the expected volume of samples, denoted $E_n$, where $n \in \mathbb{Z}_{>0}$ is the number of sampels. The effective number of samples 
+is defined as:
+
+\begin{equation}
+    \label{eq:eff_num}
+    E_n = \frac{1-\beta^n}{1-\beta}
+\end{equation}
+
+where $\beta = (N-1)/N$. The hyperparameter $\beta \in [0,1)$ determines how fast $E_n$ grows.
+
+As a result, the CB loss introduces a class-balanced re-weighting term, inversely proportional to the effective number of classes. Adding the CB term to the standard softmax cross-entropy given in equation \eqref{eq:ce_loss} yield the following:
+
+\begin{equation}
+    \label{eq:cb_loss}
+    L_{cb} = - \frac{1 - \beta}{1 - \beta^{n_y}} \log(p_y)
+\end{equation}
+
+where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in equation \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
+
+
+
+
+\subsection{Equalization Loss}
+\label{sec:seql}
+\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Images/gradient_analysis.png} 
+    \caption{Gradient analysis. \cite{tan2020equalizationlosslongtailedobject}.}
+    \label{fig:eql_gradients} 
+\end{figure}
+
+The EQ loss was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization (SEQ) Loss}, defined as: 
+
+\begin{equation}
+    \label{eq:EQ_loss}
+    \mathcal{L}_{SEQL} = - \sum_{j=1}^{C} y_j \log(\tilde{p}_j)
+\end{equation}
+
+where
+
+\begin{equation}
+    \tilde{p}_j = \frac{e^{z_j}}{\sum_{k=1}^{C} \tilde{w}_k e^{z_k}}
+\end{equation}
+
+and the weight term is given by:
+
+\begin{equation}
+    \tilde{w}_k = (1 - \beta T_\lambda(f_k))(1 - y_k)
+\end{equation}
+
+Here, $y_j$ is the ground truth class, $z_j$ is the logit for class $j$, $f_k$ is the frequency of class $k$, \(T_\lambda(\cdot)\) is the threshold on class frequency. As there is no background category for image classification tasks, $\beta$ is introduced to randomly maintain the gradient of negative samplers. \(\beta\) is a random variable with probability \(\gamma\) of taking value 1 and probability \(1 - \gamma\) of taking value 0.
+
+
+\subsection{Balanced Softmax Loss}
+\label{sec:bs_loss}
+The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax loss (eq. \eqref{eq:ce_loss}) by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. 
+
+In \emph{Balanced Meta-Softmax for Long-Tailed Visual Recognition}, the authors represent Softmax regression as a multinomial distribution, $\phi$, dependent on $\eta$, defined as:
+
+\begin{equation}
+    \phi_j = \frac{e^{\eta_j}}{\sum_{i=1}^{k}e^{\eta_i}}
+\end{equation}
+
+where $k$ are the number of classes.
+
+The Balanced Softmax uses the output logits $\eta$ (eq. \eqref{eq:logits}) to parametize two separate probabilities: $\phi$ for testing, and $\hat{\phi}$ for training. This separation is used when training with an imbalanced dataset to eliminate the discrepancy between training and testing distributions \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
+
+Assume $\phi$ to be the desired conditional probability of the balanced dataset, with the form $\phi_j = p(y = j \mid x) = \frac{p(x \mid y=j)}{p(x)} \cdot \frac{1}{k}$, and $\hat{\phi}$ to be the desired conditional probability of the imbalanced training set, with the form $\hat{\phi}_j = \hat{p}(y = j \mid x) = \frac{p(x \mid y=j)}{\hat{p}(x)} \cdot \frac{n_j}{\sum_{i=1}^{k} n_i}$. If $\phi$ is expressed by the standard Softmax function of the model output $\eta$, then $\hat{\phi}$ can be expressed as:
+
+\begin{equation}
+    \hat{\phi}_j = \frac{n_j e^{\eta_j}}{\sum_{i=1}^{k} n_i e^{\eta_i}}.
+\end{equation}
+
+where $n_j$ is the number of samples in class $j$.
+
+The authors proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. ultimately, the Balanced Softmax loss function is becomes:
+
+\begin{equation}
+    \mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
+\end{equation}
+
+where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior (e.g. normalized frequency of samples from class $y$), and the term in the denominator normalizes the probabilities across all classes while accounting for priors.
+
+
+
+
+\subsection{LDAM Loss}
+\label{sec:ldam_loss}
 The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class’ decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in equation \eqref{eq:opt_margin} by increasing the distance between the largest and secon largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
 
 

@@ -16,16 +16,18 @@ Introduction:
 
 Background:
 x Convolutional Neural Networks
-- Adam optimizer
-- Logit adjustment
-- Loss preliminaries (probabilities)
+x Adam optimizer
+x Logit adjustment
+x Loss preliminaries (probabilities)
 - Make figures
 - Detailed architecture of ResNet-50
 - Detailed architecture of MobileNetV2
 - Detailed architectire of ViT-B/16
 - Detailed architecture of ConvNeXt
-- Sort out sections
-- Remove the long-tailed category figure
+x Sort out sections
+x Remove the long-tailed category figure
+- Re-arrange model architecture sections
+- K classes 
 
 Methodology:
 - Read all notes from earlier
@@ -37,6 +39,8 @@ x Find the reference that says adam optimizer doesnt work with certain losses: L
 x Explain freezing layers
 - Insert the results from the reference papers for the models and losses 
 - Parameters in model table
+- Align the selection to the background theory
+- Make the arguments simpler
 
 Experimental Setup:
 x Rephrasing

@@ -28,9 +28,9 @@ This section presents the overall results of all experiments conducted in this t
         Softmax   & 0.7978   & \textbf{0.8059} & \textbf{0.8069} & \textbf{0.7870} & 0.8684 \\
         Focal loss   & 0.8014   & 0.8011 & 0.7998 & \textbf{0.7870} & 0.8947 \\
         Weighted Softmax loss   & 0.7978   & \textbf{0.8059} & \textbf{0.8069} & \textbf{0.7870} & 0.8684 \\
-        Class-balanced loss   & 0.7978   & \textbf{0.8059} & \textbf{0.8069} & \textbf{0.7870} & 0.8684 \\
-        Balanced Softmax loss   & \textbf{0.8034}  & 0.8030 & \textbf{0.8069} & 0.7574 & \textbf{0.9211} \\
-        Equalization loss   & 0.7994   & 0.8040 & 0.8057 & 0.7692 & \textbf{0.9211} \\
+        Class-balanced loss   & 0.8008   & 0.8049 & 0.8140 & 0.7456 & 0.8684 \\
+        Balanced Softmax loss   & 0.8034  & 0.8030 & \textbf{0.8069} & 0.7574 & \textbf{0.9211} \\
+        Equalization loss   &  \textbf{0.8078}  & 0.7916 & 0.7962 & 0.7396 & \textbf{0.9211} \\
         LDAM loss   &  0.7828   & 0.7821 & 0.7808 & 0.7574 & \textbf{0.9211} \\
         \bottomrule
     \end{tabular}
@@ -54,9 +54,9 @@ Although LDAM Loss demonstrates lower overall accuracy, its high tail-class accu
         Softmax   & 0.5282   & 0.7735 & 0.8341 & 0.5917 & 0.2368 \\
         Focal loss   & 0.5200   & \textbf{0.7745} & \textbf{0.8389} & 0.5917 & 0.1579 \\
         Weighted Softmax loss   & 0.5016   & 0.7231 & 0.7808 & 0.5503 & 0.2105 \\
-        Class-balanced loss   & 0.1936   & 0.0913 & 0.0521 & 0.2485 & 0.2632 \\
+        Class-balanced loss   &  0.5034  & 0.7336 & 0.7938 & 0.5385 & 0.2632 \\
         Balanced Softmax loss   & \textbf{0.5796}   & 0.7650 & 0.8069 & \textbf{0.6331} & \textbf{0.4211} \\
-        Equalization loss   & 0.5310   & 0.7650 & 0.8235 & 0.5917 & 0.2368 \\
+        Equalization loss   &   0.0618 & 0.0647 & 0.0675 & 0.0592 & 0.0263 \\
         LDAM loss   & 0.4264 & 0.5899 & 0.6137 & 0.5444 & 0.2632 \\
         \bottomrule
     \end{tabular}
@@ -79,9 +79,9 @@ From Table \ref{tab:mobilenet_lt_acc1_1}, Balanced Softmax Loss outperforms othe
         Softmax loss   & \textbf{0.8324}  & 0.8421 & 0.8448 & 0.8047 & \textbf{0.9474} \\
         Focal loss   & 0.8310  & 0.8344 & 0.8341 & \textbf{0.8166} & 0.9211 \\
         Weighted Softmax loss   & \textbf{0.8324} & 0.8421 & 0.8448 & 0.8047 & \textbf{0.9474} \\
-        Class-balanced loss   &  \textbf{0.8324} & 0.8421 & 0.8448 & 0.8047 & \textbf{0.9474} \\
+        Class-balanced loss   &  0.8144 & 0.8173 & 0.8199 & 0.7751 & \textbf{0.9474} \\
         Balanced Softmax loss   & 0.8310 & \textbf{0.8430} & \textbf{0.8460} & 0.8107 & 0.9211 \\
-        Equalization loss   & 0.8292 & 0.8373 & 0.8412 & 0.7929 & \textbf{0.9474} \\
+        Equalization loss   & 0.8316 & 0.8354 & 0.8365 & \textbf{0.8166} & 0.8947 \\
         LDAM loss   & 0.7990 & 0.7983 & 0.8069 & 0.7337 & 0.8947 \\
         \bottomrule
     \end{tabular}
@@ -102,9 +102,9 @@ From Table \ref{tab:resnet_bal_acc1_1}, Softmax, Weighted Softmax, and Class-Bal
         Softmax loss   & 0.5522 & \textbf{0.7954} & \textbf{0.8531} & 0.6391 & 0.2105 \\
         Focal loss   & 0.5456 & 0.7935 & 0.8483 & 0.6272 & 0.3158 \\
         Weighted Softmax loss   & 0.4976 & 0.7336 & 0.7915 & 0.5562 & 0.2368 \\
-        Class-balanced loss   & 0.2052 & 0.1836 &  0.1445 & 0.3787 & 0.1842 \\
+        Class-balanced loss   & 0.4970 & 0.7450 & 0.8069 & 0.5562 & 0.2105 \\
         Balanced Softmax loss   & \textbf{0.5908} & 0.7916 & 0.8270 & \textbf{0.6568} & \textbf{0.6053} \\
-        Equalization loss   & 0.5452 & 0.7897 & 0.8389 & 0.6450 & 0.3421 \\
+        Equalization loss   & 0.0886 & 0.1399 & 0.1505 & 0.1124 &  0.0263 \\
         LDAM loss   & 0.3742 & 0.5937 & 0.6469 & 0.4438 & 0.0789 \\
         \bottomrule
     \end{tabular}
@@ -129,9 +129,9 @@ From Table \ref{tab:vit_bal_acc1_1}, LDAM Loss achieves the overall best perform
         Softmax loss   & 0.5620 & 0.5671 & 0.5521 & 0.6036 & 0.7368 \\
         Focal loss   & 0.5516 & 0.5538 & 0.5438 & 0.5680 & 0.7105 \\
         Weighted Softmax loss   & 0.5620 & 0.5671 & 0.5521 & 0.6036 & 0.7368 \\
-        Class-balanced loss   & 0.5620 & 0.5671 &  0.5521 & 0.6036 & 0.7368 \\
+        Class-balanced loss   & 0.5432 & 0.5452 & 0.5427 & 0.5207 & 0.7105 \\
         Balanced Softmax loss   & 0.5628 & 0.5642 & 0.5640 & 0.5325 & 0.7105 \\
-        Equalization loss   & 0.5634   & 0.5519 & 0.5462 & 0.5503 & 0.6842 \\
+        Equalization loss   & 0.5582 & 0.5547 & 0.5462 & 0.5680 & 0.6842 \\
         LDAM loss   & \textbf{0.5906} &  \textbf{0.6013} & \textbf{0.5924} & \textbf{0.6095} & \textbf{0.7632} \\
         \bottomrule
     \end{tabular}
@@ -150,9 +150,9 @@ From Table \ref{tab:vit_bal_acc1_1}, LDAM Loss achieves the overall best perform
         Softmax loss   & 0.2254 & \textbf{0.4367} & \textbf{0.5071} & 0.1775 & 0.0263 \\
         Focal loss   & 0.2210 & 0.4206 & 0.4834 & 0.1953 & 0.0263 \\
         Weighted Softmax loss   & 0.1284 & 0.1760 & 0.1919 & 0.1302 & 0.0263 \\
-        Class-balanced loss   & 0.0558 & 0.0076 & 0.0000 & 0.0237 & \textbf{0.1053} \\
+        Class-balanced loss   & 0.1346 & 0.1865 & 0.2014 & 0.1361 & 0.0789 \\
         Balanced Softmax loss   & \textbf{0.2460} & 0.4244 & 0.4822 &  \textbf{0.2130} & 0.0789 \\
-        Equalization loss   & 0.2168 & 0.4215 & 0.4893 & 0.1716 & 0.0263 \\
+        Equalization loss   & 0.1686 & 0.2778 & 0.3140 & 0.1361 & \textbf{0.1053} \\
         LDAM loss   & 0.1570 & 0.2750 & 0.3140 & 0.1361 & 0.0263 \\
         \bottomrule
     \end{tabular}
@@ -173,11 +173,11 @@ From Table \ref{tab:vit_lt_acc1}, performance remains low across all loss functi
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
         \midrule
         Softmax loss   & 0.8332 & \textbf{0.8535} & \textbf{0.8566} & 0.8166 & \textbf{0.9474} \\
-        Focal loss   & 0.8314 & 0.8487 & 0.8507 & 0.8284 & 0.8947 \\
+        Focal loss   & 0.8314 & 0.8487 & 0.8507 & \textbf{0.8284} & 0.8947 \\
         Weighted Softmax loss   & 0.8332 & \textbf{0.8535} & \textbf{0.8566} &  0.8166 & \textbf{0.9474} \\
-        Class-balanced loss   & 0.8332 & \textbf{0.8535} & \textbf{0.8566} & 0.8166 & \textbf{0.9474} \\
-        Balanced Softmax loss   & \textbf{0.8364} & 0.8344 & 0.8365 & 0.7988 & \textbf{0.9474} \\
-        Equalization loss   & 0.8318 & 0.8468 & 0.8448 & \textbf{0.8343} & \textbf{0.9474} \\
+        Class-balanced loss   & \textbf{0.8398} & 0.8344 & 0.8389 & 0.7929 & 0.9211 \\
+        Balanced Softmax loss   & 0.8364 & 0.8344 & 0.8365 & 0.7988 & \textbf{0.9474} \\
+        Equalization loss   & 0.8322 & 0.8392 & 0.8412 & 0.8107 & 0.9211 \\
         LDAM loss   & 0.8316 & 0.8373 & 0.8412 & 0.8047 & 0.8947 \\
         \bottomrule
     \end{tabular}
@@ -197,12 +197,12 @@ From Table \ref{tab:conv_bal_acc1_1}, Balanced Softmax Loss achieves the best ba
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
         \midrule
-        Softmax loss   & 0.5972 & \textbf{0.8316} & \textbf{0.8898} & 0.6568 & 0.3158 \\
-        Focal loss   & 0.5938 & 0.8145 & 0.8685 & 0.6568 & 0.3158 \\
+        Softmax loss   & 0.5972 & \textbf{0.8316} & \textbf{0.8898} & \textbf{0.6568} & 0.3158 \\
+        Focal loss   & 0.5938 & 0.8145 & 0.8685 & \textbf{0.6568} & 0.3158 \\
         Weighted Softmax loss   & 0.4090 & 0.6356 & 0.6848 & 0.4911 & 0.1842 \\
-        Class-balanced loss   & 0.0142 & 0.0019 & 0.0000 & 0.0000 & 0.0526 \\
+        Class-balanced loss   & 0.3436 & 0.5756 & 0.6469 & 0.3254 & 0.1053 \\
         Balanced Softmax loss   & \textbf{0.6460} & 0.8230 & 0.8685 & 0.6509 & \textbf{0.5789} \\
-        Equalization loss   & 0.5956 & 0.8278 & 0.8768 & \textbf{0.6923} & 0.3421 \\
+        Equalization loss   & 0.5948 & 0.7973 & 0.8460 & 0.6272 & 0.4737 \\
         LDAM loss   & 0.3770 & 0.5956 & 0.6445 & 0.4260 & 0.2632 \\
         \bottomrule
     \end{tabular}
