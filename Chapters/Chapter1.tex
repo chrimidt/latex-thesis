@@ -3,33 +3,19 @@
 
 Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results \cite{Goodfellow-et-al-2016}. The trained models have shown image classification with accuracies of over 80 \% \cite{he2015deepresiduallearningimage,dosovitskiy2021imageworth16x16words}, and hence the interest in deep learning for image recognition is high. However, the high accuracies are usually achieved on models trained with balanced datasets, while most real-world datasets are skewed in samples per class \cite{vanhorn2017deviltailsfinegrainedclassification,Buda_2018,liu2019largescalelongtailedrecognitionopen}.  
 
-This thesis addresses the challenge of long-tailed datasets in image classification, where most classes contain only a few samples. A long-tailed class distribution causes the model to primarily learn features from majority (head) classes, leading to a bias toward these dominant classes. As a result, the trained model struggles to recognize inputs from minority (tail) classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data \cite{vanhorn2018inaturalistspeciesclassificationdetection,zhang2023deep}. The aim of this thesis is to examine some of the methods tackling the long-tailed problem for deep learning described in the paper \textit{Deep Long-Tailed Learning: A Survey} by Zhang et al.\cite{zhang2023deep} to find a method for long-tailed learning that works on a specific long-tailed dataset of images of insects taken around equator. The goal of the insect dataset is to identify species.
+This thesis addresses the challenge of long-tailed datasets in image classification, where most classes contain only a few samples. A long-tailed class distribution causes the model to primarily learn features from majority (head) classes, leading to a bias toward these dominant classes. As a result, the trained model struggles to recognize inputs from minority (tail) classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data \cite{vanhorn2018inaturalistspeciesclassificationdetection,zhang2023deep}. The aim of this thesis is to examine class re-balancing techniques to tackle the long-tailed problem in deep learning.
+
 
 \section{Problem Definition}
-\todo{Something about head and tail classes.}
-% Let {xi
-% , yi}
-% n
-% i=1 be the long-tailed training set, where
-% each sample xi has a corresponding class label yi
-% . The total
-% number of training set over K classes is n =
-% PK
-% k=1 nk, where
-% nk denotes the data number of class k; let π denote the vector of
-% label frequencies, where πk = nk/n indicates the label frequency
-% of class k. Without loss of generality, a common assumption in
-% long-tailed learning [31], [32] is that the classes are sorted by
-% cardinality in decreasing order (i.e., if i1 < i2, then ni1 ≥ ni2
-% ,
-% and n1 nK), and then the imbalance ratio is defined as n1/nK.
+This thesis explores deep learning techniques for addressing long-tailed distributions in image classification, focusing on the interplay between backbone architectures and class-sensitive learning methods.
 
-The goal of this project is to investigate deep learning models, like Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs), and methods, mainly class re-balancing through cost-sensitive learning, and analyze their performance on datasets representaing a long-tailed structure.  
+Four deep learning state-of-the art models are investigated, including three CNNs, and one ViT. The CNNs investigated are ResNet-50 \cite{he2015deepresiduallearningimage}, MobileNetV2 \cite{sandler2018mobilenetv2}, and ConvNeXt-Base \cite{liu2022convnet2020s}, while the ViT investigated is the ViT-B/16 \cite{dosovitskiy2021imageworth16x16words}. These particular models were chosen because of their individual strenghts  ResNet50 is a variant of the ResNet architecture, offering a strong baseline, providing a standard for comparison. MobileNetV2, build with the ResNet architecture, respresents models designed for environments with limited resources.ConvNeXt Base is a newer interpretation of convolutional neural networks, incorporating design principles from vision transformers, bridging the gap between tradional CNNs and ViTs, while ViT-B/16 represents traditional ViTs. All four models leverages transfer learning, pretrained on ImageNet \cite{ImageNet2009}, and subsequently trained on a balanced version of the CIFAR-100 \cite{krizhevsky2009learning} dataset, which serves as a baseline for comparing the training on the long-tailed version of CIFAR-100 (CIFAR-100-LT) \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.  
 
-Four models are investigated, where three of them are CNNs, and one is a ViT. The CNNs investigated are the MobileNetV2, ResNet50v2, and ConvNeXt Base, while the ViT investigated is the ViT-B/16. All four models are pretrained on ImageNet, and further trained on both a balanced version of CIFAR100 and an long-tailed version of CIFAR100, called CIFAR100-LT, and introducing the long-tailed technique as class re-balancing in the loss functions by using re-weighting. All models are trained with Softmax Cross-Entropy Loss, Weighted Softmax Cross-Entropy Loss, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, LDAM Loss, and Equalization Loss. The main purpose of this master's thesis is to compare class re-balancing methods on a well respresenting type of models used in deep learning image recognition tasks. Furhter comparison with state-of-the-art methods for deep long-tailed learning will be made. The motivation for this comparison is to find a way to train on a real-world long-tailed dataset of moths to correctly identify species.
+The long-tailed techniques investigated in this thesis focus on class re-balancing, with an emphasis on class-sensitive learning through loss functions. All models are trained using Softmax Cross-Entropy Loss \cite{cs231n}, Weighted Softmax Cross-Entropy Loss \cite{zhang2023deep}, Focal Loss \cite{lin2018focallossdenseobject}, Class-Balanced Loss \cite{cui2019classbalancedlossbasedeffective}, Balanced Softmax Loss \cite{ren2020balancedmetasoftmaxlongtailedvisual}, LDAM Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, and Equalization Loss \cite{tan2020equalizationlosslongtailedobject}. By including these loss designs, this thesis investigates the effectiveness of each in mitigating the challenges posed by class imbalance.
 
+The selection of these loss functions is based on their alignment with cost-sensitive approaches highlighted in Deep Long-Tailed Learning: A Survey \cite{zhang2023deep}. Starting with the standard Softmax Cross-Entropy Loss as a baseline, the study progresses through increasingly sophisticated loss functions designed to improve model performance on underrepresented tail classes while maintaining accuracy across the entire dataset. This comparative analysis aims to provide insights into how specific loss functions interact with model architectures in addressing the challenges of long-tailed distributions. 
 
-% These particular models were chosen because of their individual strenghts MobileNetV2 was designed for resource effeciency, respresenting a models designed for environments with limited resources. ResNet50v2 is build on the succes of the ResNet architecture, offering a strong baseline, providing a standard for comparison. ConvNeXt Base is a newer interpretation of convolutional neural networks, incorporating design principles of vision transformers, bridging the gap between tradional CNNs and ViTs. ViT-B/16 is 
+By evaluating the effectiveness of different models and techniques, this study aims to guide practitioners in selecting appropriate strategies to address class imbalance, improve model performance on underrepresented classes, and achieve more balanced predictions.
 
 
 \subsection{Goals of this thesis}
@@ -47,35 +33,34 @@ Deep long-tailed learning methods, such as the carefully designed loss functions
 
 
 \subsection{Approach}
-\todo{finish this section.}
-This master's thesis consists of six steps, described below:\\  
+This master's thesis consists of five stages, described below:  
+\vspace{1em}
 
-\textbf{First step} is to investigate the dataset used for training, testing and validation in \textit{Deep Long-Tailed Learning: A Survey}, as the class re-balancing in this paper is used as inspiration for this thesis.\\
+\noindent \textbf{Stage one} is to investigate the dataset used for training, testing and validation in \textit{Deep Long-Tailed Learning: A Survey}, as the class re-balancing in this paper is used as inspiration for this thesis.
+\vspace{1em}
 
-\textbf{Second step} is generating a long-tailed version of CIFAR100 that can be used for training and comparisons of methods.\\
+\noindent \textbf{Stage two} is generating a long-tailed version of CIFAR-100 that can be used for training and comparisons of methods. This is inspired by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, who uses the CIFAR-100-LT dataset for experiments.
+\vspace{1em}
 
-\textbf{Third step} is the implementation of models and methods, combining them.\\
+\noindent \textbf{Stage three} is the selection of model architectures and class-sensitive methods.
+\vspace{1em}
 
-\textbf{Fourth step} is hyperparameter settings.\\
+\noindent \textbf{Stage four} is training and evaluation of the models with different loss design. The training is both on the balanced and long-tailed versions of CIFAR-100.
+\vspace{1em}
 
-\textbf{Fifth step} is training and evaluation of the models with different loss functions. The training is both on the balanced and long-tailed version of CIFAR100.\\
+\noindent \textbf{Stage five} is a comparison of the methods.
+\vspace{1em}
 
-\textbf{Sixth step} is a comparison of the methods.
 
-Other steps could involve comparisons to related work and other long-tailed learning methods.
 
 \subsection{Scope of this thesis}
-This thesis focuses on applying deep long-tailed learning methods to image classification tasks with an emphasis on loss re-weighting as a solution to handle imbalanced datasets. The loss re-weighting methods include cross-entropy loss, focal loss, weighted cross-entropy loss,  class-balanced loss, balanced softmax loss, equalization loss, and LDAM loss. The experiments are conducted on the CIFAR100 dataset, with both a balanced and synthetically generated long-tailed version. The evaluation is done with particular focus on top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications. \todo{not yet module improvement.}
+This thesis seeks to apply deep long-tailed learning methods to image classification tasks with an emphasis on loss design to mitigate the effect imposed by class imbalance. The loss designs include Softmax Cross-Entropy Loss, Focal Loss, Weighted Softmax Cross-Entropy Loss, Class-Balanced Loss, Balanced Boftmax Loss, Equalization Loss, and LDAM Loss. The experiments are conducted on four backbone architectures: ResNet-50, MobileNetV2, ConvNeXt-Base, and ViT-B/16. These are trained on the CIFAR-100 dataset with both a balanced and synthetically generated long-tailed version. The evaluation metric is the top-1 accuracy, with attention paid to performance on head, middle, and tail classes. This thesis does not explore other long-tailed learning approaches such as re-sampling, information augmentation, or model architecture modifications.
 
-% \section{Motivation}
-% Discuss why the problem is significant, including real-world implications.
-% Mention the importance of biodiversity studies or the challenges of species identification with limited samples.
-% Discuss broader impacts, such as how solving long-tailed learning problems can benefit other fields.
 
 
 
 \section{Related Work}
-The challenge of long-tailed datasets has been extensively studied in the literature \cite{zhang2023deep,zhang2024systematicreviewlongtailedlearning}. % Zhang et al. \cite{zhang2023deep} conducted a comprehensive survey on long-tailed learning techniques, categorizing them into three main strategies: class re-balancing, information augmentation, and module improvement. This section explores class re-balancing approaches that are beyond the scope of this thesis, as well as other related methodologies commonly employed to address the issues of long-tailed datasets.
+The challenge of long-tailed datasets has been extensively studied in the literature \cite{zhang2023deep,zhang2024systematicreviewlongtailedlearning}. Zhang et al. \cite{zhang2023deep} conducted a comprehensive survey on long-tailed learning techniques, categorizing them into three main strategies: class re-balancing, information augmentation, and module improvement. 
 
 \todo{Add references to re-weighting papers.}
 
