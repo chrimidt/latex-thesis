@@ -19,6 +19,7 @@ From Table \ref{tab:resnet_bal_acc1_1}, Softmax and Weighted Softmax yield ident
 \begin{table}[h!]
     \centering
     \caption{Evaluation results for ResNet50 trained on the custom balanced dataset, showing Acc1.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -40,6 +41,7 @@ From Table \ref{tab:resnet_lt_acc1_1}, Balanced Softmax Loss significantly impro
 \begin{table}[h!]
     \centering
     \caption{Evaluation results for ResNet50 trained on the long-tailed dataset, showing Acc1.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -62,6 +64,7 @@ From Table \ref{tab:resnet_lt_acc1_1}, Balanced Softmax Loss significantly impro
 \begin{table}[H]
     \centering
     \caption{Top-1 accuracy results for MobileNetV2 on the balanced dataset across all loss functions.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -83,6 +86,7 @@ As shown in Table \ref{tab:mobilenet_bal_acc1_1}, SEQL achieves the highest accu
 \begin{table}[h!]
     \centering
     \caption{Top-1 accuracy results for MobileNetV2 on the long-tailed dataset across all loss functions.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -109,6 +113,7 @@ From Table \ref{tab:vit_bal_acc1_1}, LDAM Loss achieves the overall best perform
 \begin{table}[h!]
     \centering
     \caption{Evaluation results for ViT-B/16 trained on the custom balanced dataset, showing Acc1.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -129,6 +134,7 @@ From Table \ref{tab:vit_bal_acc1_1}, LDAM Loss achieves the overall best perform
 \begin{table}[h!]
     \centering
     \caption{Evaluation results for ViT-B/16 trained on the long-tailed dataset, showing Acc1.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -153,6 +159,7 @@ From Table \ref{tab:conv_bal_acc1_1}, CB Loss achieves the highest balanced test
 \begin{table}[h!]
     \centering
     \caption{Evaluation results for ConvNeXt Base trained on the custom balanced dataset, showing Acc1.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -173,6 +180,7 @@ From Table \ref{tab:conv_bal_acc1_1}, CB Loss achieves the highest balanced test
 \begin{table}[h!]
     \centering
     \caption{Evaluation results for ConvNeXt Basetrained on the long-tailed dataset, showing Acc1.}
+    \small
     \begin{tabular}{cccccc}
         \toprule
         Loss Function & Balanced & Long-tailed & Head & Middle & Tail \\ 
@@ -202,14 +210,17 @@ Overall, these results indicate that the experimental setup is effective for mos
 
 \begin{table}[H]
     \centering
-    \caption{Comparison of model performance on balanced CIFAR-100 with published benchmarks.}
-    \begin{tabular}{|l|c|c|}
-    \hline
-    \textbf{Model}        & \textbf{Result (Acc1)} & \textbf{Benchmark Result (Acc1)}  \\ \hline
-    MobileNetV2           & 80.78\%               & 73.20\% \cite{park2022bitatneuralnetworkbinarization}  \\ \hline
-    ResNet50            & 83.24\%               & 86.90\% \cite{wightman2021resnetstrikesbackimproved}  \\ \hline
-    ViT-B/16              & 59.06\%               & 93.51\% \cite{ye2023partialfinetuningsuccessorfinetuning} \\ \hline
-    ConvNeXt Base         & 83.98\%               & 94.04\% \cite{ye2023partialfinetuningsuccessorfinetuning}  \\ \hline
+    \caption{Comparison of model performance (top-1 accuracy) with published benchmarks. The models are trained and tested on a balanced CIFAR-100 dataset. The performances are achieved with varying the techniques, and are meant as a reference and not a direct comparison.}
+    \small
+    \begin{tabular}{lcc}
+    \toprule
+    \textbf{Model}        & \textbf{Result (Acc1)} & \textbf{Benchmark Result (Acc1)}  \\ 
+    \midrule
+    ResNet-50            & 83.24\%               & 86.90\% \cite{wightman2021resnetstrikesbackimproved}  \\ 
+    MobileNetV2           & 80.78\%               & 73.20\% \cite{park2022bitatneuralnetworkbinarization}  \\ 
+    ViT-B/16              & 59.06\%               & 93.51\% \cite{ye2023partialfinetuningsuccessorfinetuning} \\ 
+    ConvNeXt-Base         & 83.98\%               & 94.04\% \cite{ye2023partialfinetuningsuccessorfinetuning}  \\ 
+    \bottomrule
     \end{tabular}
     \label{tab:benchmark_comparison}
 \end{table}
@@ -327,35 +338,88 @@ These result are further underlined in figure \ref{fig:loss_comparison_bars}, wh
 
 
 
+%\section{Summary and Discussion}
+% The overall best performance on tail classes was achieved by the Balanced Softmax Loss, which proved to be consistent across all models while also achieving competing results on other test categories. Furthermore, these findings highlight the impact of model architecture combined with loss designs, as the standard deviation demonstrates when comparing figures \ref{fig:mean_loss_comparison} and \ref{fig:loss_comparison_bars}. Here, the longer errorbars suggests the dependency of loss design and model architecture, respectively. Further investigation of model and loss design combinations could lead to greater tail-class performance.
+
+% Although the BS Loss' overall superior performance on tail classes, this performance accuracy often came with trade-offs in performance on head classes. For example, while ResNet-50 achieved the highest top 1 accuracy of 60.53\% on tail classes using Balanced Softmax, compared to that of ConvNeXt Base (Acc1: 57.89\%), head-class accuracy (82.70\%) lagged behind ConvNeXt Base (86.85\%). This trade-off highlights the challenge of optimizing for both head and tail classes simultaneously and indicates that Balanced Softmax prioritizes tail-class adjustments at the expense of head-class performance. 
+
+% SEQL, in contrast, consistently underperformed across all models and test categories with the exception of ConvNeXt-Base. This suggests that the down-weighting of the negative gradients posed by the SEQL affect the model's ability to distinguish classes from one another, as discussed in section \ref{sec:loss_selection}. The ConvNetxt architecture includes designs components that could help mitigate the performance drop imposed by the heavy masking, such as LayerNorm (see section \ref{sec:convnext}). When training on a small datasets like the long-tailed CIFAR-100, the use of SEQL could result in the model not receiving an adequate number of samples for training when negative gradients are down-weighted. Moreover, the model fails to learn fine-grained distinctions necessary to achieve high discriminative abilities.  
+
+% Likewise, the ViT-B/16 architecture underperformed significantly across all loss designs (including the softmax baseline), categories, and training datasets, with the best accuracy of 59.06\% on a balanced training dataset compared to its benchmark of 93.95\% \cite{ye2023partialfinetuningsuccessorfinetuning}. These results indicate that the default ViT-B/16 architecture may not be well-suited for long-tailed datasets without further optimization \cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}. These could include a carefully chosen optimizer, longer training, or larger dataset \cite{beyer2022betterplainvitbaselines}. Comparatively, the CNN architectures displayed overall better performance with the same setup. 
+
+% The high and equal tail-class performances of ResNet-50, MobileNetV2, and ConvNeXt-Base trained on the balanced CIFAR-100 (see tables \ref{tab:resnet_bal_acc1_1}, \ref{tab:mobilenet_bal_acc1_1}, and \ref{tab:conv_bal_acc1_1}) suggests that tail-class performance may have reached a saturation point due to the limited number of samples in tail classes. These limitations could be investigated through testing on a larger datasets. 
+
+% \paragraph{Optimizer Choice in Long-Tailed Learning}
+% Studies has shown that different optimizers can influence performance in long-tailed classification due to an implicit bias \cite{soudry2024implicitbias,menon2021longtaillearninglogitadjustment}. Specifically, the Adam optimizer exhibits a weak correlation between class frequency and weight norms compared to SGD, which can result in different trade-offs when balancing head and tail performance \cite{menon2021longtaillearninglogitadjustment}. Adam was chosen primarily for its faster convergence and minimal hyperparameter tuning. However, future research could explore whether switching to SGD might yield further improvements in tail-class accuracy, especially when combined with re-weighting schemes or alternative loss functions.
+
+% The performance of the LDAM could potentially improve by including the deferred re-weighting scheme (DRW), also introduced by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. According to related work \cite{menon2021longtaillearninglogitadjustment}, the DRW significanlty improves performance on long-tailed datasets in contrast to relying solely on LDAM for effective class re-balancing.
+
+% The decision to derive test data from the training set, rather than splitting the validation set to match the class distribution to that of the ImageNet-LT (see section \ref{sec:dataset_specs}), could also influence the results, since the training data would include more samples. Likewise, the performance of the combinations of model architectures and loss designs could benefit from training with a larger dataset, like ImageNet and ImageNet-LT. Furthermore, these larger long-tailed benchmarks follow the Pareto distribution rather than an exponential decay, mirroring a natural occuring long-tailed dataset, as discussed in sections \ref{sec:lt-datasets} and \ref{sec:dataset_specs}.  
+
+
+% Overall, these findings emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the challenges of deep long-tailed learning. They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
+
 \section{Summary and Discussion}
-The overall best performance on tail classes was achieved by the Balanced Softmax Loss, which proved to be consistent across all models while also achieving competing results on other test categories. Furthermore, these findings highlight the impact of model architecture combined with loss designs, as the standard deviation demonstrates when comparing figures \ref{fig:mean_loss_comparison} and \ref{fig:loss_comparison_bars}. Here, the longer errorbars suggests the dependency of loss design and model architecture, respectively. Further investigation of model and loss design combinations could lead to greater tail-class performance.
 
-Although the CB Loss' overall superior performance on tail classes, this performance accuracy often came with trade-offs in performance on head classes. For example, while ResNet-50 achieved the highest top 1 accuracy of 60.53\% on tail classes using Balanced Softmax, compared to that of ConvNeXt Base (Acc1: 57.89\%), head-class accuracy (82.70\%) lagged behind ConvNeXt Base (86.85\%). This trade-off highlights the challenge of optimizing for both head and tail classes simultaneously and indicates that Balanced Softmax prioritizes tail-class adjustments at the expense of head-class performance. 
+\paragraph{Balanced Softmax and Tail-Class Performance}
+By a large margin, the overall best performance on tail classes was achieved by the Balanced Softmax Loss, which proved to be consistent across all models while also achieving competitive results on other test categories. Balanced Softmax works by shifting logits to benefit minority classes, effectively countering the natural bias toward majority classes. However, as discussed below, this re-scaling can sometimes come at the expense of head-class performance.
 
-SEQL, in contrast, consistently underperformed across all models and test categories with the exception of ConvNeXt-Base. This suggests that the down-weighting of the negative gradients posed by the SEQL affect the model's ability to distinguish classes from one another, as discussed in section \ref{sec:loss_selection}. The ConvNetxt architecture includes designs components that could help mitigate the performance drop imposed by the heavy masking, such as LayerNorm (see section \ref{sec:convnext}). When training on a small datasets like the long-tailed CIFAR-100, the use of SEQL could result in the model not receiving an adequate number of samples for training when negative gradients are down-weighted. Moreover, the model fails to learn fine-grained distinctions necessary to achieve high discriminative abilities.  
-
-Likewise, the ViT-B/16 architecture underperformed significantly across all loss designs (including the softmax baseline), categories, and training datasets, with the best accuracy of 59.06\% on a balanced training dataset compared to its benchmark of 93.95\% \cite{ye2023partialfinetuningsuccessorfinetuning}. These results indicate that the default ViT-B/16 architecture may not be well-suited for long-tailed datasets without further optimization \cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}. These could include a carefully chosen optimizer, longer training, or larger dataset \cite{beyer2022betterplainvitbaselines}. Comparatively, the CNN architectures displayed overall better performance with the same setup. 
-
-The high and equal tail-class performances of ResNet-50, MobileNetV2, and ConvNeXt-Base trained on the balanced CIFAR-100 (see tables \ref{tab:resnet_bal_acc1_1}, \ref{tab:mobilenet_bal_acc1_1}, and \ref{tab:conv_bal_acc1_1}) suggests that tail-class performance may have reached a saturation point due to the limited number of samples in tail classes. These limitations could be investigated through testing on a larger datasets. 
-
-\todo{Include discussion of the choice of adam optimizer over the SGD.}
+\paragraph{Head vs. Tail Performance Trade-Off}
+Although Balanced Softmax excels at improving tail-class accuracy, this improvement often comes with a trade-off in head-class performance. For example, while ResNet-50 achieved the highest top-1 accuracy of 60.53\% on tail classes using Balanced Softmax (compared to 57.89\% on ConvNeXt Base), its head-class accuracy (82.70\%) lagged behind that of ConvNeXt Base (86.85\%). This trade-off highlights the challenge of optimizing for both head and tail classes simultaneously, indicating that Balanced Softmax prioritizes boosting tail classes more aggressively. Future work could explore strategies to fine-tune or balance this trade-off.
 
 
-The performance of the LDAM could potentially improve by including the deferred re-weighting scheme (DRW), also introduced by Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. According to related work \cite{menon2021longtaillearninglogitadjustment}, the DRW significanlty improves performance on long-tailed datasets in contrast to relying solely on LDAM for effective class re-balancing. The authors of behind LDAM achieved top-1 error of 57.96\% on CIFAR-100-LT with imbalance ratio of 100 on ResNet-32 with LDAM-DRQ. The experiments in this thesis yielded \todo{make this}.
+\paragraph{SEQL}
+In contrast, SEQL consistently underperformed across most models and test categories, with the exception of ConvNeXt-Base. A possible reason is that SEQL down-weights negative gradients, which can inadvertently weaken the model's ability to develop fine-grained distinctions among classes (see Section~\ref{sec:seql}). The ConvNeXt architecture includes design elements such as LayerNorm (see Section~\ref{sec:convnext}) that might mitigate the adverse effects of heavy gradient masking. However, on small datasets like long-tailed CIFAR-100, down-weighting negative gradients deprives the model of critical examples for training, further impairing the learning of subtle class distinctions.
 
-The decision to derive test data from the training set, rather than splitting the validation set to match the class distribution to that of the ImageNet-LT (see section \ref{sec:dataset_specs}), could also influence the results, since the training data would include more samples. Likewise, the performance of the combinations of model architectures and loss designs could benefit from training with a larger dataset, like ImageNet and ImageNet-LT. Furthermore, these larger long-tailed benchmarks follow the Pareto distribution rather than an exponential decay, mirroring a natural occuring long-tailed dataset, as discussed in sections \ref{sec:lt-datasets} and \ref{sec:dataset_specs}.  
+\paragraph{LDAM}
+The LDAM loss could potentially be improved by combining it with a deferred re-weighting scheme (DRW), as introduced by Cao et al.~\cite{cao2019learningimbalanceddatasetslabeldistributionaware}. Related work~\cite{menon2021longtaillearninglogitadjustment} demonstrates that DRW significantly boosts performance on long-tailed datasets, in contrast to using LDAM alone.
 
+\paragraph{CNNs vs.\ ViTs}
+CNN architectures (ResNet-50, MobileNetV2, and ConvNeXt Base) generally displayed better performance under the setup employed in this thesis. In contrast, ViT-B/16 underperformed significantly across all loss designs, categories, and training datasets, with its best accuracy reaching only 59.06\% on a balanced training dataset, compared to a benchmark of 93.95\%~\cite{ye2023partialfinetuningsuccessorfinetuning}. This discrepancy suggests that the default ViT-B/16 architecture may not be well-suited for smaller or long-tailed datasets without further adaptation. Transformers typically excel with large-scale, balanced data; hence, additional optimization techniques (e.g., specialized data augmentations, longer training, or advanced regularization) may be necessary to exploit ViT-B/16’s full potential~\cite{menon2021longtaillearninglogitadjustment,loshchilov2018fixing}.
 
-Overall, these findings emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the challenges of deep long-tailed learning. They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
+\paragraph{Saturation on Balanced CIFAR-100}
+ResNet-50, MobileNetV2, and ConvNeXt-Base all displayed high, nearly equal tail-class performances when trained on the balanced version of CIFAR-100 (see Tables~\ref{tab:resnet_bal_acc1_1}, \ref{tab:mobilenet_bal_acc1_1}, and \ref{tab:conv_bal_acc1_1}). This suggests that tail-class accuracy may have reached a saturation point due to the inherently limited number of samples in these minority classes. Testing on larger, more diverse datasets would help clarify whether these accuracies can be further improved.
 
-\todo{Adam optimization:}
-Figure 1: Mean and standard deviation over 5 runs of per-class weight norms for a ResNet-32 under
-momentum and Adam optimisers. We use long-tailed (“LT”) versions of CIFAR-10 and CIFAR-100,
-and sort classes in descending order of frequency; the first class is 100 times more likely to appear
-than the last class. Both optimisers yield solutions with comparable balanced error. However, the
-weight norms have incompatible trends: under momentum, the norms are strongly correlated with
-class frequency, while with Adam, the norms are anti-correlated or independent of the class frequency.
-Consequently, weight normalisation under Adam is ineffective for combatting class imbalance \cite{menon2021longtaillearninglogitadjustment}.
-adam optimizer: 
-\url{https://medium.com/@weidagang/demystifying-the-adam-optimizer-in-machine-learning-4401d162cb9e}
-Useful for large datasets \cite{kingma2017adammethodstochasticoptimization}
+\paragraph{Optimizer Choice in Long-Tailed Learning}
+Studies have shown that optimizer choice can influence long-tailed classification performance due to implicit biases \cite{soudry2024implicitbias,menon2021longtaillearninglogitadjustment}. Specifically, SGD with momentum tends to correlate more strongly with class frequency, amplifying the advantage of head classes. In contrast, Adam exhibits a weaker correlation between class frequency and weight norms, potentially influencing re-weighting schemes~\cite{menon2021longtaillearninglogitadjustment}.
+
+Given these nuances, Adam was chosen primarily for its faster convergence and minimal hyperparameter tuning in this study. However, future work could explore switching to SGD to see if this yields better overall performance. For instance, a carefully tuned SGD might further improve tail-class accuracy when combined with a re-weighting strategy (like DRW).
+
+\paragraph{Dataset Considerations}
+The decision to derive test data directly from the training set, rather than creating a separate validation set with a matched long-tailed distribution (see Section~\ref{sec:dataset_specs}), may have influenced the reported results.
+
+Likewise, the combinations of model architectures and loss designs could benefit from training on larger long-tailed benchmarks like ImageNet-LT. These larger datasets follow a more natural Pareto distribution rather than an exponential decay, better mirroring real-world scenarios (see Sections~\ref{sec:lt-datasets} and~\ref{sec:dataset_specs}). However, scaling to ImageNet-LT also introduces higher computational and resource demands.
+
+\paragraph{Fine-Tuning and Transfer Learning}
+Transfer learning from large-scale datasets (e.g., ImageNet) is widely acknowledged as a means of mitigating data scarcity in long-tailed problems~\cite{cs231n,ye2023partialfinetuningsuccessorfinetuning,kandel2020}. In this study, all layers of the pretrained models were fine-tuned rather than freezing any subset of them. Fine-tuning the entire network allows the model to fully adapt its learned features to the CIFAR-100 dataset, potentially benefiting minority classes that differ significantly from ImageNet classes~\cite{ye2023partialfinetuningsuccessorfinetuning}.
+
+However, this comprehensive fine-tuning introduces two notable trade-offs. First, updating all layers raises the risk of overfitting~\cite{cs231n}, especially when dealing with a smaller dataset such as CIFAR-100. Second, because the lower layers often capture general, transferable features (e.g., edges, shapes), fully retraining these layers can lead to a loss of these broad representations~\cite{cs231n,yosinski2014transferablefeaturesdeepneural}. In future work, partial freezing or layer-wise fine-tuning could be investigated to preserve the generality of early-stage features while still adapting higher layers to the characteristics of the long-tailed CIFAR-100 distribution.
+
+\paragraph{Summary}
+Balanced Softmax Loss achieved highest accuracy on minority classes across all CNN architectures by a large margin, highlighting the effectiveness of logit shifting compared to re-weighting and re-margining techniques. However, adjusting logits comes with a trade-off in majority classes, where weighted cross-entropy loss designs consistently outperforms.
+
+Overall, findings of these experiments emphasize the importance of aligning loss functions with both dataset characteristics and model architectures to address the challenges of deep long-tailed learning. They also highlight the need for a nuanced approach that balances improvements in tail-class accuracy with minimal trade-offs in head-class and overall performance.
+
+% \subsection{Future Directions}
+% \paragraph{Balancing Head and Tail Classes More Effectively.}
+% Finding the right equilibrium between head-class and tail-class accuracy remains a core challenge. Future work could explore adaptive or dynamic adjustments to Balanced Softmax or CB Loss, where re-scaling factors are periodically recalculated based on per-class performance.
+
+% \paragraph{Combining LDAM with DRW.}
+% As noted, \textbf{LDAM with DRW} may significantly improve performance. Implementing this combination in tandem with CNN and transformer architectures—possibly using different optimizers—could clarify the interplay between re-weighting strategies, loss functions, and architecture-specific inductive biases.
+
+% \paragraph{Architectural and Optimizer Innovations.}
+% Novel network architectures, specialized data augmentations, and flexible optimizers (e.g., AdaBound or Lion) might offer further gains. Thorough hyperparameter tuning, especially in learning rate schedules for both head and tail classes, can be essential for maximizing performance on imbalanced datasets.
+
+% \paragraph{Larger, More Realistic Benchmarks.}
+% Finally, testing these methods on larger, naturally imbalanced datasets would help validate whether the improvements seen on CIFAR-100 are robust in more complex, real-world conditions. The use of large-scale, long-tailed benchmarks—while computationally intensive—provides a more realistic test bed for practical applications.
+
+% \subsection{Overall Conclusions}
+% In summary, our findings demonstrate that:
+% \begin{itemize}
+%     \item \textbf{Loss Design Matters}: Balanced Softmax and CB Loss excel at boosting minority classes but may reduce head-class accuracy.  
+%     \item \textbf{Model Architecture Impacts Performance}: CNNs generally handle imbalance better under our setup than ViT-B/16, which may require larger datasets or specialized tuning.  
+%     \item \textbf{Optimizer Bias is Real}: Adam’s weaker correlation between class frequency and weight norms can work synergistically with re-weighting methods, though SGD might still outperform it under careful tuning.  
+%     \item \textbf{Methodological Details Influence Outcomes}: Using training data for testing or employing small datasets can mask or exaggerate improvements.
+% \end{itemize}
+
+% Overall, these findings emphasize that tackling long-tailed learning requires aligning \emph{all} components—loss function, architecture, optimizer, and dataset design—to address the unique challenges posed by highly imbalanced data. Achieving gains in tail-class performance must be balanced with minimal trade-offs in head-class and overall accuracy, a tension likely best resolved through tailored or hybrid strategies that adapt to the specific data distribution at hand.
