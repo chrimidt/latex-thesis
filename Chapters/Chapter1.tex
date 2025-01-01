@@ -1,17 +1,9 @@
 % Chapter 1: Introduction
-
-% Length: aim for 2-3 pages.
-
 \label{sec:introduction}
 
-\todo{Emphasize head and tail classes.}
+Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results \cite{Goodfellow-et-al-2016}. The trained models have shown image classification with accuracies of over 80 \% \cite{he2015deepresiduallearningimage,dosovitskiy2021imageworth16x16words}, and hence the interest in deep learning for image recognition is high. However, the high accuracies are usually achieved on models trained with balanced datasets, while most real-world datasets are skewed in samples per class \cite{vanhorn2017deviltailsfinegrainedclassification,Buda_2018,liu2019largescalelongtailedrecognitionopen}.  
 
-Image classification is one of the main challenges computer vision.
-
-Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results \cite{Goodfellow-et-al-2016}. The trained models have shown image classification with accuracies of over 80 \% \todo{reference here}, and hence the interest in deep learning for image recognition is high. However, the high accuracies are for on models trained on balanced datasets with thousands of samples per class \todo{reference here}, while most real-world datasets are skewed in samples per class \cite{vanhorn2017deviltailsfinegrainedclassification,Buda_2018,liu2019largescalelongtailedrecognitionopen}.  
-
-
-This thesis focuses on the problem with long-tailed datasets. The problem with training a deep learning model on long-tailed datasets is that the model will effectively the data from the classes with most samples, and not the classes with few samples. The finsihed model will then not recognize an input from the tail classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data. The aim of this thesis is to try out some of the methods tackling the long-tailed problem for deep learning described in the paper \textit{Deep Long-Tailed Learning: A Survey} by Zhang et al.\cite{zhang2023deep} to find a method for long-tailed learning that works on a specific long-tailed dataset of images of moths taken around equator. The goal of the moth dataset is to identify species.
+This thesis addresses the challenge of long-tailed datasets in image classification, where most classes contain only a few samples. A long-tailed class distribution causes the model to primarily learn features from majority (head) classes, leading to a bias toward these dominant classes. As a result, the trained model struggles to recognize inputs from minority (tail) classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data \cite{vanhorn2018inaturalistspeciesclassificationdetection,zhang2023deep}. The aim of this thesis is to examine some of the methods tackling the long-tailed problem for deep learning described in the paper \textit{Deep Long-Tailed Learning: A Survey} by Zhang et al.\cite{zhang2023deep} to find a method for long-tailed learning that works on a specific long-tailed dataset of images of insects taken around equator. The goal of the insect dataset is to identify species.
 
 \section{Problem Definition}
 \todo{Something about head and tail classes.}
@@ -41,6 +33,7 @@ Four models are investigated, where three of them are CNNs, and one is a ViT. Th
 
 
 \subsection{Goals of this thesis}
+\label{sec:goals}
 The goals of this thesis are to:
 
 \begin{enumerate}

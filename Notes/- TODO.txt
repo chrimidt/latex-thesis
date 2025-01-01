@@ -59,10 +59,10 @@ x Move comparisons with state-of-the-art results in seperate section.
 - Confusion matrix?
 x Table for the mean and standard deviation across all loss designs for each model in figure 5.1
 x Include the new found CBL and SEQL 
-- Compare the types of class re-balancing
+x Compare the types of class re-balancing
 
 Conclusion and Future Work:
-- Write the goals again and the answers below
+x Write the goals again and the answers below
 
 References:
 - Align with formalia
