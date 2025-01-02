@@ -15,19 +15,19 @@ CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, deri
 
 \begin{equation}
     \label{eq:exp}
-    n_i = n_{max}\cdot \text{IR}^{\frac{i-1}{C-1}}
+    n_i = n_{max}\cdot \text{IR}^{\frac{i-1}{K-1}}
 \end{equation}
 
-Where $n_i$ is the number of samples in class $i$, $n_{max}$ is the number of samples in the most frequent class, IR is the imbalance ratio, and $C$ is the total number of classes \cite{kaidic_ldam_drw}.
+Where $n_i$ is the number of samples in class $i$, $n_{max}$ is the number of samples in the most frequent class, IR is the imbalance ratio, and $K$ is the total number of classes \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.
 
 Other long-tailed datasets follow a Pareto distribution with number of samplers per class as followed \cite{liu2019largescalelongtailedrecognitionopen}:
 
 \begin{equation}
     \label{eq:pareto}
-    f(C) = \frac{\alpha C_{\text{m}}^\alpha}{C^{\alpha + 1}}, \quad C \geq C_{\text{m}}, \quad \alpha > 0
+    f(K) = \frac{\alpha K_{\text{m}}^\alpha}{K^{\alpha + 1}}, \quad K \geq K_{\text{m}}, \quad \alpha > 0
 \end{equation}
 
-Here, $\alpha$ is the shape parameter, $C_{\text{m}}$ is the scale parameter representing the minimum possible class index, and $C$ is the class index. A larger $\alpha$ results in a more severe imbalance.
+Here, $\alpha$ is the shape parameter, $K_{\text{m}}$ is the scale parameter representing the minimum possible class index, and $K$ is the class index. A larger $\alpha$ results in a more severe imbalance.
 
 \begin{figure}[ht]
     \centering

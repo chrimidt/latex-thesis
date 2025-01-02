@@ -112,7 +112,7 @@ To further analyze performance, the test set was divided into three subsets: hea
 
 
 \subsection{Data Augmentation}
-Data augmentation and normalization were applied to the CIFAR-100 dataset to improve the generalization capability of the models. For the CIFAR-100 dataset, the augmentations were applied using the CIFAR-100 RGB statistics, with mean values [0.4914, 0.4822, 0.4465], and standard deviations [0.2023, 0.1994, 0.2010] \cite{kaidic_ldam_drw}. These values are used to normalize the images after applying the transformations. However, the models used in this study are all pretrained on ImageNet, and choosing the ImageNet RGB statistics could potentially influence the training, as the pretrained weights are optimized for inputs with ImageNet statistics. Future work could explore the impact of using ImageNet statistics instead.
+Data augmentation and normalization were applied to the CIFAR-100 dataset to improve the generalization capability of the models. For the CIFAR-100 dataset, the augmentations were applied using the CIFAR-100 RGB statistics, with mean values [0.4914, 0.4822, 0.4465], and standard deviations [0.2023, 0.1994, 0.2010] \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. These values are used to normalize the images after applying the transformations. However, the models used in this study are all pretrained on ImageNet, and choosing the ImageNet RGB statistics could potentially influence the training, as the pretrained weights are optimized for inputs with ImageNet statistics. Future work could explore the impact of using ImageNet statistics instead.
 
 Images were resized to 224x224 pixels to match the input requirements of the ImageNet-pretrained models. Random cropping with a padding of 4 was applied to introduce spatial variations, while horizontal flipping with a 50\% probability further augmented the data. After these transformations, images were normalized using the CIFAR-100-specific mean and standard deviation values, ensuring consistency with the dataset.
 
@@ -142,7 +142,7 @@ Transfer learning leverages pre-trained neural networks to adapt to new tasks on
     MobileNetV2 \cite{sandler2018mobilenetv2} & CNN  & ImageNet-1K & - & 72.154 \cite{pytorch_mobilenetv2} \\
     ResNet50 \cite{he2015deepresiduallearningimage} & CNN & ImageNet-1K & - & 	
     80.858 \cite{torchvision-resnet} \\
-    ConvNeXt-Base \cite{todi2023convnext}  & CNN & ImageNet-1K & 88.591.464 & 84.062 \cite{torchvision-convnext} \\
+    ConvNeXt-Base \cite{todi2023convnext}  & CNN & ImageNet-1K & 88.591.464 & 84.062 \cite{torchvision-resnet} \\
     ViT-B/16 \cite{dosovitskiy2021imageworth16x16words}   & ViT & \makecell{ImageNet-21K \\ (ft on ImageNet-1K)} & - & 	- \\
     \bottomrule
     \end{tabular}
