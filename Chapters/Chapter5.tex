@@ -14,7 +14,7 @@ This section presents the overall results of all experiments conducted in this t
 
 \subsection{ResNet-50}
 
-From Table \ref{tab:resnet_bal_acc1_1}, Softmax and Weighted Softmax yield identical performance when trained on balanced data due to their cross-entropy term in equations \eqref{eq:cb_loss} and \eqref{eq:wce_loss}. Balanced Softmax Loss demonstrates strong performance on the long-tailed test set (Acc1: 84.30\%) and head classes (Acc1: 84.60\%), while still performing comparably on tail classes. Notably, Sofmax Loss, Weighted Softmax Loss, and CB Loss all achieve top-1 accuracy of 94.74 \% on tail classes as the greates performance of all loss designs. Overall, the performance of the class re-balancing methods compare to that of the softmax baseline. The best performing loss design (softmax) perform with an accuracy of 83.24\%, not far behind the best published result for ResNet-50 with an accuracy of 86.90\% as seen in table \ref{tab:benchmark_comparison}.
+From Table \ref{tab:resnet_bal_acc1_1}, Softmax and Weighted Softmax yield identical performance when trained on balanced data due to their cross-entropy term in equations \eqref{eq:cb_loss} and \eqref{eq:wce_loss}. Balanced Softmax Loss demonstrates strong performance on the long-tailed test set (Acc1: 84.30\%) and head classes (Acc1: 84.60\%), while still performing comparably on tail classes. Notably, Sofmax Loss, Weighted Softmax Loss, and CB Loss all achieve top-1 accuracy of 94.74 \% on tail classes as the greatest performance of all loss designs. Overall, the performance of the class re-balancing methods compare to that of the softmax baseline. The best performing loss design (Softmax) achieved and accuracy of 83.24\%, not far behind the best published result for ResNet-50 with an accuracy of 86.90\% as seen in table \ref{tab:benchmark_comparison}.
 
 \begin{table}[h!]
     \centering
@@ -36,7 +36,7 @@ From Table \ref{tab:resnet_bal_acc1_1}, Softmax and Weighted Softmax yield ident
     \label{tab:resnet_bal_acc1_1}
 \end{table}
 
-From Table \ref{tab:resnet_lt_acc1_1}, Balanced Softmax Loss significantly improves tail-class accuracy (Acc1: 60.53\%), outperforming other loss designs, while also outperforming on balanced and middle sets. Softmax Loss achieves the best performance on the long-tailed dataset and head classes, indicating that while Balanced Softmax improves minority-class accuracy, Softmax remains strong for majority classes. Comparing with the results form table \ref{tab:resnet_bal_acc1_1}, most losses exhibits strong performance on head classes, except for SEQL with and underwhelming performance across all categories. Likewise, LDAM struggles with most categories, and particularly with tail classes.
+From Table \ref{tab:resnet_lt_acc1_1}, Balanced Softmax Loss significantly improves tail-class accuracy (Acc1: 60.53\%), outperforming other loss designs, while also outperforming on balanced and middle sets. Softmax Loss achieves the best performance on the long-tailed dataset and head classes, indicating that while Balanced Softmax improves minority-class accuracy, Softmax remains strong for majority classes. Comparing with the results form table \ref{tab:resnet_bal_acc1_1}, most losses exhibits strong performance on head classes, except for SEQL with an underwhelming performance across all categories. Likewise, LDAM struggles with most categories, and particularly with tail classes.
 
 \begin{table}[h!]
     \centering
@@ -154,7 +154,7 @@ From Table \ref{tab:vit_bal_acc1_1}, LDAM Loss achieves the overall best perform
 The results from Table \ref{tab:vit_lt_acc1} show low performance across all loss designs. Balanced Softmax Loss slightly improves results on balanced and middle categories, while Softmax Loss achieves the highest accuracy on the long-tailed dataset and head classes. The best performance on tail classes (Acc1: 10.53\%) is achieved by SEQL, however, still unsatisfactory. This pattern suggests that the ViT-B/16 architecture may not be sufficient for robust performance on smaller-scale, long-tailed datasets and may require furhter adjustments in the training pipeline, as outlined in section \ref{sec:ViTs}. 
 
 \subsection{ConvNeXt Base}
-From Table \ref{tab:conv_bal_acc1_1}, CB Loss achieves the highest balanced test accuracy of 83.64\% while the Softmax Loss, Weighted Softmax loss, and BS loss tie for top performance on the long-tailed dataset (Acc1: 94.74\%). Softmax Loss and weighted softmax loss yield same perfomance across all categories du to their shared design on balanced datasets. The saturation of tail-class performance is likely due to the quality or quantity of tail classes. For comparison, the best published result for a ConvNext architecture trained with CIFAR-100 achieve an accuarcy of 94.04\% (see table \ref{tab:benchmark_comparison}), the best perfomance of on the balanced test set is in alignment yields an accuracy of 83.98\%, implying room for improvement in the training pipeline.
+From Table \ref{tab:conv_bal_acc1_1}, CB Loss achieves the highest balanced test accuracy of 83.64\% while the Softmax Loss, Weighted Softmax loss, and BS loss tie for top performance on the long-tailed dataset (Acc1: 94.74\%). Softmax Loss and weighted softmax loss yield same perfomance across all categories due to their shared design on balanced datasets. The saturation of tail-class performance is likely due to the quality or quantity of tail classes. For comparison, the best published result for a ConvNext architecture trained with CIFAR-100 achieve an accuarcy of 94.04\% (see table \ref{tab:benchmark_comparison}), the best perfomance of on the balanced test set is in alignment yields an accuracy of 83.98\%, implying room for improvement in the training pipeline.
 
 \begin{table}[h!]
     \centering
@@ -206,7 +206,7 @@ For MobileNetV2, the results in this thesis surpass the published benchmarks. Th
 
 The most significant deviation is observed with ViT-B/16, where the accuracy falls far short of the benchmark. This discrepancy suggests that the configuration for ViT-B/16 may not optimized for training with small-scale datasets, as outlined in section \ref{sec:ViTs}. 
 
-Overall, these results indicate that the experimental setup is effective for most models but highlights potential limitations for transformer-based architectures such as ViT-B/16. Future investigation could lead to and understanding of these discrepancies.
+Overall, these results indicate that the experimental setup is effective for most models but highlights potential limitations for transformer-based architectures such as ViT-B/16. Future investigation could lead to an understanding of these discrepancies.
 
 \begin{table}[H]
     \centering
