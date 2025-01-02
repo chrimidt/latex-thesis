@@ -1,6 +1,6 @@
 % Chapter 2: Background
 
-This chapter presents the different background topics of the thesis work, which are the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Vision Transformers (ViT)}, and the deep long-tailed learning methods \textit{Class-Sensitive Learning}.
+This chapter presents the different background topics of the thesis work, which includes the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Vision Transformers (ViT)}, and the deep long-tailed learning methods \textit{Class-Sensitive Learning}.
 
 % ===============================================================================
 % LT Datasets
@@ -8,8 +8,16 @@ This chapter presents the different background topics of the thesis work, which 
 \section{Long-Tailed Datasets}
 \label{sec:lt-datasets}
 Long-tailed datasets pose significant challenges in deep learning, as they represent an extreme form of class imbalance. Addressing these challenges is central to this thesis, which explores methods to improve model performance on underrepresented classes. This section outlines the structure of long-tailed distributions and their implications.
+%\vspace{1em}
 
-A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. For a long-tailed training set $\{x_i, y_i\}_{i=1}^n$, where each sample $x_i$ has a corresponding class label $y_i$. The total number of training samples over $K$ classes is $n = \sum_{k=1}^K n_k$. Here, $n_k$ represents the number of samples in class $k$. Let $\pi$ denote the vector of label frequencies, where $\pi_k = \frac{n_k}{n}$ indicates the label frequency of class $k$ \cite{zhang2023deep}. It can be assumed that the classes are sorted by cardinality in decreasing order. This class distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} by using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/long_tail_distribution.png} 
+    \caption{Illustration of a long-tailed distribution. Figure from \cite{lgresearch257}.}
+    \label{fig:lt_distribution} % Use a unique label for referencing the figure
+\end{figure}
+
+\noindent A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. Mathematically, a long-tailed training set is denoted as $\{x_i, y_i\}_{i=1}^n$, where each sample $x_i$ has a corresponding class label $y_i$. The total number of training samples over $K$ classes is $n = \sum_{k=1}^K n_k$. Here, $n_k$ represents the number of samples in class $k$. Let $\pi$ denote the vector of label frequencies, where $\pi_k = \frac{n_k}{n}$ indicates the label frequency of class $k$ \cite{zhang2023deep}. It can be assumed that the classes are sorted by cardinality in decreasing order. This class distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} by using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
 
 CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 $32 \times 32$ color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR-100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following an exponential decay en sample sizes, given by:
 
@@ -29,12 +37,7 @@ Other long-tailed datasets follow a Pareto distribution with number of samplers 
 
 Here, $\alpha$ is the shape parameter, $K_{\text{m}}$ is the scale parameter representing the minimum possible class index, and $K$ is the class index. A larger $\alpha$ results in a more severe imbalance.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Images/long_tail_distribution.png} 
-    \caption{Illustration of a long-tailed distribution. Figure from \cite{lgresearch257}.}
-    \label{fig:lt_distribution} % Use a unique label for referencing the figure
-\end{figure}
+
 
 Class imbalance has a profound impact on model performance compared to evenly distributed datasets \cite{vanhorn2017deviltailsfinegrainedclassification, cui2019classbalancedlossbasedeffective}. Deep networks trained on long-tailed datasets often exhibit biased performance, favoring head classes while performing poorly on tail classes \cite{zhang2023deep}. Zhang et al. (2023) provide a comprehensive survey of methods addressing this challenge, categorizing current approaches into three main groups: class re-balancing, information augmentation, and module improvement. These methods will be further explored in section \ref{sec:lt_methods}. 
 
@@ -47,7 +50,7 @@ Class imbalance has a profound impact on model performance compared to evenly di
 \section{Model Architecures}
 \label{sec:model_arch}
 Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2015deepresiduallearningimage}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the ViT architecture.
-These models were chosen to represent a spectrum of design paradigms; from the traditional ResNet to lightweight architectures and transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
+These models were chosen to represent a spectrum of design paradigms; from lightweight CNNs to transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
 
 % ===============================================================================
 % DNNs
@@ -56,14 +59,15 @@ These models were chosen to represent a spectrum of design paradigms; from the t
 \label{sec:intro_DNN}
 Before the introduction of Convolutional Neural Networks (CNNs) and, more recently, Vision Transformers (ViTs), the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive,HORNIK1989359}.
 
-To illustrate the structure of a neural network, figure \ref{fig:dnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
-
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{Images/cnn_layers.png} 
     \caption{Layers of a neural network. This neural network consists of three input neurons, two hidden layers with four neurons each, and two output neurons. The layers are fully connected.}
     \label{fig:dnn_layers}
 \end{figure}
+
+To illustrate the structure of a neural network, figure \ref{fig:dnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
+
 
 However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. The limitations of MLPs were addressed by Convolutional Neural Networks (CNNs), which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
 
@@ -82,7 +86,7 @@ Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address
     \label{fig:cnn_illustration}
 \end{figure}
 
-CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a fully connected layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the fully connected layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width} \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers:
+\noindent CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a fully connected layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the fully connected layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width} \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers:
 
 \paragraph{Convolutional Layer}
 The convolutional layer is the foundation of CNNs. It applies a set of filters (called kernels) to the input image, performing convolutions to produce feature maps \cite{cs231n}. Each filter is designed to detect specific features, such as edges or textures. The filter, which has smaller dimensions than the input, is applied to an area of the image, computing dot products between the weights of the filter and the input pixels, as illustrated in figure \todo{make this figure}. Afterwards, the filter shifts by a stride, repeating the process until the kernel has computed the dot products for entire image. This process enables the network to learn spatial hierarchies of features, with the early layers capturing patterns like edges, and later layers capturing detailed structures \todo{reference}. After each convolution, the ReLu transformation is applied to introduce non-linearity \cite{cs231n}.
@@ -107,15 +111,36 @@ The FC layer, as the name implies, connects every neuron in one layer to every n
 % Pooling layers contribute to a spatial hierarchy, making the network robust to small positional changes and reducing computational complexity. Moreover, the multi-layered structure of CNNs facilitates hierarchical feature learning, where early layers capture simple features, and deeper layers learn increasingly complex representations. These inductive biases are fundamental to the effectiveness of CNNs in tasks like image classification and segmentation, as they align closely with the structure and characteristics of image data.
 
 
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed in section \ref{sec:model_arch_background}.
+
+% ===============================================================================
+% Vision Transformers
+
+\subsection{Vision Transformers}
+\label{sec:ViTs}
+\todo{Explain their advantages over CNNs for certain tasks.
+Mention why they are relevant for handling long-tailed datasets.}
+
+Transformers were introduced by Vaswani et al. in 2017 \cite{vaswani2023attentionneed}, and revolutionized the deep learning field, surpassing Recurrent Neural Networks (RNNs) for Natural Language Processing (NLP) tasks  \cite{v7labs-vit,vaswani2023attentionneed}. The design behind transformers is based on self-attention mechanism, allowing the model to weigh the significance of each part of input. As their design lack recurrence or convolutions, transformers use positional embeddings to represent the order of tokens in a sequence \cite{vaswani2023attentionneed}. Later, the Vision Transformer (ViT), an adaptation of the transformer architecture for image processing, was introduced by Dosovitskiy et al. (2021) \cite{dosovitskiy2021imageworth16x16words}. Here, images are represented as sequences including the class label as a learnable token for classification. The input image is divided into a sequence of patches, which are then flattened and liniarly embedded into a vector. The spacial information is preserved by adding positional encodings to the embeddings. Next, the sequence is fed into a transformer encoder identical to that introduced by Vaswani et al., consisting of alternating layers of Multi-head self-attention (MSP) and Multi-Layer Perceptron (MLP) blocks with Layer Norm (LN) applied before every block, and residual connection after every block. The final MLP layer acts as the classification head \cite{dosovitskiy2021imageworth16x16words}. The illustration in figure \ref{fig:vit_arch} shows the architecture of Vision Transformers.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/vit.png} 
+    \caption{Vision Transformer architecture. Figure from \cite{dosovitskiy2021imageworth16x16words}. \todo{Make this figure.}}
+    \label{fig:vit_arch}
+\end{figure}
+
+Unlike CNNs, ViTs have much less image-specific inductive bias \cite{dosovitskiy2021imageworth16x16words}. While the inductive bias in CNNs help the model generalize to unseen data \cite{kim2020inductivebias}, the ViT architecture does not include built-in assumptions about the structure of the data, only the MLP layers are local an translationally equivalent \cite{dosovitskiy2021imageworth16x16words}. As a result, ViTs require more training data to learn spacial relations compared with CNNs.
+
+\todo{What made the ViT get SOTA? Why were they better than CNNs? Scalability. \url{https://www.youtube.com/watch?v=QqejV0LNDHA}.}
 
 
-
-CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed below.
-
+\section{Model Architectures}
+\label{sec:model_arch_background}
 % ===============================================================================
 % ResNet50
 
-\subsubsection{ResNet50 Architecture}
+\subsection{ResNet50 Architecture}
 \label{sec:resnet}
 ResNet50 is a variant of the Residual Network (ResNet) architecture, developed by Microsoft Research (He et al.) in 2015 \cite{he2015deepresiduallearningimage}. The ResNet architecture was designed to address the vanishing and exploding gradient problem in deep networks. When training a deep neural network, as the number of layers increases, the gradients of the loss function with respect to the weight can potentially vanish or explode during backpropagation \cite{he2015deepresiduallearningimage}. This can lead to slow convergence or unstable updates.
 
@@ -142,7 +167,7 @@ The ResNet50 implementation consist of 1 convolutional layer, 4 stages of bottle
 % ===============================================================================
 % MobileNetV2
 
-\subsubsection{MobileNetV2 Architecture}
+\subsection{MobileNetV2 Architecture}
 \label{sec:mobilenet}
 MobileNetV2 introduced by Sandler et al. \cite{sandler2018mobilenetv2} is a lightweight CNN model designed primarily to balance model accuracy and computational efficiency, making it suitable for mobile or embedded devices. Building upon the original concepts of MobileNetV1 \cite{howard2017mobilenetsefficientconvolutionalneural}, MobileNetV2 preserves the use of depthwise separable convolutions, a method for reducing the parameters and floating-point operations, while introducing a novel element known as the inverted residual structure. 
 
@@ -177,38 +202,9 @@ Following MobileNetV1, MobileNetV2 relies on depthwise separable convolutions to
 
 
 % ===============================================================================
-% Vision Transformers
-
-\subsection{Vision Transformers}
-\label{sec:ViTs}
-\todo{Explain their advantages over CNNs for certain tasks.
-Mention why they are relevant for handling long-tailed datasets.}
-
-Transformers were introduced by Vaswani et al. in 2017 \cite{vaswani2023attentionneed}, and revolutionized the deep learning field, surpassing Recurrent Neural Networks (RNNs) for Natural Language Processing (NLP) tasks  \cite{v7labs-vit,vaswani2023attentionneed}. The design behind transformers is based on self-attention mechanism, allowing the model to weigh the significance of each part of input. As their design lack recurrence or convolutions, transformers use positional embeddings to represent the order of tokens in a sequence \cite{vaswani2023attentionneed}. Later, the Vision Transformer (ViT), an adaptation of the transformer architecture for image processing, was introduced by Dosovitskiy et al. (2021) \cite{dosovitskiy2021imageworth16x16words}. Here, images are represented as sequences including the class label as a learnable token for classification. The input image is divided into a sequence of patches, which are then flattened and liniarly embedded into a vector. The spacial information is preserved by adding positional encodings to the embeddings. Next, the sequence is fed into a transformer encoder identical to that introduced by Vaswani et al., consisting of alternating layers of Multi-head self-attention (MSP) and Multi-Layer Perceptron (MLP) blocks with Layer Norm (LN) applied before every block, and residual connection after every block. The final MLP layer acts as the classification head \cite{dosovitskiy2021imageworth16x16words}. The illustration in figure \ref{fig:vit_arch} shows the architecture of Vision Transformers.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Images/vit.png} 
-    \caption{Vision Transformer architecture. Figure from \cite{dosovitskiy2021imageworth16x16words}. \todo{Make this figure.}}
-    \label{fig:vit_arch}
-\end{figure}
-
-Unlike CNNs, ViTs have much less image-specific inductive bias \cite{dosovitskiy2021imageworth16x16words}. While the inductive bias in CNNs help the model generalize to unseen data \cite{kim2020inductivebias}, the ViT architecture does not include built-in assumptions about the structure of the data, only the MLP layers are local an translationally equivalent \cite{dosovitskiy2021imageworth16x16words}. As a result, ViTs require more training data to learn spacial relations compared with CNNs.
-
-\todo{What made the ViT get SOTA? Why were they better than CNNs? Scalability. \url{https://www.youtube.com/watch?v=QqejV0LNDHA}.}
-
-% ===============================================================================
-% ViT-B/16
-
-\subsubsection{ViT-B/16 Architecture}
-\label{sec:vitb16}
-the ViT-B/16 is a Vision Transformer that leverages the transformer architecture for image classification \cite{dosovitskiy2021imageworth16x16words}, pre-trained on \todo{ImageNet-1K or ImageNet-21K?}. One of the main characteristics of the ViT-B/16 is that the input image consist of a fixed $16 \times 16$ patch size. It has 12 stacked encoder layers, each computing self-attention with 12 heads \cite{dosovitskiy2021imageworth16x16words}. Additionally, each layer includes an MLP, and skip-connections are applied around self-attention and MLP blocks for better gradient flow. LN is applied before the attention and MLP blocks. Afterwards, the appended class token is extracted, and a fully connected layer maps the token to the class prediction \cite{torchvision2024vitb16}. 
-
-
-% ===============================================================================
 % ConvNeXt Base
 
-\subsubsection{ConvNeXt Base Architecture}
+\subsection{ConvNeXt Base Architecture}
 \label{sec:convnext}
 ConvNext, introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}, evolutionized the traditional CNN architecture by incorporating elements from ViTs. Starting with the stem cell, the ConvNeXts employ a patchify stem, as seen in figure \ref{fig:stem}. By setting the kernel to $4 \times 4$ and the stride to 4, the result is a non-overlapping convolution where no information is shared between them. However, these are later combined in the final layers of the network.  
 
@@ -229,6 +225,16 @@ Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, t
 \end{figure}
 
 Instead of using the commonly used activation function in ResNets, the Rectified Linear Unit (ReLU), the ConvNeXt use Gaussian Error Linear Unit (GeLU). This activation function has shown to perform better than ReLU for transformers \cite{liu2022convnet2020s}. Additionally, ConvNext draws inspiration from transformers by removing most instances of normalization layers, only leaving them after depthwise convolutions and furhter replacing the Batch Normalization with Layer Normalization. Finally, ConvNeXt introduces separate downsampling layers between blocks rather than implementing downsampling within the blocks themselves. 
+
+% ===============================================================================
+% ViT-B/16
+
+\subsection{ViT-B/16 Architecture}
+\label{sec:vitb16}
+the ViT-B/16 is a Vision Transformer that leverages the transformer architecture for image classification \cite{dosovitskiy2021imageworth16x16words}, pre-trained on \todo{ImageNet-1K or ImageNet-21K?}. One of the main characteristics of the ViT-B/16 is that the input image consist of a fixed $16 \times 16$ patch size. It has 12 stacked encoder layers, each computing self-attention with 12 heads \cite{dosovitskiy2021imageworth16x16words}. Additionally, each layer includes an MLP, and skip-connections are applied around self-attention and MLP blocks for better gradient flow. LN is applied before the attention and MLP blocks. Afterwards, the appended class token is extracted, and a fully connected layer maps the token to the class prediction \cite{torchvision2024vitb16}. 
+
+
+
 
 
 
@@ -253,7 +259,7 @@ Deep networks are commonly trained with mini-batch gradient descent using random
 \subsection{Class-Sensitive Learning}
 \label{sec:class-sensitive-learning}
 
-Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}, as described later in this section. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function \todo{or how losses er calculated} to pay more attention to minority classes, thus improving overall performance.
+Traditional training methods using the standard loss function, cross-entropy loss, can lead the model to be biased towards head classes, as the loss ignores class imbalance and thus generate an uneven amount of gradients for different classes \cite{zhang2023deep}, as described later in this section. Consequently, tail classes are often misclassified. To address this imbalance, class-sensitive learning methods modify the loss function to pay more attention to minority classes, thus improving performance on tail classes.
 
 The three sub-categories of class-sensitive learning explored in this thesis are described in the following.
 
@@ -263,9 +269,9 @@ Modifies the loss function, commonly the cross-entropy loss, by assigning differ
 
 \subsubsection{Re-Margining}
 \label{sec:re-margining}
-Re-margining aims to solve class imbalance by improving classification by introducing margin between classes, encouraging higher margins between rare classes. 
+Re-margining aims to solve class imbalance by introducing margin between classes, encouraging higher margins between rare classes. 
 
-The margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in the $i$-th class to the decision boundary. Figure \ref{fig:decision_boundaries} illustrates how the margin affects the decision boundary for binary classification. As the decision boundary separates the regions of input space corresponding to different class predictions, by increasing the margin, the model becomes more confident in classification.
+Figure \ref{fig:decision_boundaries} illustrates how the margin affects the decision boundary for binary classification. Here, the margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in the $i$-th class to the decision boundary.  By increasing the margin, the decision boundary separates the regions of input space corresponding to different class predictions, thus the model becomes more confident in classification.
 
 
 \begin{figure}[ht]
@@ -275,43 +281,41 @@ The margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in
     \label{fig:decision_boundaries} 
 \end{figure}
 
-The margin is defined as:
+\noindent The margin is defined as:
 
 \begin{equation}
     \label{eq:margin_def}
     \gamma(x,y) = f(x)_y - \max_{j \neq y}f(x)_j
 \end{equation}
 
-which is the distance between the prediction of the sample $(x,y)$ and the decision boundary.
-
-The training margin for class $j$ is defined as:
+\noindent which is the distance between the prediction of the sample $(x,y)$ and the decision boundary. The training margin for class $j$ is defined as:
 
 \begin{equation}
     \label{eq:margin_class_def}
     \gamma_j = f(x)_y - \max_{i \in S_j}\gamma(x_i,y_i)
 \end{equation}
 
-The classical generalization bound is defined as
+\noindent The classical generalization bound is defined as:
 
 \begin{equation}
     \label{eq:gen_bound}
     \text{imbalanced test error}\lesssim \frac{1}{\gamma_{min}}\sqrt{\frac{C(\mathcal{F})}{n}}
 \end{equation}
 
-In a balanced setting:
+\noindent In a balanced setting:
 
 \begin{equation}
     \frac{1}{2}\text{err}[\text{class1}]+\frac{1}{2}\text{err}[\text{class2}] \lesssim \left(\frac{1}{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}\right)\sqrt{C(\mathcal{F})}
 \end{equation}
 
-This boundary can be shifted by taking the minimum: $\min{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}$, such that $\gamma_1+\gamma_2=C$. This yields the optimal solution:
+\noindent This boundary can be shifted by taking the minimum: $\min{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}$, such that $\gamma_1+\gamma_2=C$. This yields the optimal solution:
 
 \begin{equation}
     \label{eq:opt_margin}
     \gamma_i\varpropto n^{-1/4}_i 
 \end{equation}
 
-with the standard solution being $\gamma_1=\gamma_2$ \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
+\noindent with the standard solution being $\gamma_1=\gamma_2$ \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
 
 \subsubsection{Logit Adjustment}
 \label{sec:logit_adjustment}
@@ -467,7 +471,7 @@ where $n_y$ is the number of samples in the ground truth class $y$. Applying the
 
 \subsection{Equalization Loss}
 \label{sec:seql}
-\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when these underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
+\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
 
 \begin{figure}[ht]
     \centering
@@ -533,7 +537,7 @@ where $z_y$ represents the logit for the true class, $\pi_y$ is the class prior 
 
 \subsection{LDAM Loss}
 \label{sec:ldam_loss}
-The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class’ decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in equation \eqref{eq:opt_margin} by increasing the distance between the largest and secon largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
+The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class' decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in equation \eqref{eq:opt_margin} by increasing the distance between the largest and second largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
 
 
 The class-dependent margin for multiple classes is defined as:
@@ -543,20 +547,20 @@ The class-dependent margin for multiple classes is defined as:
     \gamma_j = \frac{C}{n^{1/4}_j}
 \end{equation}
 
-where $C$ is a tunable hyper-parameter, and $n_j$ is the number of samples in class $j$. Applying the margin through the loss function, inspired by the Hinge Loss \todo{reference}, will encourage the model to respect the margins in equation \eqref{eq:margin}:
+where $C$ is a tunable hyper-parameter, and $n_j$ is the number of samples in class $j$. Applying the margin through the loss function, inspired by the Hinge Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, will encourage the model to respect the margins in equation \eqref{eq:margin}:
 
 \begin{equation}
     \label{eq:ldam-hg}
     \mathcal{L}_{ldam-hg} = \max\left(\max_{j \neq y}\{z_j\} - z_y + \Delta_y, 0\right)
 \end{equation}
 
-where
+\noindent where
 
 \begin{equation}
     \Delta_j = \frac{C}{n_j^{1/4}} \quad \text{for } j \in \{1, \dots, k\}.
 \end{equation}
 
-and $z_y$ is the model output (logit) for the true class $y$, and $\max_{j \neq y}\{z_j\}$ is the highest score among incorrect classes. Adding the margin $\Delta_j$ ensures that the true class logit is separated from the highest incorrect score by the at least $\Delta_j$. However, since the function in equation \eqref{eq:ldam-hg} is non-differentiable at certain points, a modifications to the cross-entropy loss is used to address this. Here, the class-dependent margins are introduced directly into the logits as follows:
+\noindent and $z_y$ is the model output (logit) for the true class $y$, and $\max_{j \neq y}\{z_j\}$ is the highest score among incorrect classes. Adding the margin $\Delta_j$ ensures that the true class logit is separated from the highest incorrect score by the at least $\Delta_j$. However, since the function in equation \eqref{eq:ldam-hg} is non-differentiable at certain points, a modifications to the cross-entropy loss is used to address this. Here, the class-dependent margins are introduced directly into the logits as follows:
 
 \begin{equation}
     \label{eq:ldam}
