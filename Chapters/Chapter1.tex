@@ -1,7 +1,7 @@
 % Chapter 1: Introduction
 \label{sec:introduction}
 
-Deep learning has become a prominent solution in recent years for tackling image regocnision tasks. With the availability of large datasets, i.e. ImageNet, along with GPUs, training of deep learning models have become easier, and have led to remarkable results \cite{Goodfellow-et-al-2016}. The trained models have shown image classification with accuracies of over 80 \% \cite{he2015deepresiduallearningimage,dosovitskiy2021imageworth16x16words}, and hence the interest in deep learning for image recognition is high. However, the high accuracies are usually achieved on models trained with balanced datasets, while most real-world datasets are skewed in samples per class \cite{vanhorn2017deviltailsfinegrainedclassification,Buda_2018,liu2019largescalelongtailedrecognitionopen}.  
+Deep learning has become a prominent solution in recent years for tackling image regocnition tasks. With the availability of large datasets, i.e. ImageNet \cite{ImageNet2009}, along with GPUs, training of deep learning models have become easier and have led to remarkable results \cite{Goodfellow-et-al-2016}. The trained models have shown image classification with accuracies of over 80 \% \cite{he2015deepresiduallearningimage,dosovitskiy2021imageworth16x16words}, and hence the interest in deep learning for image recognition is high. However, the high accuracies are usually achieved on models trained with balanced datasets, while most real-world datasets are skewed in samples per class \cite{vanhorn2017deviltailsfinegrainedclassification,Buda_2018,liu2019largescalelongtailedrecognitionopen}.  
 
 This thesis addresses the challenge of long-tailed datasets in image classification, where most classes contain only a few samples. A long-tailed class distribution causes the model to primarily learn features from majority (head) classes, leading to a bias toward these dominant classes. As a result, the trained model struggles to recognize inputs from minority (tail) classes. Most real-world datasets follows a long-tailed structure, hence the need for a reliable method to detect examples of tail-class data \cite{vanhorn2018inaturalistspeciesclassificationdetection,zhang2023deep}. The aim of this thesis is to examine class re-balancing techniques to tackle the long-tailed problem in deep learning.
 
@@ -13,9 +13,9 @@ Four deep learning state-of-the art models are investigated, including three CNN
 
 The long-tailed techniques investigated in this thesis focus on class re-balancing, with an emphasis on class-sensitive learning through loss functions. All models are trained using Softmax Cross-Entropy Loss \cite{cs231n}, Weighted Softmax Cross-Entropy Loss \cite{zhang2023deep}, Focal Loss \cite{lin2018focallossdenseobject}, Class-Balanced Loss \cite{cui2019classbalancedlossbasedeffective}, Balanced Softmax Loss \cite{ren2020balancedmetasoftmaxlongtailedvisual}, LDAM Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, and Equalization Loss \cite{tan2020equalizationlosslongtailedobject}. By including these loss designs, this thesis investigates the effectiveness of each in mitigating the challenges posed by class imbalance.
 
-The selection of these loss functions is based on their alignment with cost-sensitive approaches highlighted in Deep Long-Tailed Learning: A Survey \cite{zhang2023deep}. Starting with the standard Softmax Cross-Entropy Loss as a baseline, the study progresses through increasingly sophisticated loss functions designed to improve model performance on underrepresented tail classes while maintaining accuracy across the entire dataset. This comparative analysis aims to provide insights into how specific loss functions interact with model architectures in addressing the challenges of long-tailed distributions. 
+The selection of these loss functions is based on their alignment with class-sensitive approaches highlighted in Deep Long-Tailed Learning: A Survey \cite{zhang2023deep}. Starting with the standard Softmax Cross-Entropy Loss as a baseline, the study progresses through increasingly sophisticated loss functions designed to improve model performance on underrepresented tail classes while maintaining accuracy across the entire dataset. This comparative analysis aims to provide insights into how specific loss functions interact with model architectures in addressing the challenges of long-tailed distributions. 
 
-By evaluating the effectiveness of different models and techniques, this study aims to guide practitioners in selecting appropriate strategies to address class imbalance, improve model performance on underrepresented classes, and achieve more balanced predictions.
+By evaluating the effectiveness of different models and techniques, this study seeks to guide practitioners in selecting appropriate strategies to address class imbalance, improve model performance on underrepresented classes, and achieve more balanced predictions.
 
 
 \subsection{Goals of this thesis}
@@ -29,7 +29,7 @@ The goals of this thesis are to:
 \end{enumerate}
 
 \subsection{Hypothesis}
-Deep long-tailed learning methods, such as the carefully designed loss functions tailored for long-tailed ditributed datasets, can improve the performance of underrepresented (tail) classes while maintaining the overall accuracy across diverse model architectures. The effectiveness of these loss functions is influenced by the choise of model architecture and the degree of imbalance of the dataset.
+Deep long-tailed learning methods, such as the carefully designed loss functions tailored for long-tailed ditributed datasets, can improve the performance of underrepresented (tail) classes while maintaining the overall accuracy across diverse model architectures. The effectiveness of these loss functions is influenced by the choice of model architecture and the degree of imbalance in the dataset.
 
 
 \subsection{Approach}
@@ -102,14 +102,14 @@ Ensemble learning is a technique that combines multiple network modules (i.e. ex
 
 \section{Reading Guide}
 
-\noindent \textbf{Structure} This reading recommendation is to read this thesis in a linear flow, beginning with Chapter 1 followed by Chapter 2 etc. However, if the reader is familiar with the subjects of this thesis, Chapter 2 can be skipped, and the reader can go to Chaper 3. Alternatively, if the reader is familar with long-tailed methods and looking for a quick guidance, jumping directly to Chapter 5 will suffice, although it is highly recommended to read Chapter 4 for a better understanding of Chapter 5.
+The reading recommendation is to read this thesis in a linear flow, beginning with Chapter 1 followed by Chapter 2 etc. However, if the reader is familiar with the subjects of this thesis, Chapter 2 can be skipped, and the reader can go to Chaper 3. Alternatively, if the reader is familar with long-tailed methods and looking for a quick guidance, jumping directly to Chapter 5 will suffice, although it is highly recommended to read Chapter 4 for a better understanding of Chapter 5.
 A description of the content of the chapters is presented in the following:
 \vspace{1em}
 
 \noindent \textbf{Chapter 2} provides the theoretical background for the long-tailed learning methodologies relevant to the work in this thesis.
 \vspace{1em}
 
-\noindent \textbf{Chapter 3} describes the methodology used in this thesis, including dataset preparation, selection of model and loss designs, and implementation details. 
+\noindent \textbf{Chapter 3} describes the methodology used in this thesis, including dataset preparation, selection of model and loss designs and implementation details. 
 \vspace{1em}
 
 \noindent \textbf{Chapter 4} present the experimental results and a discussion thereof.
