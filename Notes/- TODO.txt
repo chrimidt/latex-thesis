@@ -73,10 +73,10 @@ Finisher:
 - Finish TODOs
 - Notations are consistent 
 - Check for consistent past/present
-- Correct references 
+x Correct references 
 - Layout
 x Front page
-- GAI declaration!!!!
+x GAI declaration!!!!
 
 If time allows:
 - Confusion matrix
