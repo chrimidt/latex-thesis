@@ -60,42 +60,60 @@ This thesis seeks to apply deep long-tailed learning methods to image classifica
 
 
 \section{Related Work}
-The challenge of long-tailed datasets has been extensively studied in the literature \cite{zhang2023deep,zhang2024systematicreviewlongtailedlearning}. Zhang et al. \cite{zhang2023deep} conducted a comprehensive survey on long-tailed learning techniques, categorizing them into three main strategies: class re-balancing, information augmentation, and module improvement. 
+The challenge of long-tailed datasets has been extensively studied in the literature \cite{zhang2023deep,zhang2024systematicreviewlongtailedlearning}, and to overcome the challenge of long-tailed data, various methods has been proposed. Zhang et al. \cite{zhang2023deep} conducted a comprehensive survey on long-tailed learning techniques, categorizing them into three main strategies: class re-balancing, information augmentation, and module improvement. These are further divided into sub-categories: re-sampling, cost-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier design, decoupled training, and ensemble learning, as seen in Figure~\ref{fig:lt_methods}. 
 
-\todo{Add references to re-weighting papers.}
+This section highlights methods relevant to the experiments conducted in this thesis; for additional details on other techniques, refer to the references cited in Zhang et al.'s survey.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/lt_methods_categories.png} 
+    \caption{Proposed categorization of long-tailed methods by \emph{Zhang et al.} \cite{zhang2023deep}. There are three main categories: class re-balancing, information augmentation, and module improvement. These are further divided into sub-categories: re-sampling, cost-sensitive learning, logit adjustment, transfer learning, data augmentation, representation learning, classifier design, decoupled training, and ensemble learning.}
+    \label{fig:lt_methods} 
+\end{figure}
+
 
 \paragraph{Data Re-sampling}
 Data re-sampling techniques aim to modify the training dataset to mitigate class imbalance by simulating a balanced dataset. The most popular methods for re-sampling are random over-sampling (ROS) and random under-sampling (RUS) \cite{Chawla_2002,han2005}. ROS involves duplicating random samples from the minority classes, whereas RUS involves removing samples from the majority classes \cite{zhang2023deep,han2005}. However, these techniques have their weaknesses: over-sampling the minority classes will eventually lead to overfitting tail classes, and under-sampling can lead to underperformance on head classes \cite{zhang2023deep}. Another re-sampling technique, called Synthetic Minority Over-Sampling Technique (SMOTE) \cite{Chawla_2002}, involves synthetical generation of instances of the minority classes based on the existing data. 
+
+\paragraph{Re-weighting}
+Re-weighting techniques attemps to address class imbalance by assigning weights to classes or samples during training. The vanilla approach involves weighting classes proportional to the inverse sample frequency \cite{zhang2023deep}. Cui et al. \cite{cui2019classbalancedlossbasedeffective} propose re-weighting by the inverse effective number of samples. Focal Loss \cite{lin2018focallossdenseobject} introduces a mechanism to down-weight well-classified examples, emphasizing harder examples during training. Tan et al. \cite{tan2020equalizationlosslongtailedobject} proposed down-weighting tail-class loss when they serve as negative vaules for head-classes. These re-weighting strategies form the foundation for comparison in this thesis.
+
+\paragraph{Margin}
+Margin-based approaches aim to improve classification performance by increasing the separation between classes. Techniques such as Large-Margin Softmax \cite{liu2017largemarginsoftmaxlossconvolutional} and Additive Margin Softmax \cite{Wang_2018} reduce intra-class variation and enhance inter-class separability.
+
+Label-Distribution-Aware-Margin (LDAM) Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} focuses on integrating margin-based strategies with class-sensitive learning to explicitly encourage larger margins for tail classes. The performance of this re-margining strategy is evaluated in this thesis.
+
+\paragraph{Logit Adjustment}
+Logit adjustment methods seeks to modify the prediction logits of deep models, either applied post-hoc to a trained model, or enforced during training \cite{menon2021longtaillearninglogitadjustment}. Balanced Softmax Loss \cite{ren2020balancedmetasoftmaxlongtailedvisual} adjusts logits by incorporating class priors into the Softmax function, ensuring a more stable probability assignment across classes. The performane of the Balanced Softmax Loss is evaluated in this thesis.
 
 \paragraph{Transfer Learning}
 Transfer learning techniques adress the issue of class imblance by transferring learned features from head classes to tail classes. Examples include transferring the intra-class variance \cite{yin2019featuretransferlearningdeep} and transferring semantic deep features \cite{liu2019largescalelongtailedrecognitionopen}.
 
 \paragraph{Data Augmentation}
-Data augmentation is a deep learning technique used to expand the training dataset by applying transformations to samples or features, enhancing model accuracy while reducing overfitting \cite{perez2017effectivenessdataaugmentationimage,shorten2019survey}. Common augmentation methods include Mixup \cite{zhang2018mixupempiricalriskminimization}, which combines pairs of samples to create interpolated examples; CutMix \cite{yun2019cutmixregularizationstrategytrain}, which replaces regions of one image with patches from another; and UniMix \cite{xu2021calibratedmodellongtailedvisual}, which focuses on calibrating the feature space for long-tailed distributions. Rare-class Sample Generator (RSG) \cite{wang2021rsgsimpleeffectivemodule} focuses on enhancing tail-class performance by transferring knowledge from head classes.
+Data augmentation is a deep learning technique used to expand the training dataset by applying transformations to samples or features, enhancing model accuracy while reducing overfitting \cite{perez2017effectivenessdataaugmentationimage,shorten2019survey}. Common augmentation methods include Mixup \cite{zhang2018mixupempiricalriskminimization}, which combines pairs of samples to create interpolated examples, CutMix \cite{yun2019cutmixregularizationstrategytrain}, which replaces regions of one image with patches from another, and UniMix \cite{xu2021calibratedmodellongtailedvisual}, which focuses on calibrating the feature space for long-tailed distributions. Rare-class Sample Generator (RSG) \cite{wang2021rsgsimpleeffectivemodule} focuses on enhancing tail-class performance by transferring knowledge from head classes.
 
-\paragraph{Decoupled Training}
-Decoupled training \cite{kang2020decouplingrepresentationclassifierlongtailed} separates representation learning and classifier training. First, the model is trained to extract features from the entire dataset, afterwards, a re-balancing technique is applied during classification. Despite the simple framework, decoupling showed state-of-the art performance on long-tailed benchmarks.
 
 \paragraph{Ensemple Learning}
 Ensemble learning is a technique that combines multiple network modules (i.e. experts) to solve long-tailed problems. By doing so, the predictions of the different models can be combined, ultimately outperforming a single model \cite{zhou2020bbnbilateralbranchnetworkcumulative,wang2022longtailedrecognitionroutingdiverse}.
 
-% Few Shot Learning
-
-\todo{Margin Loss}
-\begin{quote}
-Margin loss. The hinge loss is often used to obtain a “max-margin” classifier, most notably in
-SVMs [Suykens and Vandewalle, 1999]. Recently, Large-Margin Softmax [Liu et al., 2016], Angular
-Softmax [Liu et al., 2017a], and Additive Margin Softmax [Wang et al., 2018a] have been proposed
-to minimize intra-class variation in predictions and enlarge the inter-class margin by incorporating
-the idea of angular margin. In contrast to the class-independent margins in these papers, our approach
-encourages bigger margins for minority classes. Uneven margins for imbalanced datasets are also
-proposed and studied in [Li et al., 2002] and the recent work [Khan et al., 2019, Li et al., 2019]. Our
-theory put this idea on a more theoretical footing by providing a concrete formula for the desired
-margins of the classes alongside good empirical progress. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}
-\end{quote}
+% \paragraph{Decoupled Training}
+% Decoupled training \cite{kang2020decouplingrepresentationclassifierlongtailed} separates representation learning and classifier training. First, the model is trained to extract features from the entire dataset, afterwards, a re-balancing technique is applied during classification. Despite the simple framework, decoupling showed state-of-the art performance on long-tailed benchmarks.
 
 
 \section{Reading Guide}
-\todo{Mention what each chapter will cover and how they relate to each other.}
-% Example: "Chapter 2 provides the theoretical background for long-tailed learning and deep learning methodologies. Chapter 3 describes the methodology used in this thesis, including dataset preparation and implementation details. Chapters 4 and 5 present the experimental results and analysis, followed by conclusions and suggestions for future work in Chapter 6."
+
+\noindent \textbf{Structure} This reading recommendation is to read this thesis in a linear flow, beginning with Chapter 1 followed by Chapter 2 etc. However, if the reader is familiar with the subjects of this thesis, Chapter 2 can be skipped, and the reader can go to Chaper 3. Alternatively, if the reader is familar with long-tailed methods and looking for a quick guidance, jumping directly to Chapter 5 will suffice, although it is highly recommended to read Chapter 4 for a better understanding of Chapter 5.
+A description of the content of the chapters is presented in the following:
+\vspace{1em}
+
+\noindent \textbf{Chapter 2} provides the theoretical background for the long-tailed learning methodologies relevant to the work in this thesis.
+\vspace{1em}
+
+\noindent \textbf{Chapter 3} describes the methodology used in this thesis, including dataset preparation, selection of model and loss designs, and implementation details. 
+\vspace{1em}
+
+\noindent \textbf{Chapter 4} present the experimental results and a discussion thereof.
+\vspace{1em}
+
+\noindent \textbf{Chapter 5} concludes on this thesis, reflects the goals presented in Chapter 1, and discusses future work. 
 

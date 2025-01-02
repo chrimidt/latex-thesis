@@ -2,17 +2,17 @@ Experiments:
 x Run CB loss
 x Run SEQL
 
-- Abstract
-- Acknowledgement
+x Abstract
+x Acknowledgement
 
 Introduction:
-- Introduction
-- Problem Definition
-- Goals
-- Hypothesis
-- Related work: re-weighting, logit adjustment, re-margining
-- Reading Guide
-- Approach
+x Introduction
+x Problem Definition
+x Goals
+x Hypothesis
+x Related work: re-weighting, logit adjustment, re-margining
+x Reading Guide
+x Approach
 
 Background:
 x Convolutional Neural Networks
@@ -27,11 +27,9 @@ x Loss preliminaries (probabilities)
 x Sort out sections
 x Remove the long-tailed category figure
 - Re-arrange model architecture sections
-- K classes 
+x K classes 
 
 Methodology:
-- Read all notes from earlier
-- Make plot of ImageNet distribution into bar plot
 x Model Selection
 x Loss Selection
 x Explain choice of optimizer
@@ -55,8 +53,6 @@ x What is the best method and compare to the others
 x How should the methods be compared in order to find the best method 
 x Move comparisons with state-of-the-art results in seperate section.
 - Describe the kernel and stride size of ViT-B/16 and how it affects the results on the 32x32 cifar-100
-- Find the kernel and stride sizes for other ViT-B/16 trained with CIFAR-100
-- Confusion matrix?
 x Table for the mean and standard deviation across all loss designs for each model in figure 5.1
 x Include the new found CBL and SEQL 
 x Compare the types of class re-balancing
@@ -80,3 +76,11 @@ Finisher:
 - Correct references 
 - Layout
 x Front page
+- GAI declaration!!!!
+
+If time allows:
+- Confusion matrix
+- Appendix with loss curves
+- Find the kernel and stride sizes for other ViT-B/16 trained with CIFAR-100
+- Make plot of ImageNet distribution into bar plot
+
