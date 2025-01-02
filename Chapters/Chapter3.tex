@@ -21,26 +21,31 @@ In what follows, each step of the methodology will be explained in detail.
 Following the dataset structure used in \textit{Deep Long-Tailed Learning: A Survey}, the CIFAR100 dataset was modified to create a long-tailed training set and a balanced test set. 
 
 \subsection{Benchmark Dataset Selection}
-There are a number of benchmark datasets for long-tailed image classification tasks, including ImageNet-LT, Places365-Lt, CIFAR-100-LT, and iNaturalist 2018 \todo{references}. The previous three are sampled from ImageNet, Places365, and CIFAR-100, following the Pareto distribution, as described in section \ref{sec:lt-datasets}, while the iNaturalist 2018 is a natural long-tailed dataset. Table \ref{tab:datasets} summarizes the four datasets and their data specifications. 
+There are a number of benchmark datasets for long-tailed image classification tasks, including ImageNet-LT \cite{liu2019largescalelongtailedrecognitionopen}, Places365-LT \cite{liu2019largescalelongtailedrecognitionopen}, CIFAR-100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, and iNaturalist 2018 \cite{vanhorn2018inaturalistspeciesclassificationdetection}. The previous three are sampled from ImageNet, Places365, and CIFAR-100, following the Pareto distribution, as described in section \ref{sec:lt-datasets}, while the iNaturalist 2018 is a natural long-tailed dataset. Table \ref{tab:datasets} summarizes the four datasets and their data specifications. 
 
 \begin{table}[ht]
     \centering
-    \caption{Summary of long-tailed benchmarks for image classification. \todo{references}}
+    \caption{Summary of long-tailed benchmarks for image classification.}
     \begin{tabular}{lccc}
     \hline
     \textbf{Dataset}           & \textbf{\# Classes} & \textbf{\# Training Data} & \textbf{\# Test Data} \\ \hline
-    ImageNet-LT   & 1,000              & 115,846                   & 50,000                \\
-    CIFAR-100-LT   & 100                & 50,000                    & 10,000                \\
-    Places-LT     & 365                & 62,500                    & 36,500                \\
-    iNaturalist 2018 & 8,142            & 437,513                   & 24,426                \\ \hline
+    ImageNet-LT \cite{liu2019largescalelongtailedrecognitionopen}  & 1,000              & 115,846                   & 50,000                \\
+    CIFAR-100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}  & 100                & 50,000                    & 10,000                \\
+    Places-LT  \cite{liu2019largescalelongtailedrecognitionopen}   & 365                & 62,500                    & 36,500                \\
+    iNaturalist 2018 \cite{vanhorn2018inaturalistspeciesclassificationdetection} & 8,142            & 437,513                   & 24,426                \\ \hline
     \end{tabular}
     \label{tab:datasets}
 \end{table}
     
 
-With its 100 classes and only 60,000 samples, the CIFAR-100 dataset was chosen as a benchmark for the experiments conducted in this thesis based on its managable size, compared to the other benchmarks, and widespread use as a standard in image classification research \todo{reference}. Its comparatively small size allows for rapid experimentation and comparisons, wheras a larger benchmark requires more computational effort and time for experiments, thus it is well-suited for multiple configurations and evaluations. However, CIFAR-100 has some limitations compared to larger dataset, like ImageNet-LT or iNaturalist. For example, CIFAR-100 images are of relatively low resolution ($32 \times 32$ pixels) compared to ImageNet ($224 \times 224$ pixels), and may limit the ability of models to capture fine-grained details. Likewise, the smaller number of classes and samples can result in less diversity compared to datasets like iNaturalist 2018, which contains nearly nine times as many samples in the training data as CIFAR-100-LT. Despite these drawbacks, CIFAR-100-LT remains a practical choice for this thesis due to its computational efficiency. 
+With its 100 classes and only 60,000 samples, the CIFAR-100 dataset was chosen as a benchmark for the experiments conducted in this thesis based on its managable size, compared to the other benchmarks, and widespread use as a standard in image classification research. Its comparatively small size allows for rapid experimentation and comparisons, wheras a larger benchmark requires more computational effort and time for experiments, thus it is well-suited for multiple configurations and evaluations. However, CIFAR-100 has some limitations compared to larger dataset, like ImageNet-LT or iNaturalist. For example, CIFAR-100 images are of relatively low resolution ($32 \times 32$ pixels), as depicted in Figure \ref{fig:cifar100_images}, compared to ImageNet ($224 \times 224$ pixels), and may limit the ability of models to capture fine-grained details. Likewise, the smaller number of classes and samples can result in less diversity compared to datasets like iNaturalist 2018, which contains nearly nine times as many samples in the training data as CIFAR-100-LT. Despite these drawbacks, CIFAR-100-LT remains a practical choice for this thesis due to its computational efficiency. 
 
-\todo{Describe the type of images in CIFAR-100 and include examples.}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Images/cifar100_sample_grid.png}
+    \caption{Examples from the CIFAR-100 dataset showing the low resolution ($32 \times 32$ pixels). Each image is labeled with its corresponding class name.}
+    \label{fig:cifar100_images}
+\end{figure}
 
 \subsection{Data Characteristics: Class Distribution}
 Understanding the class distribution in long-tailed datasets is essential for evaluating the impact of the class imbalance on model performance. This section analyzes the class distribution of the benchmark ImageNet-LT used in \cite{zhang2023deep}, which serves as a reference for creating a similar distribution across the CIFAR-100-LT training, evaluation, and test datasets.  
@@ -68,17 +73,19 @@ The class distributions used in experiments in this thesis: Balanced training se
     \centering
     \caption{Class Distributions Used in Experiments}
     \label{tab:class_distributions}
-    \begin{tabular}{|l|c|}
-    \hline
-    \textbf{Dataset Type}                       & \textbf{Samples}                                                                 \\ \hline
-    Balanced Training Set                       & 45,000        \\ \hline
-    Balanced Validation Set                     & 10,000    \\ \hline
+    \small
+    \begin{tabular}{ll}
+    \toprule
+    \textbf{Dataset Type}                       & \textbf{\# Samples}                                                                 \\ \midrule
+    Balanced Training Set                       & 45,000        \\ 
+    Balanced Validation Set                     & 10,000    \\ 
     Balanced Test Set                           & 5,000    \\ \hline
-    Long-Tailed Training Set                    & \todo{-}      \\ \hline
-    Long-Tailed Test Set                        & \todo{-} \\ \hline
-    Head  & \todo{-} \\ \hline
-    Middle   & \todo{-} \\ \hline
-    Tail  & \todo{-} \\ \hline
+    Long-Tailed Training Set                    & 9,754      \\ 
+    Long-Tailed Test Set                        & 1,051 \\ \hline
+    Head  & 844 \\ 
+    Middle   & 169 \\ 
+    Tail  & 38 \\
+    \bottomrule
     \end{tabular}
     \end{table}
     
