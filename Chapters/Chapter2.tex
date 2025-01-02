@@ -47,7 +47,7 @@ Class imbalance has a profound impact on model performance compared to evenly di
 % ===============================================================================
 % Model architechtures
 
-\section{Model Architecures}
+\section{Model Architectures}
 \label{sec:model_arch}
 Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2015deepresiduallearningimage}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the ViT architecture.
 These models were chosen to represent a spectrum of design paradigms; from lightweight CNNs to transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
@@ -86,7 +86,7 @@ Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address
     \label{fig:cnn_illustration}
 \end{figure}
 
-\noindent CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a fully connected layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the fully connected layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width} \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers:
+\noindent CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a fully connected layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the fully connected layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width}, \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers:
 
 \paragraph{Convolutional Layer}
 The convolutional layer is the foundation of CNNs. It applies a set of filters (called kernels) to the input image, performing convolutions to produce feature maps \cite{cs231n}. Each filter is designed to detect specific features, such as edges or textures. The filter, which has smaller dimensions than the input, is applied to an area of the image, computing dot products between the weights of the filter and the input pixels, as illustrated in figure \todo{make this figure}. Afterwards, the filter shifts by a stride, repeating the process until the kernel has computed the dot products for entire image. This process enables the network to learn spatial hierarchies of features, with the early layers capturing patterns like edges, and later layers capturing detailed structures \cite{yosinski2014transferablefeaturesdeepneural}. After each convolution, the ReLu transformation is applied to introduce non-linearity \cite{cs231n}.
@@ -111,7 +111,7 @@ The FC layer, as the name implies, connects every neuron in one layer to every n
 % Pooling layers contribute to a spatial hierarchy, making the network robust to small positional changes and reducing computational complexity. Moreover, the multi-layered structure of CNNs facilitates hierarchical feature learning, where early layers capture simple features, and deeper layers learn increasingly complex representations. These inductive biases are fundamental to the effectiveness of CNNs in tasks like image classification and segmentation, as they align closely with the structure and characteristics of image data.
 
 
-CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed in section \ref{sec:model_arch}.
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed in later in this section.
 
 % ===============================================================================
 % Vision Transformers
@@ -144,7 +144,7 @@ Likewise, in ViTs, images are represented as sequences including the class label
 \label{sec:resnet}
 ResNet50 is a variant of the Residual Network (ResNet) architecture, developed by Microsoft Research (He et al.) in 2015 \cite{he2015deepresiduallearningimage}. The ResNet architecture was designed to address the vanishing and exploding gradient problem in deep networks. When training a deep neural network, as the number of layers increases, the gradients of the loss function with respect to the weight can potentially vanish or explode during backpropagation \cite{he2015deepresiduallearningimage}. This can lead to slow convergence or unstable updates.
 
-In traditional CNNs, stacked layers learn a direct mapping $\mathcal{H}(x)$ of the input $x$ to the output. The introduction of residual layers, however, allows for the layer to fit a residual mapping, as illustrated in figure \ref{fig:res_learning}, where the network learns the residual function $\mathcal{F}(x) = \mathcal{H}(x) - X$. Isolating $\mathcal{H}(x)$ yields $\mathcal{H}(x) = \mathcal{F}(x) + x$, meaning that the input $x$ is passed through a skip connection. This architecure reduces the complexity of the optimization process, as the network only has to model the residual component $\mathcal{F}(x)$ rather than the full mapping $\mathcal{H}(x)$ \cite{he2015deepresiduallearningimage}.
+In traditional CNNs, stacked layers learn a direct mapping $\mathcal{H}(x)$ of the input $x$ to the output. The introduction of residual layers, however, allows for the layer to fit a residual mapping, as illustrated in figure \ref{fig:res_learning}, where the network learns the residual function $\mathcal{F}(x) = \mathcal{H}(x) - X$. Isolating $\mathcal{H}(x)$ yields $\mathcal{H}(x) = \mathcal{F}(x) + x$, meaning that the input $x$ is passed through a skip connection. This architecture reduces the complexity of the optimization process, as the network only has to model the residual component $\mathcal{F}(x)$ rather than the full mapping $\mathcal{H}(x)$ \cite{he2015deepresiduallearningimage}.
 
 \begin{figure}[ht]
     \centering
@@ -153,7 +153,7 @@ In traditional CNNs, stacked layers learn a direct mapping $\mathcal{H}(x)$ of t
     \label{fig:res_learning}
 \end{figure}
 
-The residual network is formed by stacking multiple layers of residual blocks, as the one depicted in figure \ref{fig:res_learning}. The ResNet architecture can have a varying number of layers, and, as the name implies, the ResNet50 variant has 50 layers. Other architecures include ResNet-34, ResNet-101, and ResNet-152 \cite{he2016identitymappingsdeepresidual}. 
+The residual network is formed by stacking multiple layers of residual blocks, as the one depicted in figure \ref{fig:res_learning}. The ResNet architecture can have a varying number of layers, and, as the name implies, the ResNet50 variant has 50 layers. Other architectures include ResNet-34, ResNet-101, and ResNet-152 \cite{he2016identitymappingsdeepresidual}. 
 
 The ResNet50 implementation consist of 1 convolutional layer, 4 stages of bottleneck residual blocks with layers [3, 4, 6, 3], global average pooling, and finally a fully connected layer for classification\cite{torchvision-resnet}, as seen in figure \ref{fig:resnet50}. 
 
@@ -215,7 +215,7 @@ ConvNext, introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}, evolution
     \label{fig:stem}
 \end{figure}
 
-Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, the ConvNeXt use depthwise convolution, already described in the MobileNetV2 section \ref{sec:mobilenet}, to increase the FLOPs/accuracy trade-off. Likewise, the ConvNext incorporates inverted bottleneck block, which are an important design in transformers as well as MobileNetV2 \cite{liu2022convnet2020s}. Additionally, the ConvNext architecure uses a $7 time 7$ depthwise convultion in each block on the condition of moving the depthwise convolution layer up. See figure \ref{fig:conv_block}.
+Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, the ConvNeXt use depthwise convolution, already described in the MobileNetV2 section \ref{sec:mobilenet}, to increase the FLOPs/accuracy trade-off. Likewise, the ConvNext incorporates inverted bottleneck block, which are an important design in transformers as well as MobileNetV2 \cite{liu2022convnet2020s}. Additionally, the ConvNext architecture uses a $7 time 7$ depthwise convultion in each block on the condition of moving the depthwise convolution layer up. See figure \ref{fig:conv_block}.
 
 \begin{figure}[h!]
     \centering
@@ -267,8 +267,8 @@ Figure \ref{fig:decision_boundaries} illustrates how the margin affects the deci
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{Images/decision_boundary.png} 
-    \caption{Margins \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. \todo{make this figure.}}
+    \includegraphics[width=0.3\textwidth]{Images/margin.drawio.png} 
+    \caption{The margins and decision boundary in the feature space of binary classification. The distance between the classes is fixed, but shifting the decision boundary can optimize the trade-off between them. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.}
     \label{fig:decision_boundaries} 
 \end{figure}
 
@@ -433,8 +433,8 @@ In feature space, the probability of newly sampled data with volume 1 is overlap
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.6\textwidth]{Images/CB_feature_space.png}
-    \caption{Figure from \cite{cui2019classbalancedlossbasedeffective}. \todo{Make this figure}}
+    \includegraphics[width=0.5\textwidth]{Images/featurespace.drawio.png}
+    \caption{The probability of newly sampled data (black dot) to overlap with previously samples data (grey area) given the set of all possible data (dashed circle). \cite{cui2019classbalancedlossbasedeffective}.}
     \label{fig:cb_featue_space}
 \end{figure}
 

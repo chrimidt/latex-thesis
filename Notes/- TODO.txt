@@ -20,13 +20,9 @@ x Adam optimizer
 x Logit adjustment
 x Loss preliminaries (probabilities)
 - Make figures
-- Detailed architecture of ResNet-50
-- Detailed architecture of MobileNetV2
-- Detailed architectire of ViT-B/16
-- Detailed architecture of ConvNeXt
 x Sort out sections
 x Remove the long-tailed category figure
-- Re-arrange model architecture sections
+x Re-arrange model architecture sections
 x K classes 
 
 Methodology:
@@ -36,7 +32,7 @@ x Explain choice of optimizer
 x Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
 x Explain freezing layers
 - Insert the results from the reference papers for the models and losses 
-- Parameters in model table
+x Parameters in model table
 - Align the selection to the background theory
 - Make the arguments simpler
 
@@ -52,7 +48,6 @@ x Investigate why Class-Balanced loss is so bad
 x What is the best method and compare to the others
 x How should the methods be compared in order to find the best method 
 x Move comparisons with state-of-the-art results in seperate section.
-- Describe the kernel and stride size of ViT-B/16 and how it affects the results on the 32x32 cifar-100
 x Table for the mean and standard deviation across all loss designs for each model in figure 5.1
 x Include the new found CBL and SEQL 
 x Compare the types of class re-balancing
@@ -75,6 +70,7 @@ Finisher:
 - Check for consistent past/present
 x Correct references 
 - Layout
+- Indentations
 x Front page
 x GAI declaration!!!!
 
@@ -83,4 +79,8 @@ If time allows:
 - Appendix with loss curves
 - Find the kernel and stride sizes for other ViT-B/16 trained with CIFAR-100
 - Make plot of ImageNet distribution into bar plot
+- Detailed architecture of ResNet-50
+- Detailed architecture of MobileNetV2
+- Detailed architectire of ViT-B/16
+- Detailed architecture of ConvNeXt
 
