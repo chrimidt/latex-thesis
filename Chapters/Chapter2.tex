@@ -476,7 +476,7 @@ Equalization Loss (EQL) \cite{tan2020equalizationlosslongtailedobject} aims to m
     \label{fig:eql_gradients} 
 \end{figure}
 
-\noindent The EQL was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization (SEQ) Loss}, defined as: 
+\noindent The EQL was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization Loss (SEQL)}, defined as: 
 
 \begin{equation}
     \label{eq:EQ_loss}
@@ -500,7 +500,7 @@ Equalization Loss (EQL) \cite{tan2020equalizationlosslongtailedobject} aims to m
 
 \subsection{Balanced Softmax Loss}
 \label{sec:bs_loss}
-The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax loss (eq. \eqref{eq:ce_loss}) by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. 
+The BS loss modifies the standard CE loss (eq. \eqref{eq:ce_loss}) by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. 
 
 Ren et al. \cite{ren2020balancedmetasoftmaxlongtailedvisual} introduces Softmax regression as a multinomial distribution, $\phi$, dependent on $\eta$, defined as:
 
@@ -520,7 +520,7 @@ Assume $\phi$ to be the desired conditional probability of the balanced dataset,
 
 \noindent where $n_j$ is the number of samples in class $j$.
 
-Ren et al. \cite{ren2020balancedmetasoftmaxlongtailedvisual} proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Ultimately, the Balanced Softmax loss function is becomes:
+Ren et al. \cite{ren2020balancedmetasoftmaxlongtailedvisual} proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Ultimately, the BS loss function becomes:
 
 \begin{equation}
     \mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
@@ -533,7 +533,7 @@ Ren et al. \cite{ren2020balancedmetasoftmaxlongtailedvisual} proved that this me
 
 \subsection{LDAM Loss}
 \label{sec:ldam_loss}
-The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class' decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in Eq. \eqref{eq:opt_margin} by increasing the distance between the largest and second largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
+The LDAM loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class' decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in Eq. \eqref{eq:opt_margin} by increasing the distance between the largest and second largest logit for each class and introducing that to the cross-entropy loss (Eq. \eqref{eq:ce_loss}).
 
 
 The class-dependent margin for multiple classes is defined as:
