@@ -266,74 +266,74 @@ The Balanced Softmax Loss emerges as the overall best performing loss design acr
 
 These result are further underlined in figure \ref{fig:loss_comparison_bars}, where the mean and standard deviation of the loss functions across the four backbone architectures are illustrated. Here, the Balanced Softmax Loss shows a better average perfomance on tail classes, while also displaying the smoothest variation across evaluation categories, ignoring the SEQL. Additionally, the standard deviation suggests that the perfomance of the Balanced Softmax Loss on tail classes depend on the model architecture. Table \ref{tab:performance_summary} display the exact values of the mean and standard deviations shown in figure \ref{fig:loss_comparison_bars}. 
 
+% \begin{figure}[ht]
+%     \centering
+%     \begin{subfigure}{0.75\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/resnet_lt_loss_comparison_copy.png}
+%         \caption*{(a)}
+%         \label{fig:resnet_lt_loss_comparison}
+%     \end{subfigure}
+%     \vspace{1em} % Add some vertical spacing
+
+%     \begin{subfigure}{0.75\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/mobilenet_lt_loss_comparison_copy.png}
+%         \caption*{(b)}
+%         \label{fig:mobilenet_lt_loss_comparison}
+%     \end{subfigure}
+%     \vspace{1em} % Add some vertical spacing
+
+%     \begin{subfigure}{0.75\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/vit_lt_loss_comparison_copy.png}
+%         \caption*{(c)}
+%         \label{fig:vit_lt_loss_comparison}
+%     \end{subfigure}
+%     \vspace{1em} % Add some vertical spacing
+
+%     \begin{subfigure}{0.75\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{Images/Plots/convnext_lt_loss_comparison.png}
+%         \caption*{(d)}
+%         \label{fig:conv_lt_loss_comparison}
+%     \end{subfigure}
+
+%     \caption{Comparison of top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions on various models.}
+%     \label{fig:lt_loss_comparison_all_models}
+% \end{figure}
+
 \begin{figure}[h!]
     \centering
-    \begin{subfigure}{0.75\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Images/resnet_lt_loss_comparison_copy.png}
-        \caption*{(a)}
-        \label{fig:resnet_lt_loss_comparison}
-    \end{subfigure}
-    \vspace{1em} % Add some vertical spacing
-
-    \begin{subfigure}{0.75\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Images/mobilenet_lt_loss_comparison_copy.png}
-        \caption*{(b)}
-        \label{fig:mobilenet_lt_loss_comparison}
-    \end{subfigure}
-    \vspace{1em} % Add some vertical spacing
-
-    \begin{subfigure}{0.75\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Images/vit_lt_loss_comparison_copy.png}
-        \caption*{(c)}
-        \label{fig:vit_lt_loss_comparison}
-    \end{subfigure}
-    \vspace{1em} % Add some vertical spacing
-
-    \begin{subfigure}{0.75\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{Images/Plots/convnext_lt_loss_comparison.png}
-        \caption*{(d)}
-        \label{fig:conv_lt_loss_comparison}
-    \end{subfigure}
-
-    \caption{Comparison of top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions on various models.}
-    \label{fig:lt_loss_comparison_all_models}
+    \includegraphics[width=0.8\textwidth]{Images/Plots/resnet_lt_loss_comparison.png}
+    \caption{ResNet-50 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:resnet_lt_loss_comparison}
 \end{figure}
+\FloatBarrier
 
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=0.9\textwidth]{Images/Plots/resnet_lt_loss_comparison.png}
-%     \caption{ResNet-50 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
-%     \label{fig:resnet_lt_loss_comparison}
-% \end{figure}
-% \FloatBarrier
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Images/Plots/mobilenet_lt_loss_comparison.png}
+    \caption{MobileNetV2 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:mobilenet_lt_loss_comparison}
+\end{figure}
+\FloatBarrier
 
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=0.9\textwidth]{Images/Plots/mobilenet_lt_loss_comparison.png}
-%     \caption{MobileNetV2 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
-%     \label{fig:mobilenet_lt_loss_comparison}
-% \end{figure}
-% \FloatBarrier
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/Plots/vit_lt_loss_comparison.png}
+    \caption{ViT-B/16 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:vit_lt_loss_comparison}
+\end{figure}
+\FloatBarrier
 
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=0.9\textwidth]{Images/Plots/vit_lt_loss_comparison.png}
-%     \caption{ViT-B/16 top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
-%     \label{fig:vit_lt_loss_comparison}
-% \end{figure}
-% \FloatBarrier
-
-% \begin{figure}[h!]
-%     \centering
-%     \includegraphics[width=0.9\textwidth]{Images/Plots/convnext_lt_loss_comparison.png}
-%     \caption{ConvNeXt-Base top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
-%     \label{fig:conv_lt_loss_comparison}
-% \end{figure}
-% \FloatBarrier
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Images/Plots/convnext_lt_loss_comparison.png}
+    \caption{ConvNeXt-Base top 1 accuracy across test categories (Balanced, Long-tailed, Head, Middle, Tail) for different loss functions.}
+    \label{fig:conv_lt_loss_comparison}
+\end{figure}
+\FloatBarrier
 
 
 \begin{figure}[h!]
