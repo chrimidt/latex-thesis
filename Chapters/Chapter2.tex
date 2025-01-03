@@ -272,64 +272,64 @@ Modifies the loss function, commonly the cross-entropy loss, by assigning differ
 \label{sec:re-margining}
 Re-margining aims to solve class imbalance by introducing margin between classes, encouraging higher margins between rare classes. 
 
-Figure \ref{fig:decision_boundaries} illustrates how the margin affects the decision boundary for binary classification. Here, the margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in the $i$-th class to the decision boundary.  By increasing the margin, the decision boundary separates the regions of input space corresponding to different class predictions, thus the model becomes more confident in classification.
+Figure \ref{fig:decision_boundaries} illustrates how the margin affects the decision boundary for binary classification. Here, the margin $\gamma_i$ of the $i$-th class is the minimum distance of the data in the $i$-th class to the decision boundary.  By increasing the margin, the decision boundary separates the regions of input space corresponding to different class predictions, thus the model becomes more confident in classification \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.
 
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.3\textwidth]{Images/margin.drawio.png} 
-    \caption{The margins and decision boundary in the feature space of binary classification. The distance between the classes is fixed, but shifting the decision boundary can optimize the trade-off between them. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.}
+    \caption{The margins and decision boundary of binary classification. The distance between the classes is fixed, but shifting the decision boundary can optimize the trade-off between them. \cite{cao2019learningimbalanceddatasetslabeldistributionaware}.}
     \label{fig:decision_boundaries} 
 \end{figure}
 
-\noindent The margin is defined as:
+% \noindent The margin is defined as:
 
-\begin{equation}
-    \label{eq:margin_def}
-    \gamma(x,y) = f(x)_y - \max_{j \neq y}f(x)_j
-\end{equation}
+% \begin{equation}
+%     \label{eq:margin_def}
+%     \gamma(x,y) = f(x)_y - \max_{j \neq y}f(x)_j
+% \end{equation}
 
-\noindent which is the distance between the prediction of the sample $(x,y)$ and the decision boundary. The training margin for class $j$ is defined as:
+% \noindent which is the distance between the prediction of the sample $(x,y)$ and the decision boundary. The training margin for class $j$ is defined as:
 
-\begin{equation}
-    \label{eq:margin_class_def}
-    \gamma_j = f(x)_y - \max_{i \in S_j}\gamma(x_i,y_i)
-\end{equation}
+% \begin{equation}
+%     \label{eq:margin_class_def}
+%     \gamma_j = f(x)_y - \max_{i \in S_j}\gamma(x_i,y_i)
+% \end{equation}
 
-\noindent The classical generalization bound is defined as:
+% \noindent The classical generalization bound is defined as:
 
-\begin{equation}
-    \label{eq:gen_bound}
-    \text{imbalanced test error}\lesssim \frac{1}{\gamma_{min}}\sqrt{\frac{C(\mathcal{F})}{n}}
-\end{equation}
+% \begin{equation}
+%     \label{eq:gen_bound}
+%     \text{imbalanced test error}\lesssim \frac{1}{\gamma_{min}}\sqrt{\frac{C(\mathcal{F})}{n}}
+% \end{equation}
 
-\noindent In a balanced setting:
+% \noindent In a balanced setting:
 
-\begin{equation}
-    \frac{1}{2}\text{err}[\text{class1}]+\frac{1}{2}\text{err}[\text{class2}] \lesssim \left(\frac{1}{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}\right)\sqrt{C(\mathcal{F})}
-\end{equation}
+% \begin{equation}
+%     \frac{1}{2}\text{err}[\text{class1}]+\frac{1}{2}\text{err}[\text{class2}] \lesssim \left(\frac{1}{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}\right)\sqrt{C(\mathcal{F})}
+% \end{equation}
 
-\noindent This boundary can be shifted by taking the minimum: $\min{\gamma_1\sqrt{n_1}}+\frac{1}{\gamma_2\sqrt{n_2}}$, such that $\gamma_1+\gamma_2=C$. This yields the optimal solution:
+Cao et al. \cite{cao2019learningimbalanceddatasetslabeldistributionaware} has shown that the optimal margin for a class is inversely proportional to the fourth root of its frequency $n_i$, allowing the model to generalize better in imbalance settings:
 
 \begin{equation}
     \label{eq:opt_margin}
     \gamma_i\varpropto n^{-1/4}_i 
 \end{equation}
 
-\noindent with the standard solution being $\gamma_1=\gamma_2$ \cite{cao2019learningimbalanceddatasetslabeldistributionaware}. 
+\noindent with the standard solution being $\gamma_1=\gamma_2$. 
 
 \subsubsection{Logit Adjustment}
 \label{sec:logit_adjustment}
-Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the model outputs, i.e. logits, based on prior class probabilities \cite{menon2021longtaillearninglogitadjustment,ren2020balancedmetasoftmaxlongtailedvisual}. \todo{Write about the label distribution shifts between training and test data.} 
+Logit adjustment is a class re-balancing technique that aims to optimize the class imbalance by adjusting the model outputs, i.e. logits, based on prior class probabilities \cite{menon2021longtaillearninglogitadjustment,ren2020balancedmetasoftmaxlongtailedvisual}.
 
-The output model outputs are computed by the following equation:
+In classification tasks, model outputs $\eta_j$ for class $j$ are computed by:
 
 \begin{equation}
     \label{eq:logits}
     \eta_j = \theta^T_j f(x)
 \end{equation}
 
-\noindent where $\theta_j$ are the weights for the last layer for class $j$, and $f(x)$ is the feature extractor function \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
+\noindent where $\theta_j$ are the weights for the final layer for class $j$, and $f(x)$ is the feature extractor function \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Logit adjustment modifies these logits accounting for the prior class probabilites, thus shifting the model's prediction toward a more balanced output distribution \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
 \vspace{1em}
 
 \noindent In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. 
@@ -350,9 +350,6 @@ For image classification tasks, the standard loss function is the cross-entropy 
 % \end{equation}
 
 % Here, $w$ are the parameters, $\eta$ is the learning rate, and $L$ is the loss function. This is an iterative process, and continues until the loss reaches a minimum or the model converges.
-
-% From equation \eqref{eq:gradient_update}, 
-
 
 % \todo{This is the SGD. Include the Adam Optimizer.}
 % The Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization} 
@@ -389,7 +386,7 @@ The CE loss measures the difference between the predicted probability distributi
     \mathcal{L}_{\text{CE}} = - \log(p_y)
 \end{equation}
 
-\noindent Inserting the Softmax probabilites from equation \eqref{eq:softmax} yields:
+\noindent Inserting the Softmax probabilites from Eq. \eqref{eq:softmax} yields:
 
 \begin{equation}
     \label{eq:ce_loss}
@@ -405,7 +402,7 @@ The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities
 
 \subsection{Weighted Softmax Cross-Entropy Loss}
 \label{sec:wce_loss}
-The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (equation \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
+The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (Eq. \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
 
 \begin{equation}
     \label{eq:wce_loss}
@@ -456,16 +453,14 @@ is defined as:
 
 \noindent where $\beta = (N-1)/N$. The hyperparameter $\beta \in [0,1)$ determines how fast $E_n$ grows.
 
-As a result, the CB loss introduces a class-balanced re-weighting term, inversely proportional to the effective number of classes. Adding the CB term to the standard softmax cross-entropy given in equation \eqref{eq:ce_loss} yield the following:
+As a result, the CB loss introduces a class-balanced re-weighting term, inversely proportional to the effective number of classes. Adding the CB term to the standard softmax cross-entropy given in Eq. \eqref{eq:ce_loss} yield the following:
 
 \begin{equation}
     \label{eq:cb_loss}
     L_{cb} = - \frac{1 - \beta}{1 - \beta^{n_y}} \log(p_y)
 \end{equation}
 
-\noindent where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in equation \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
-
-
+\noindent where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in Eq. \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
 
 
 \subsection{Equalization Loss}
@@ -505,7 +500,7 @@ The EQ loss was designed for object recognition, but the authors decided to adop
 \label{sec:bs_loss}
 The \emph{Balanced Softmax (BS)} Loss modifies the standard softmax loss (eq. \eqref{eq:ce_loss}) by directly incorporating class priors $\pi_y$ into the logits before computing probabilities \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Unlike approaches that operate solely in the loss space, BS Loss integrates class frequency adjustments at the probability computation stage, effectively neutralizing the bias introduced by imbalanced class distributions. 
 
-In \emph{Balanced Meta-Softmax for Long-Tailed Visual Recognition}, the authors represent Softmax regression as a multinomial distribution, $\phi$, dependent on $\eta$, defined as:
+Ren et al. \cite{ren2020balancedmetasoftmaxlongtailedvisual} introduces Softmax regression as a multinomial distribution, $\phi$, dependent on $\eta$, defined as:
 
 \begin{equation}
     \phi_j = \frac{e^{\eta_j}}{\sum_{i=1}^{k}e^{\eta_i}}
@@ -513,7 +508,7 @@ In \emph{Balanced Meta-Softmax for Long-Tailed Visual Recognition}, the authors 
 
 \noindent where $k$ are the number of classes.
 
-The Balanced Softmax uses the output logits $\eta$ (eq. \eqref{eq:logits}) to parametize two separate probabilities: $\phi$ for testing, and $\hat{\phi}$ for training. This separation is used when training with an imbalanced dataset to eliminate the discrepancy between training and testing distributions \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
+The Balanced Softmax uses the output logits $\eta$ (Eq. \eqref{eq:logits}) to parametize two separate probabilities: $\phi$ for testing, and $\hat{\phi}$ for training. This separation is used when training with an imbalanced dataset to eliminate the discrepancy between training and testing distributions \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
 
 Assume $\phi$ to be the desired conditional probability of the balanced dataset, with the form $\phi_j = p(y = j \mid x) = \frac{p(x \mid y=j)}{p(x)} \cdot \frac{1}{k}$, and $\hat{\phi}$ to be the desired conditional probability of the imbalanced training set, with the form $\hat{\phi}_j = \hat{p}(y = j \mid x) = \frac{p(x \mid y=j)}{\hat{p}(x)} \cdot \frac{n_j}{\sum_{i=1}^{k} n_i}$. If $\phi$ is expressed by the standard Softmax function of the model output $\eta$, then $\hat{\phi}$ can be expressed as:
 
@@ -523,7 +518,7 @@ Assume $\phi$ to be the desired conditional probability of the balanced dataset,
 
 \noindent where $n_j$ is the number of samples in class $j$.
 
-The authors proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. ultimately, the Balanced Softmax loss function is becomes:
+Ren et al. \cite{ren2020balancedmetasoftmaxlongtailedvisual} proved that this method can accomodate the label distribution shifts between training and test sets \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Ultimately, the Balanced Softmax loss function is becomes:
 
 \begin{equation}
     \mathcal{L}_{bs} = - \log\left( \frac{\pi_y \exp(z_y)}{\sum_j \pi_j \exp(z_j)} \right)
@@ -536,7 +531,7 @@ The authors proved that this method can accomodate the label distribution shifts
 
 \subsection{LDAM Loss}
 \label{sec:ldam_loss}
-The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class' decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in equation \eqref{eq:opt_margin} by increasing the distance between the largest and second largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
+The \emph{Label-Distribution-Aware Margin (LDAM)} Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware} represents a class-sensitive approach based on re-margining. Instead of altering the loss directly, LDAM modifies the margin applied to each class' decision boundary, ensuring that the model is more confident in classification for minority classes. The goal is to apply the optimal boundary in Eq. \eqref{eq:opt_margin} by increasing the distance between the largest and second largest logit for each class and introducing that to the cross-entropy loss (eq. \eqref{eq:ce_loss}).
 
 
 The class-dependent margin for multiple classes is defined as:
@@ -546,7 +541,7 @@ The class-dependent margin for multiple classes is defined as:
     \gamma_j = \frac{C}{n^{1/4}_j}
 \end{equation}
 
-\noindent where $C$ is a tunable hyper-parameter, and $n_j$ is the number of samples in class $j$. Applying the margin through the loss function, inspired by the Hinge Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, will encourage the model to respect the margins in equation \eqref{eq:margin}:
+\noindent where $C$ is a tunable hyper-parameter, and $n_j$ is the number of samples in class $j$. Applying the margin through the loss function, inspired by the Hinge Loss \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, will encourage the model to respect the margins in Eq. \eqref{eq:margin}:
 
 \begin{equation}
     \label{eq:ldam-hg}
@@ -559,7 +554,7 @@ The class-dependent margin for multiple classes is defined as:
     \Delta_j = \frac{C}{n_j^{1/4}} \quad \text{for } j \in \{1, \dots, k\}.
 \end{equation}
 
-\noindent and $z_y$ is the model output (logit) for the true class $y$, and $\max_{j \neq y}\{z_j\}$ is the highest score among incorrect classes. Adding the margin $\Delta_j$ ensures that the true class logit is separated from the highest incorrect score by the at least $\Delta_j$. However, since the function in equation \eqref{eq:ldam-hg} is non-differentiable at certain points, a modifications to the cross-entropy loss is used to address this. Here, the class-dependent margins are introduced directly into the logits as follows:
+\noindent and $z_y$ is the model output (logit) for the true class $y$, and $\max_{j \neq y}\{z_j\}$ is the highest score among incorrect classes. Adding the margin $\Delta_j$ ensures that the true class logit is separated from the highest incorrect score by the at least $\Delta_j$. However, since the function in Eq. \eqref{eq:ldam-hg} is non-differentiable at certain points, a modifications to the cross-entropy loss is used to address this. Here, the class-dependent margins are introduced directly into the logits as follows:
 
 \begin{equation}
     \label{eq:ldam}

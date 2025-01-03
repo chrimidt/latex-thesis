@@ -24,6 +24,7 @@ x Sort out sections
 x Remove the long-tailed category figure
 x Re-arrange model architecture sections
 x K classes 
+x label shift
 
 Methodology:
 x Model Selection
@@ -55,7 +56,7 @@ Conclusion and Future Work:
 x Write the goals again and the answers below
 
 References:
-- Align with formalia
+x Align with formalia
 
 Appendix:
 - Remove F1 scores
@@ -76,7 +77,6 @@ x GAI declaration!!!!
 If time allows:
 - Confusion matrix
 - Appendix with loss curves
-- Find the kernel and stride sizes for other ViT-B/16 trained with CIFAR-100
 - Make plot of ImageNet distribution into bar plot
 - Detailed architecture of ResNet-50
 - Detailed architecture of MobileNetV2

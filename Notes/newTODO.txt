@@ -1,0 +1,10 @@
+
+- glossary
+- Notations are consistent 
+
+- Layout
+- Check for consistent past/present
+- Indentations
+
+- loss tables in appendix
+
