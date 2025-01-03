@@ -1,6 +1,6 @@
 % Chapter 2: Background
 
-This chapter presents the different background topics of the thesis work, which includes the long-tailed datasets, model architectures \textit{Convolutional Neural Networks (CNN)} and \textit{Vision Transformers (ViT)}, and the deep long-tailed learning methods \textit{Class-Sensitive Learning}.
+This chapter presents the different background topics of the thesis work, which includes the long-tailed datasets, model architectures Convolutional Neural Networks (CNN) and Vision Transformers (ViT), and class-sensitive deep long-tailed learning methods.
 
 % ===============================================================================
 % LT Datasets
@@ -17,9 +17,9 @@ Long-tailed datasets pose significant challenges in deep learning, as they repre
     \label{fig:lt_distribution} 
 \end{figure}
 
-\noindent A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. Mathematically, a long-tailed training set is denoted as $\{x_i, y_i\}_{i=1}^n$, where each sample $x_i$ has a corresponding class label $y_i$. The total number of training samples over $K$ classes is $n = \sum_{k=1}^K n_k$. Here, $n_k$ represents the number of samples in class $k$. Let $\pi$ denote the vector of label frequencies, where $\pi_k = \frac{n_k}{n}$ indicates the label frequency of class $k$ \cite{zhang2023deep}. It can be assumed that the classes are sorted by cardinality in decreasing order. This class distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}. For example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} by using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
+\noindent A balanced dataset is one where all classes are evenly represented, whereas imbalanced datasets feature varying sample sizes across classes. Long-tailed datasets are characterized by a significant class imbalance, where a few dominant classes account for most samples (head classes), while the majority of classes are underrepresented (tail classes) as depicted in Figure \ref{fig:lt_distribution}. Mathematically, a long-tailed training set is denoted as $X=\{x_i, y_i\}_{i=1}^n$, where each sample $x_i$ has a corresponding class label $y_i$ \cite{zhang2023deep}. The total number of training samples over $K$ classes is $n = \sum_{k=1}^K n_k$, where $n_k$ represents the number of samples in class $k$. Let $\pi$ denote the vector of label frequencies, where $\pi_k = \frac{n_k}{n}$ indicates the label frequency of class $k$. It can be assumed that the classes are sorted by cardinality in decreasing order. This class distribution is common for real-world datasets \cite{Newman_2005, liu2019largescalelongtailedrecognitionopen}, for example, the iNaturalist, a popular benchmark for image classification, exhibits a long-tailed distribution of species \cite{vanhorn2018inaturalistspeciesclassificationdetection}. Other benchmarks are constructed by sampling from datasets such as ImageNet \cite{ImageNet2009} by using a Pareto distribution, which simulates long-tailed class distributions with a power-law decay \cite{zhang2023deep, dealvis2024surveydeeplongtailclassification,cao2019learningimbalanceddatasetslabeldistributionaware}.
 
-CIFAR100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 $32 \times 32$ color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR-100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following an exponential decay en sample sizes, given by:
+CIFAR-100-LT \cite{cao2019learningimbalanceddatasetslabeldistributionaware}, derived from the CIFAR-100 dataset \cite{krizhevsky2009learning}, serves as the primary dataset for the experiments conducted in this thesis. CIFAR-100 is a widely used benchmark in classification research due to its diverse class representation and manageable size. It consists of 60,000 $32 \times 32$ color images divided into 100 classes, each with 600 samples. These are further split into 500 training images and 100 testing images per class. CIFAR-100-LT is created by reducing the number of samples in certain classes of CIFAR-100 following an exponential decay en sample sizes, given by:
 
 \begin{equation}
     \label{eq:exp}
@@ -39,7 +39,7 @@ Other long-tailed datasets follow a Pareto distribution with number of samplers 
 
 
 
-Class imbalance has a profound impact on model performance compared to evenly distributed datasets \cite{vanhorn2017deviltailsfinegrainedclassification, cui2019classbalancedlossbasedeffective}. Deep networks trained on long-tailed datasets often exhibit biased performance, favoring head classes while performing poorly on tail classes \cite{zhang2023deep}. Zhang et al. (2023) provide a comprehensive survey of methods addressing this challenge, categorizing current approaches into three main groups: class re-balancing, information augmentation, and module improvement. These methods will be further explored in section \ref{sec:lt_methods}. 
+Class imbalance has a profound impact on model performance compared to evenly distributed datasets \cite{vanhorn2017deviltailsfinegrainedclassification, cui2019classbalancedlossbasedeffective}. Deep networks trained on long-tailed datasets often exhibit biased performance, favoring head classes while performing poorly on tail classes \cite{zhang2023deep}. Zhang et al. \cite{zhang2023deep} provide a comprehensive survey of methods addressing this challenge, categorizing current approaches into three main groups: class re-balancing, information augmentation, and module improvement. This thesis focus on class re-balancing methods which will be further explored in section \ref{sec:lt_methods}. 
 
 
 
@@ -49,7 +49,7 @@ Class imbalance has a profound impact on model performance compared to evenly di
 
 \section{Model Architectures}
 \label{sec:model_arch}
-Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, Convolutional Neural Networks (CNNs) and Vision Transformers (ViTs) are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet50V2 \cite{he2015deepresiduallearningimage}, and ConvNeXt Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the ViT architecture.
+Deep learning has revolutionized image classification by introducing models capable of learning complex patterns and representations from data. Among these, CNNs and ViTs are chosen as the primary architectures used in this thesis due to their performance on image classification tasks. This section provides a theoretical foundation for these models, focusing on the specific architectures utilized: MobileNetV2 \cite{sandler2018mobilenetv2}, ResNet-50 \cite{he2015deepresiduallearningimage}, and ConvNeXt-Base \cite{todi2023convnext} as the CNN architectures, and ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} as the ViT architecture.
 These models were chosen to represent a spectrum of design paradigms; from lightweight CNNs to transformers. By evaluating models of varying complexity, this study aims to identify architectures best suited for long-tailed learning under different resource constraints and data distributions.
 
 % ===============================================================================
@@ -57,7 +57,7 @@ These models were chosen to represent a spectrum of design paradigms; from light
 
 \subsection{Introduction to Deep Neural Networks}
 \label{sec:intro_DNN}
-Before the introduction of Convolutional Neural Networks (CNNs) and, more recently, Vision Transformers (ViTs), the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive,HORNIK1989359}.
+Before the introduction of CNNs and, more recently, ViTs, the standard approach for image classification involved flattening a two-dimensional image matrix into a one-dimensional array and passing it through a Multilayer Perceptron (MLP), also known as a feed-forward neural network. MLPs are fully connected neural networks composed of an input layer, output layer, and one or more hidden layers, as illustrated in Figure \ref{fig:dnn_layers}. Being fully connected means that each neuron in a given layer is connected to all neurons in the next layer, forming a dense network. These connections are associated with weights and biases, which the network learns during training. Input features are fed into the input layer, propagated through hidden layers that add complexity to model nonlinear relationships, and yield predictions in the output layer. Known as universal approximators, MLPs can approximate any continuous function given sufficient neurons in the hidden layers \cite{zhang2023dive,HORNIK1989359}.
 
 \begin{figure}[ht]
     \centering
@@ -66,10 +66,10 @@ Before the introduction of Convolutional Neural Networks (CNNs) and, more recent
     \label{fig:dnn_layers}
 \end{figure}
 
-\noindent To illustrate the structure of a neural network, figure \ref{fig:dnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, weight, and width of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
+\noindent Figure \ref{fig:dnn_layers} shows an example of a feed-forward neural network with three input neurons, two hidden layers, each with four neurons, and two output neurons. This architecture could be used, for instance, to classify images of cats and dogs based on three input features, such as height, width, and weight of the animals. The input propagates through the network, with each neuron computing a weighted sum of its inputs followed by an optional nonlinearity. The final output is a prediction, where the class corresponding to the neuron with the highest value is chosen.
 
 
-However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. The limitations of MLPs were addressed by Convolutional Neural Networks (CNNs), which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
+However, this simple neural network becomes insufficient for more complex problems, such as image classification, as it requires an increasing number of parameters. For instance, a $224\times 224$ RGB image flattened is very large, making MLPs parameter-heavy and inefficient. The limitations of MLPs were addressed by CNNs, which introduced convolutional and pooling layers to effectively preserve and utilize the spatial information of pixels in two-dimensional images \cite{zhang2023dive}.
 
 
 % ===============================================================================
@@ -77,7 +77,7 @@ However, this simple neural network becomes insufficient for more complex proble
 
 \subsection{Convolutional Neural Networks}
 \label{sec:CNNs}
-Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. 
+CNNs \cite{lecun1995} were introduced to address the limitations of MLPs for image-related tasks. Unlike MLPs, which treat input features as independent, CNNs are designed to recognize patterns in images by applying local filters through convolutional layers, and thereby preserving the two dimensional input of an image \cite{lecun1998,NIPS2012_c399862d,zhang2023dive}. 
 
 \begin{figure}[ht]
     \centering
@@ -86,22 +86,22 @@ Convolutional Neural Networks (CNNs) \cite{lecun1995} were introduced to address
     \label{fig:cnn_illustration}
 \end{figure}
 
-\noindent CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a fully connected layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the fully connected layer. Activation functions introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, fully connected or global pooling layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width}, \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers:
+\noindent CNNs consist of several core components, as illustrated in Figure~\ref{fig:cnn_illustration}, and have three main types of layers: convolutional layers, pooling layers, and a Fully Connected (FC) layer \cite{cs231n}. The convolutional layer is the first layer, and serves to extract local features by applying filters to small regions of an image. Pooling layers reduce the spatial dimensions of feature maps, providing invariance to small translations. CNNs are typically made of multiple convolution and pooling layers, but the final layer is the FC layer. Activation functions, such as ReLu \cite{relu},  introduce nonlinearity, allowing the network to capture complex patterns. At the final stage, FC layers aggregate the extracted features into predictions, enabling tasks such as classification or segmentation. CNNs use three-dimensional data for image classification: \emph{width}, \emph{height}, \emph{depth}. As an example, an image from the CIFAR-100 dataset has dimensions $32\times 32\times 3$, corresponding to width, height, and 3 color channels (RGB). The following provides an overview of function of the layers.
 
 \paragraph{Convolutional Layer}
-The convolutional layer is the foundation of CNNs. It applies a set of filters (called kernels) to the input image, performing convolutions to produce feature maps \cite{cs231n}. Each filter is designed to detect specific features, such as edges or textures. The filter, which has smaller dimensions than the input, is applied to an area of the image, computing dot products between the weights of the filter and the input pixels, as illustrated in figure \ref{fig:convolution}. Afterwards, the filter shifts by a stride, repeating the process until the kernel has computed the dot products for entire image. This process enables the network to learn spatial hierarchies of features, with the early layers capturing patterns like edges, and later layers capturing detailed structures \cite{yosinski2014transferablefeaturesdeepneural}. After each convolution, the ReLu \cite{relu} transformation is applied to introduce non-linearity \cite{cs231n}.
+The convolutional layer is the foundation of CNNs. It applies a set of filters (called kernels) to the input image, performing convolutions to produce feature maps \cite{cs231n}. Each filter is designed to detect specific features, such as edges or textures. The filter, which has smaller dimensions than the input, is applied to an area of the image, computing dot products between the weights of the filter and the input pixels, as illustrated in figure \ref{fig:convolution}. Afterwards, the filter shifts by a stride, repeating the process until the kernel has computed the dot products for entire image. This process enables the network to learn spatial hierarchies of features, with the early layers capturing patterns like edges, and later layers capturing detailed structures \cite{yosinski2014transferablefeaturesdeepneural}. After each convolution, the ReLu transformation is applied to introduce non-linearity \cite{cs231n}.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{Images/convolution.png} 
-    \caption{Illustration of a convolution with a $3\times 3$ kernel \cite{ibm_cnn}}
+    \caption{Illustration of a convolution with a $3\times 3$ kernel \cite{ibm_cnn}.}
     \label{fig:convolution}
 \end{figure}
 
 \paragraph{Pooling Layer}
 The function of the pooling layer (also known as downsampling) is to reduce the spatial dimensions of the feature maps, decreasing the number of parameters and computational load of the netwrok \cite{cs231n}. Moreover, this contributes to making the detection of features invariant to scale and orientation.  
 
-\paragraph{Fully Connected (FC) Layer}
+\paragraph{Fully Connected Layer}
 The FC layer, as the name implies, connects every neuron in one layer to every neuron in the next. Positioned at the end of the network, this performs the task of classification based on the features extracted from the previous layers \cite{cs231n}. The raw output of the FC layer are called logits \cite{arora2024logits}, and refers to the $K$-dimensional output vector for $K$ classes. These have raw outputs can range from $[-R,R]$, where $R$ are real numbers. However, an activation function must be applied to the logits to get the final probabilities of the model prediction. For multi-class classification, this activation function is the Softmax function introduced later in section \ref{sec:intro_losses}.
 \vspace{1em}
 
@@ -111,16 +111,16 @@ The FC layer, as the name implies, connects every neuron in one layer to every n
 % Pooling layers contribute to a spatial hierarchy, making the network robust to small positional changes and reducing computational complexity. Moreover, the multi-layered structure of CNNs facilitates hierarchical feature learning, where early layers capture simple features, and deeper layers learn increasingly complex representations. These inductive biases are fundamental to the effectiveness of CNNs in tasks like image classification and segmentation, as they align closely with the structure and characteristics of image data.
 
 
-CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed in later in this section.
+CNNs gained popularity after the introduction of LeNet-5 by LeCun et al. in 1998 \cite{lecun1998}, which showcased their capability to recognize handwritten digits. The field advanced significantly in 2012 when AlexNet \cite{NIPS2012_c399862d} won the ImageNet Challenge \cite{ILSVRC15}, demonstrating the effectiveness of deeper architectures and multi-GPU training for large-scale image recognition tasks. Subsequent developments led to influential architectures such as VGGNet \cite{simonyan2015deepconvolutionalnetworkslargescale}, GoogLeNet \cite{szegedy2014goingdeeperconvolutions}, and the state-of-the-art ResNet \cite{he2015deepresiduallearningimage}. The CNN architectures explored in this thesis are detailed in later in this section.
 
 % ===============================================================================
 % Vision Transformers
 
 \subsection{Vision Transformers}
 \label{sec:ViTs}
-Vision Transformers (ViTs), introduced by Dosovitskiy et al. in 2021 \cite{dosovitskiy2021imageworth16x16words}, presented an alternative way of handling image classification by leveragering the transformer architecture. Transformers, introduced by Vaswani et al. in 2017 \cite{vaswani2023attentionneed}, was designed for Natural Language Processing (NLP), and revolutionized the deep learning field, surpassing Recurrent Neural Networks (RNNs) NLP tasks \cite{v7labs-vit,vaswani2023attentionneed}. The transformer architecture is based on self-attention mechanism, allowing the model to selectively weigh the significance of each part of the input. As their design lack recurrence or convolutions, transformers use positional embeddings to represent the order of tokens in a sequence. 
+ViTs, introduced by Dosovitskiy et al. in 2021 \cite{dosovitskiy2021imageworth16x16words}, presented an alternative way of handling image classification by leveragering the transformer architecture. Transformers, introduced by Vaswani et al. in 2017 \cite{vaswani2023attentionneed}, was designed for Natural Language Processing (NLP), and revolutionized the deep learning field, surpassing Recurrent Neural Networks (RNNs) in NLP tasks \cite{v7labs-vit,vaswani2023attentionneed}. The transformer architecture is based on self-attention mechanism, allowing the model to selectively weigh the significance of each part of the input. As their design lack recurrence or convolutions, transformers use positional embeddings to represent the order of tokens in a sequence. 
 
-Likewise, in ViTs, images are represented as sequences including the class label as a learnable token for classification. To start, the input image is divided into a sequence of patches, which are then flattened and liniarly embedded into a vector. The spacial information is preserved by adding positional encodings to the embeddings. Next, the sequence is fed into a transformer encoder identical to that introduced by Vaswani et al., consisting of alternating layers of Multi-head self-attention (MSP) and Multi-Layer Perceptron (MLP) blocks with Layer Norm (LN) applied before every block and residual connection after every block. The final MLP layer acts as the classification head. The illustration in figure \ref{fig:vit_arch} shows the architecture of Vision Transformers.
+Likewise, in ViTs, images are represented as sequences including the class label as a learnable token for classification. To start, the input image is divided into a sequence of patches, which are then flattened and linearly embedded into a vector. The spacial information is preserved by adding positional encodings to the embeddings. Next, the sequence is fed into a transformer encoder identical to that introduced by Vaswani et al., consisting of alternating layers of Multi-head self-attention (MSP) and Multi-Layer Perceptron (MLP) blocks with Layer Norm (LN) applied before every block and residual connection after every block. The final MLP layer acts as the classification head. The illustration in figure \ref{fig:vit_arch} shows the architecture of Vision Transformers.
 
 \begin{figure}[h!]
     \centering
@@ -139,7 +139,7 @@ Likewise, in ViTs, images are represented as sequences including the class label
 
 \subsection{ResNet-50 Architecture}
 \label{sec:resnet}
-ResNet50 is a variant of the Residual Network (ResNet) architecture, developed by Microsoft Research (He et al.) in 2015 \cite{he2015deepresiduallearningimage}. The ResNet architecture was designed to address the vanishing and exploding gradient problem in deep networks. When training a deep neural network, as the number of layers increases, the gradients of the loss function with respect to the weight can potentially vanish or explode during backpropagation \cite{he2015deepresiduallearningimage}. This can lead to slow convergence or unstable updates.
+ResNet-50 is a variant of the Residual Network (ResNet) architecture, developed by Microsoft Research (He et al.) in 2015 \cite{he2015deepresiduallearningimage}. The ResNet architecture was designed to address the vanishing and exploding gradient problem in deep networks. When training a deep neural network, as the number of layers increases, the gradients of the loss function with respect to the weight can potentially vanish or explode during backpropagation \cite{he2015deepresiduallearningimage}. This can lead to slow convergence or unstable updates.
 
 In traditional CNNs, stacked layers learn a direct mapping $\mathcal{H}(x)$ of the input $x$ to the output. The introduction of residual layers, however, allows for the layer to fit a residual mapping, as illustrated in figure \ref{fig:res_learning}, where the network learns the residual function $\mathcal{F}(x) = \mathcal{H}(x) - X$. Isolating $\mathcal{H}(x)$ yields $\mathcal{H}(x) = \mathcal{F}(x) + x$, meaning that the input $x$ is passed through a skip connection. This architecture reduces the complexity of the optimization process, as the network only has to model the residual component $\mathcal{F}(x)$ rather than the full mapping $\mathcal{H}(x)$ \cite{he2015deepresiduallearningimage}.
 
@@ -150,14 +150,14 @@ In traditional CNNs, stacked layers learn a direct mapping $\mathcal{H}(x)$ of t
     \label{fig:res_learning}
 \end{figure}
 
-\noindent The residual network is formed by stacking multiple layers of residual blocks, as the one depicted in figure \ref{fig:res_learning}. The ResNet architecture can have a varying number of layers, and, as the name implies, the ResNet50 variant has 50 layers. Other architectures include ResNet-34, ResNet-101, and ResNet-152 \cite{he2016identitymappingsdeepresidual}. 
+\noindent The residual network is formed by stacking multiple layers of residual blocks, as the one depicted in figure \ref{fig:res_learning}. The ResNet architecture can have a varying number of layers, and, as the name implies, the ResNet-50 variant has 50 layers. Other architectures include ResNet-34, ResNet-101, and ResNet-152 \cite{he2016identitymappingsdeepresidual}. 
 
-The ResNet50 implementation consist of 1 convolutional layer, 4 stages of bottleneck residual blocks with layers [3, 4, 6, 3], global average pooling, and finally a fully connected layer for classification \cite{torchvision-resnet}, as seen in figure \ref{fig:resnet50}. 
+The ResNet-50 implementation consist of 1 convolutional layer, 4 stages of bottleneck residual blocks with layers [3, 4, 6, 3], global average pooling, and finally a fully connected layer for classification \cite{torchvision-resnet}, as seen in figure \ref{fig:resnet50}. 
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\textwidth]{Images/resnet50_blocks.png} 
-    \caption{ResNet50 architecture \cite{medium_resnet}, consisting of 6 stages: input preprocessing, 4 blocks with residual connections, and a FC layer.}
+    \caption{ResNet-50 architecture \cite{medium_resnet}, consisting of 6 stages: input preprocessing, 4 blocks with residual connections, and a FC layer.}
     \label{fig:resnet50}
 \end{figure}
 
@@ -166,7 +166,7 @@ The ResNet50 implementation consist of 1 convolutional layer, 4 stages of bottle
 
 \subsection{MobileNetV2 Architecture}
 \label{sec:mobilenet}
-MobileNetV2 introduced by Sandler et al. \cite{sandler2018mobilenetv2} is a lightweight CNN model designed primarily to balance model accuracy and computational efficiency, making it suitable for mobile or embedded devices. Building upon the original concepts of MobileNetV1 \cite{howard2017mobilenetsefficientconvolutionalneural}, MobileNetV2 preserves the use of depthwise separable convolutions, a method for reducing the parameters and floating-point operations, while introducing a novel element known as the inverted residual structure. 
+MobileNetV2, introduced by Sandler et al. \cite{sandler2018mobilenetv2}, is a lightweight CNN model designed primarily to balance model accuracy and computational efficiency, making it suitable for mobile or embedded devices. Building upon the original concepts of MobileNetV1 \cite{howard2017mobilenetsefficientconvolutionalneural}, MobileNetV2 preserves the use of depthwise separable convolutions, a method for reducing the parameters and floating-point operations, while introducing a novel element known as the inverted residual structure. 
 
 % \begin{figure}[ht]
 %     \centering
@@ -176,7 +176,7 @@ MobileNetV2 introduced by Sandler et al. \cite{sandler2018mobilenetv2} is a ligh
 % \end{figure}
 
 \paragraph{Inverted Residual Blocks}
-While traditional residual connections described above allow for identity mapping and improved gradient flow, MobileNetV2 employs an inverted residual structure \cite{sandler2018mobilenetv2}. Instead of mapping from a high-dimensional representation down to a lower-dimensional bottleneck, then reconstructing features at the output, inverted residual blocks begin with a low-dimensional input and expand it to a higher-dimensional space before applying a depthwise convolution. After spatial filtering, the representation is projected back down to a low-dimensional space. This approach, illustrated in Figure \ref{fig:residual}, helps preserve crucial information and maintain a rich feature space without substantially increasing computational cost. The use of a linear bottleneck (i.e., no nonlinear activation in the low-dimensional projection) also helps prevent the destruction of useful information, further improving efficiency and accuracy.  
+While traditional residual connections, as described above, allow for identity mapping and improved gradient flow, MobileNetV2 employs an inverted residual structure \cite{sandler2018mobilenetv2}. Instead of mapping from a high-dimensional representation down to a lower-dimensional bottleneck, then reconstructing features at the output, inverted residual blocks begin with a low-dimensional input and expand it to a higher-dimensional space before applying a depthwise convolution. After spatial filtering, the representation is projected back down to a low-dimensional space. This approach, illustrated in Figure \ref{fig:residual}, helps preserve crucial information and maintain a rich feature space without substantially increasing computational cost. The use of a linear bottleneck (i.e., no nonlinear activation in the low-dimensional projection) also helps prevent the destruction of useful information, further improving efficiency and accuracy.  
 
 \begin{figure}[ht]
     \centering
@@ -186,7 +186,7 @@ While traditional residual connections described above allow for identity mappin
 \end{figure}
 
 \paragraph{Depthwise Separable Convolution}
-Following MobileNetV1, MobileNetV2 relies on depthwise separable convolutions, depicted in Figure \ref{fig:depthwise_sep_conv}, to factorize the convolution operation into two simpler operations \cite{howard2017mobilenetsefficientconvolutionalneural}: depthwise convolution and pointwise convolution. The depthwise convolution applies a single filter to each input channel, and the pointwise convolution (a $1\times 1$ convolution) then recombines the channels to produce the desired output. In comparison, a standard convolution both filtes and combines inputs into a new set of outputs. This approach reduces the parameter count and computational load, making the model suitable for devices with limited resources \cite{howard2017mobilenetsefficientconvolutionalneural,sandler2018mobilenetv2}.
+Following MobileNetV1, MobileNetV2 relies on depthwise separable convolutions, depicted in Figure \ref{fig:depthwise_sep_conv}, to factorize the convolution operation into two simpler operations \cite{howard2017mobilenetsefficientconvolutionalneural}: depthwise convolution and pointwise convolution. The depthwise convolution applies a single filter to each input channel, and the pointwise convolution (a $1\times 1$ convolution) then recombines the channels to produce the desired output. In comparison, a standard convolution both filters and combines inputs into a new set of outputs. This approach reduces the parameter count and computational load, making the model suitable for devices with limited resources \cite{howard2017mobilenetsefficientconvolutionalneural,sandler2018mobilenetv2}.
 
 \begin{figure}[ht]
     \centering
@@ -203,7 +203,7 @@ Following MobileNetV1, MobileNetV2 relies on depthwise separable convolutions, d
 
 \subsection{ConvNeXt Base Architecture}
 \label{sec:convnext}
-ConvNext, introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}, evolutionized the traditional CNN architecture by incorporating elements from ViTs. Starting with the stem cell, the ConvNeXts employ a patchify stem, as seen in figure \ref{fig:stem}. By setting the kernel to $4 \times 4$ and the stride to 4, the result is a non-overlapping convolution where no information is shared between them. However, these are later combined in the final layers of the network.  
+ConvNext, introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}, evolutionized the traditional CNN architecture by incorporating elements from ViTs. Starting with the stem cell, the ConvNeXts employ a patchify stem, as seen in figure \ref{fig:stem}. By setting the kernel to $4 \times 4$ and the stride to 4, the result is a non-overlapping convolution where no information is shared between them, yet these are later combined in the final layers of the network.  
 
 \begin{figure}[h!]
     \centering
@@ -225,7 +225,7 @@ ConvNext, introduced by Liu et al. in 2022 \cite{liu2022convnet2020s}, evolution
     \label{fig:stem}
 \end{figure}
 
-Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, the ConvNeXt use depthwise convolution, already described in the MobileNetV2 section \ref{sec:mobilenet}, to increase the FLOPs/accuracy trade-off. Likewise, the ConvNext incorporates inverted bottleneck block, which are an important design in transformers as well as MobileNetV2 \cite{liu2022convnet2020s}. Additionally, the ConvNext architecture uses a $7 \times 7$ depthwise convultion in each block on the condition of moving the depthwise convolution layer up. See figure \ref{fig:conv_block}.
+\noindent Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, the ConvNeXt use depthwise convolution, already described in Section \ref{sec:mobilenet}, to increase the computation vs. accuracy trade-off. Likewise, the ConvNext incorporates inverted bottleneck blocks, which are an important design in transformers as well as MobileNetV2 \cite{liu2022convnet2020s}. Additionally, the ConvNext architecture uses a $7 \times 7$ depthwise convultion in each block on the condition of moving the depthwise convolution layer up. See figure \ref{fig:conv_block}.
 
 \begin{figure}[h!]
     \centering
@@ -234,7 +234,9 @@ Next, inspired by ResNeXt \cite{xie2017aggregatedresidualtransformationsdeep}, t
     \label{fig:conv_block}
 \end{figure}
 
-Instead of using the commonly used activation function in ResNets, the Rectified Linear Unit (ReLU) \cite{relu}, the ConvNeXt use Gaussian Error Linear Unit (GeLU) \cite{hendrycks2023gaussianerrorlinearunits}. This activation function has shown to perform better than ReLU for transformers \cite{liu2022convnet2020s}. Additionally, ConvNext draws inspiration from transformers by removing most instances of normalization layers, only leaving them after depthwise convolutions and furhter replacing the Batch Normalization with Layer Normalization. Finally, ConvNeXt introduces separate downsampling layers between blocks rather than implementing downsampling within the blocks themselves. 
+\noindent Instead of using the ReLu activation function, commonly used in ResNets, the ConvNeXt use Gaussian Error Linear Unit (GeLU) \cite{hendrycks2023gaussianerrorlinearunits}. This activation function has shown to perform better than ReLU for transformers \cite{liu2022convnet2020s}. Additionally, ConvNext draws inspiration from transformers by removing most instances of normalization layers, only leaving them after depthwise convolutions and furhter replacing the Batch Normalization (BN) with LN. Finally, ConvNeXt introduces separate downsampling layers between blocks rather than implementing downsampling within the blocks themselves. 
+
+These implementations has shown to improve performance, competing with ViTs \cite{liu2022convnet2020s}.
 
 % ===============================================================================
 % ViT-B/16
@@ -250,12 +252,12 @@ The ViT-B/16 \cite{dosovitskiy2021imageworth16x16words} is a ViT that leverages 
 \section{Class Re-balancing Methods for Long-Tailed Learning}
 \label{sec:lt_methods}
 
-Class re-balancing methods in deep learning seeks to mitigate the effects of imbalanced class distributions in training data. According to Zhang et al. \cite{zhang2023deep} class re-blancing can be divided into three sub-categories: re-sampling, class-sensitive learning, and logit adjustment. In this thesis, the primary focus is on class-sensitive learning, exploring re-weighting, re-margining, and logit modification strategies. For completeness, re-sampling is briefly introduced as well.
+Class re-balancing methods in deep learning seeks to mitigate the effects of imbalanced class distributions in training data. According to Zhang et al. \cite{zhang2023deep} class re-balancing can be divided into three sub-categories: re-sampling, class-sensitive learning, and logit adjustment. In this thesis, the primary focus is on class-sensitive learning, exploring re-weighting, re-margining, and logit adjustment strategies. For completeness, re-sampling is briefly introduced as well.
 
 
 \subsection{Re-Sampling}
 \label{sec:re-sampling}
-Deep networks are commonly trained with mini-batch gradient descent using random sampling, i.e. each sample has an equal probability of being selected \cite{zhang2023deep}. When classes are imblanced, samples from head classes naturally occur more often, thus having higher chances of being selected than samples from tail classes, resulting in a bias towards head classes. Re-sampling adresseses this problem by adjusting the sample probabilites or the sample counts per class (e.g. oversampling minority classes or undersampling majority classes). While this approach seems simple and intuitive, re-sampling can lead to overfitting of tail classes or underperformance on head classes \cite{zhang2023deep}, hence the need for more sophistacated approaches.
+Deep networks are commonly trained with mini-batch gradient descent using random sampling, i.e. each sample has an equal probability of being selected \cite{zhang2023deep}. When classes are imblanced, samples from head classes naturally occur more often, thus having higher chances of being selected than samples from tail classes, resulting in a bias towards head classes. Re-sampling addresses this problem by adjusting the sample probabilites or the sample counts per class (e.g. oversampling minority classes or undersampling majority classes). While this approach seems simple and intuitive, re-sampling can lead to overfitting of tail classes or underperformance on head classes, hence the need for more sophistacated approaches \cite{zhang2023deep}.
 
 \subsection{Class-Sensitive Learning}
 \label{sec:class-sensitive-learning}
@@ -332,12 +334,12 @@ In classification tasks, model outputs $\eta_j$ for class $j$ are computed by:
 \noindent where $\theta_j$ are the weights for the final layer for class $j$, and $f(x)$ is the feature extractor function \cite{ren2020balancedmetasoftmaxlongtailedvisual}. Logit adjustment modifies these logits accounting for the prior class probabilites, thus shifting the model's prediction toward a more balanced output distribution \cite{ren2020balancedmetasoftmaxlongtailedvisual}.
 \vspace{1em}
 
-\noindent In the following section, the theory behind several representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline Softmax Cross-Entropy loss. 
+\noindent In the following section, the theory behind representative loss functions commonly used in class-sensitive learning is presented, beginning with an introduction to loss functions followed by the baseline CE loss. 
 % Subsequently, the theory behind multiple re-weighting schemes including Weighted Softmax Cross-Entropy, Focal Loss, Class-Balanced Loss, Balanced Softmax Loss, and Equalization Loss, as well as the re-margining method LDAM Loss. Each of these methods seeks to improve the imbalance in training through modifications that ultimately improve the classification performance on tail classes.
 
 \section{Loss Functions}
 \label{sec:intro_losses}
-Loss functions are a fundamental component in deep learning, as they serve as a measure of how far model predictions deviate from the actual values \cite{zhang2023dive,Goodfellow-et-al-2016}.
+Loss functions are a fundamental component in deep learning, as they serve as a measure of how far model predictions deviate from the actual values \cite{Goodfellow-et-al-2016,zhang2023dive}.
 
 During training, an optimization algorithm iteratively updates the model parameters (weights and biases) with the goal of minimizing the loss using the gradient of the loss function with respect to each parameter to determine how the parameter affects the loss \cite{Goodfellow-et-al-2016}. Consequently, the loss function influences the model's interpretation of prediction errors and guides parameter updates. This process continues until the model converges or meets a stopping criterion. The experiments in this thesis are conducted using the Adam optimizer introduced by Kingma et al. \cite{kingma2017adammethodstochasticoptimization}.
 
@@ -359,7 +361,7 @@ For image classification tasks, the standard loss function is the cross-entropy 
 
 \subsection{Softmax Activation Function}
 \label{sec:softmax}
-The \textit{Softmax} function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the Softmax function is defined as:
+The softmax function transforms the raw output scores (logits) of the final layer of a neural network into a probability distribution over \( K \) classes. For an input \( \mathbf{z} = [z_1, z_2, \dots, z_K] \), the softmax function is defined as:
 
 \begin{equation}
     \label{eq:softmax}
@@ -370,7 +372,7 @@ The \textit{Softmax} function transforms the raw output scores (logits) of the f
 
 \subsection{Cross-Entropy Loss}
 \label{sec:ce_loss}
-The \emph{Softmax Cross-Entropy (CE) loss} is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The CE loss combines the cross-entropy loss and the softmax activation function, and thus is commonly referred to as the \emph{Softmax Loss} \cite{zhang2023dive,Goodfellow-et-al-2016,zhang2023deep}. 
+The CE loss is a fundamental building block in training deep classifiers and is widely regarded as the baseline in classification tasks \cite{zhang2023deep, cs231n, pytorch_crossentropy}. The CE loss combines the cross-entropy loss and the softmax activation function, and thus is commonly referred to as the \emph{Softmax Loss} \cite{zhang2023dive,Goodfellow-et-al-2016,zhang2023deep}. 
 
 The CE loss measures the difference between the predicted probability distribution $P$ and the true class label $y$. For a single sample, the loss is defined as \cite{zhang2023dive,cs231n}:
 
@@ -386,7 +388,7 @@ The CE loss measures the difference between the predicted probability distributi
     \mathcal{L}_{\text{CE}} = - \log(p_y)
 \end{equation}
 
-\noindent Inserting the Softmax probabilites from Eq. \eqref{eq:softmax} yields:
+\noindent Inserting the softmax probabilites from Eq. \eqref{eq:softmax} yields:
 
 \begin{equation}
     \label{eq:ce_loss}
@@ -395,26 +397,26 @@ The CE loss measures the difference between the predicted probability distributi
 
 \noindent where $y$ is the true class. This equation penalizes incorrect predictions by heavily weighting the log of the predicted probability for the true class. The loss is minimized when the predicted probability \( P(y = c \mid \mathbf{z}) \) approaches 1, indicating high confidence in the correct class.
 
-The standard Softmax Loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
+The standard CE loss (eq. \eqref{eq:ce_loss}) estimates class probabilities based on the assumption that the training and validation labels follow the same distribution, $p(y=j)$, in other words how common is the label $j$ in the data \cite{ren2020balancedmetasoftmaxlongtailedvisual}. When training with an imbalanced dataset the estimated probabilities $\phi$ can become biased when applied to data with a different class distribution, e.g. a balanced test set, which can lead to errors in predictions.
 
 % \subsubsection{Summary of Class Re-Balancing}
 % Long-tailed or imbalanced datasets pose significant challenges in classification tasks, as models trained naively tend to bias toward majority classes. Class re-balancing strategies tackle this by either sampling differently (re-sampling), adjusting the loss function to emphasize minority classes (cost-sensitive re-weighting and margin-based losses), or modifying logits based on class priors (logit adjustment). These techniques all aim to improve performance on tail classes without excessively sacrificing performance on head classes. The following sections detail how each method is applied and evaluated in the context of this thesis.
 
 \subsection{Weighted Softmax Cross-Entropy Loss}
 \label{sec:wce_loss}
-The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE loss (Eq. \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
+The WCE loss modifies the standard CE loss (Eq. \eqref{eq:ce_loss}) by introducing a weighting factor $w$. For multiclass classification, the CE loss it is multiplied by the inverse class frequencies $1/\pi_y$ \cite{zhang2023deep,lin2018focallossdenseobject}, given by:
 
 \begin{equation}
     \label{eq:wce_loss}
     \mathcal{L}_{\text{WCE}} = -w \log(p_y) = - \frac{1}{\pi_y} \log(p_y)
 \end{equation}
 
-\noindent This weighted CE loss ensures that minority classes contribute more to the overall loss, addressing the imbalance during training.
+\noindent This WCE loss ensures that minority classes contribute more to the overall loss, addressing the imbalance during training.
 
 
 \subsection{Focal Loss}
 \label{sec:fl}
-\emph{Focal Loss} \cite{lin2018focallossdenseobject} addresses class imbalance by improving model performance on hard-to-classify examples by focusing on wrongly classified examples. The technique for this is called down-weighting, and uses the prediction probabilities to dynamically adjust the contribution of each sample to the loss. Well-classified examples with high probabilities $p_y$ are down-weighted by adding a modulating factor $(1 - p_y)^\gamma$ to the cross-entropy loss (eq. \eqref{eq:ce_loss}). Here, $\gamma \geq 0$ is a tunable focusing parameter. The Focal Loss modifies the CE loss by applying the inverse prediction probability as follows:
+FL \cite{lin2018focallossdenseobject} addresses class imbalance by improving model performance on hard-to-classify examples by focusing on wrongly classified examples. The technique for this is called down-weighting, and uses the prediction probabilities to dynamically adjust the contribution of each sample to the loss. Well-classified examples with high probabilities $p_y$ are down-weighted by adding a modulating factor $(1 - p_y)^\gamma$ to the cross-entropy loss (eq. \eqref{eq:ce_loss}). Here, $\gamma \geq 0$ is a tunable focusing parameter. The FL modifies the CE loss by applying the inverse prediction probability as follows:
 
 \begin{equation}
     \label{eq:focal_loss}
@@ -432,7 +434,7 @@ The \emph{Weighted Softmax Cross-Entropy (WCE) loss} modifies the standard CE lo
 
 \subsection{Class-Balanced Loss}
 \label{sec:cb_loss}
-\emph{Class-Balanced (CB) Loss} \cite{cui2019classbalancedlossbasedeffective} introduces a re-weighting strategy based on the effective number of samples per class to re-balance the loss. Instead of simply using raw class frequencies, CB Loss estimates how much additional information new samples provide, acknowledging an information overlap among data, and as the number of samples increases, the marginal benefit of extracted features from new data diminishes. As illustrated in figure \ref{fig:cb_featue_space}, the feature space is the map of all possible data, and each sample occupies a part of the space. Collecting more samples of a class means that there is a probability that their features overlap, meaning that additional samples diminishes new information.
+CB loss \cite{cui2019classbalancedlossbasedeffective} introduces a re-weighting strategy based on the effective number of samples per class to re-balance the loss. Instead of simply using raw class frequencies, CB loss estimates how much additional information new samples provide, acknowledging an information overlap among data, and as the number of samples increases, the marginal benefit of extracted features from new data diminishes. As illustrated in figure \ref{fig:cb_featue_space}, the feature space is the map of all possible data, and each sample occupies a part of the space. Collecting more samples of a class means that there is a probability that their features overlap, meaning that additional samples diminishes new information.
 In feature space, the probability of newly sampled data with volume 1 is overlapping $p$, which means that the probability of adding new information to the feature space is $(1-p)$. 
 
 
@@ -463,18 +465,18 @@ As a result, the CB loss introduces a class-balanced re-weighting term, inversel
 \noindent where $n_y$ is the number of samples in the ground truth class $y$. Applying the inverse of the effective number ensures that minority classes contribute more to the total loss, as the effective number in Eq. \eqref{eq:eff_num} grows large for minority classes (small $n_y$) and small for majority classes (large $n_y$). When $\beta = 0$ the loss is equivalent to the CE loss. Contrary, when $\beta \longrightarrow 1$ the re-weighting effect grows.
 
 
-\subsection{Equalization Loss}
+\subsection{Softmax Equalization Loss}
 \label{sec:seql}
-\emph{Equalization (EQ) Loss} \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
+Equalization Loss (EQL) \cite{tan2020equalizationlosslongtailedobject} aims to mitigate the over-suppression of tail classes, which occurs when underrepresented classes serve predominantly as negative examples for the more frequent classes. The idea is to ignore the gradients for rare classes so that they are not excessively penalized when they appear as negatives, preventing their learned representations from being overshadowed. An analysis of gradient impact on classes is seen in figure \ref{fig:eql_gradients}.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{Images/gradient_analysis.png} 
-    \caption{Gradient analysis on positive and negative examples along with negative samples with EQL \cite{tan2020equalizationlosslongtailedobject}.}
+    \caption{Gradient analysis on positive and negative examples along with negative samples with Equalization Loss \cite{tan2020equalizationlosslongtailedobject}.}
     \label{fig:eql_gradients} 
 \end{figure}
 
-The EQ loss was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization (SEQ) Loss}, defined as: 
+\noindent The EQL was designed for object recognition, but the authors decided to adopt the principles into image classification, officially called the \emph{Softmax Equalization (SEQ) Loss}, defined as: 
 
 \begin{equation}
     \label{eq:EQ_loss}
