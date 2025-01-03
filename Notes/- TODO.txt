@@ -19,7 +19,7 @@ x Convolutional Neural Networks
 x Adam optimizer
 x Logit adjustment
 x Loss preliminaries (probabilities)
-- Make figures
+x Make figures
 x Sort out sections
 x Remove the long-tailed category figure
 x Re-arrange model architecture sections
@@ -31,7 +31,6 @@ x Loss Selection
 x Explain choice of optimizer
 x Find the reference that says adam optimizer doesnt work with certain losses: Long-tail learning via logit adjustment
 x Explain freezing layers
-- Insert the results from the reference papers for the models and losses 
 x Parameters in model table
 - Align the selection to the background theory
 - Make the arguments simpler
@@ -83,4 +82,6 @@ If time allows:
 - Detailed architecture of MobileNetV2
 - Detailed architectire of ViT-B/16
 - Detailed architecture of ConvNeXt
+- Insert the results from the reference papers for the models and losses 
+
 
