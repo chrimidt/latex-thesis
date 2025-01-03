@@ -59,8 +59,8 @@ References:
 
 Appendix:
 - Remove F1 scores
-- Make the tables pretty
-- Arrange experimental setup
+x Make the tables pretty
+x Arrange experimental setup
 
 
 Finisher:
@@ -83,5 +83,6 @@ If time allows:
 - Detailed architectire of ViT-B/16
 - Detailed architecture of ConvNeXt
 - Insert the results from the reference papers for the models and losses 
+- Adam optimizer
 
 
