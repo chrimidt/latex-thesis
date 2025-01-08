@@ -1,0 +1,157 @@
+\documentclass[a4paper,12pt]{article}
+\input{preamble.tex}
+
+\begin{document}
+
+\title{Thesis Defense Preparation: \\ \large "Deep Learning Techniques for Long-Tailed Image Classification: A Comparative Study of Loss Designs and Model Architectures"}
+\author{Christine Annelise Midtgaard}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+This section focuses on the overall preparation strategy for the defense.
+
+\subsection{Purpose of the Defense}
+\begin{itemize}
+    \item Summarize the thesis content and key findings.
+    \item Answer committee questions confidently and succinctly.
+    \item Demonstrate the impact and relevance of the work.
+\end{itemize}
+
+\subsection{Preparation Workflow}
+\begin{enumerate}
+    \item Review the thesis and highlight key points.
+    \item Develop clear slides for the presentation.
+    \item Anticipate and prepare answers to potential questions.
+    \item Practice the delivery for clarity and confidence.
+\end{enumerate}
+
+\section{Presentation Structure}
+The presentation should follow this logical flow:
+
+\subsection{Slide Outline}
+\begin{enumerate}
+    \item Title Slide: Thesis title, name, supervisor, and institution.
+    \item Introduction: Problem, goals, and hypothesis.
+    \item Results
+    \item Background:
+        \begin{itemize}
+            \item Long-tailed datasets.
+            \item Model architectures (ResNet-50, MobileNetV2, ConvNext-Base, ViT-B/16).
+            \item Loss functions and how they address class imbalance.
+        \end{itemize}
+    \item Methodology:
+        \begin{itemize}
+            \item Dataset preparation (CIFAR-100 and CIFAR-100-LT).
+            \item Model and loss function selection.
+            \item Training and evaluation strategy.
+        \end{itemize}
+    \item Results:
+        \begin{itemize}
+            \item Performance comparisons (Top-1 accuracy, head, middle, tail-classes).
+            \item Tail-class performance.
+            \item Key takeaways.
+        \end{itemize}
+    \item Discussion:
+        \begin{itemize}
+            \item Interpretations and insights.
+            \item Challenges and limitations.
+        \end{itemize}
+    \item Conclusion:
+        \begin{itemize}
+            \item Summary of contributions.
+            \item Suggestions for future work.
+        \end{itemize}
+\end{enumerate}
+
+\section{Core Topics to Review}
+\subsection{Theoretical Topics}
+\begin{itemize}
+    \item \textbf{Convolutional Neural Networks:}
+        \begin{itemize}
+            \item Residual Networks.
+            \item ResNet-50.
+            \item MobileNetV2.
+            \item ConvNext-Base
+        \end{itemize}
+    \item \textbf{Vision Transformers:}
+        \begin{itemize}
+            \item ViT-B/16.
+            \item Self-attention mechanism
+        \end{itemize}
+    \item \textbf{Loss Functions:}
+        \begin{itemize}
+            \item Softmax activation function.
+            \item Cross-Entropy Loss.
+            \item Weighted Cross-Entropy Loss.
+            \item Focal Loss.
+            \item Class-Balanced Loss.
+            \item Balanced Softmax.
+            \item Equalization Loss.
+            \item LDAM Loss.
+        \end{itemize}
+\end{itemize}
+
+\subsection{Dataset Preparation}
+\begin{itemize}
+    \item Class distributions in CIFAR-100-LT.
+    \item Data augmentation techniques and their impact.
+\end{itemize}
+
+\section{Pitfalls}
+\begin{itemize}
+    \item Optimizer (SGD, Adam, RMSProp, etc.)
+    \item Transfer Learning.
+    \item Fine-Tuning
+    \item Data Augmentation.
+    \item 
+\end{itemize}
+
+\section{Mock Questions and Answers}
+\subsection{Potential Questions}
+\begin{itemize}
+    \item Why did you choose this topic?
+    \item What are the main contributions of your thesis?
+    \item How did you create the long-tailed dataset?
+    \item Why did you choose these specific loss functions and models?
+    \item What challenges did you encounter and how were they resolved?
+    \item What are the limitations of your findings?
+    \item How does your work advance the field?
+\end{itemize}
+
+\subsection{Prepared Answers}
+\begin{itemize}
+    \item \textbf{Why this topic?} Class imbalance is a critical issue in real-world datasets, and this work explores practical solutions.
+    \item \textbf{Main Contributions:} Insights into loss function and architecture interplay for long-tailed image classification.
+    \item \textbf{Dataset:} The CIFAR-100-LT dataset was derived using exponential decay to simulate real-world imbalances.
+    \item \textbf{Challenges:} Handling transformer underperformance on small datasets and ensuring balanced evaluation metrics.
+\end{itemize}
+
+\section{Practice and Delivery Tips}
+\begin{itemize}
+    \item Use concise and clear language in your explanations.
+    \item Highlight the relevance of your results to practical problems.
+    \item Maintain a calm demeanor and take a moment to think before answering questions.
+    \item Rehearse the presentation.
+\end{itemize}
+
+\section{Ideas}
+\note{In this section I will write ideas as they come to me.}
+
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\section{Practicalities}
+\begin{itemize}
+    \item Make slides interesting and pretty.
+    \item Print slides.
+    \item Bring a printed version of the thesis.
+\end{itemize}
+
+
+\end{document}

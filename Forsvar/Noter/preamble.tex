@@ -1,0 +1,67 @@
+% Packages and setup code for notes
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{caption}
+\captionsetup{font=small}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[breaklinks]{hyperref}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{booktabs}   % For \toprule, \midrule, \bottomrule
+\usepackage{float}      % For forcing table placement
+\usepackage{titlesec}   % Custom section formatting
+\usepackage{enumitem}   % Control over lists
+
+% Page geometry for notes
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm,
+    headheight=14pt
+}
+
+% Fancy headers for notes
+\pagestyle{fancy}
+\fancyhf{} % Clear existing header/footer settings
+\fancyhead[L]{\small Notes for Defense} % Custom header
+\setlength{\headheight}{14.49998pt}
+\fancyhead[R]{\thepage} % Page number on the right
+\fancyfoot[C]{\scriptsize Prepared by: \AuthorName}
+
+% Highlighting and notes commands
+\newcommand{\important}[1]{\textcolor{red}{\textbf{#1}}} % Important notes
+\newcommand{\note}[1]{\textcolor{blue}{\textit{#1}}}      % General notes
+\newcommand{\todo}[1]{\textcolor{orange}{TODO: #1}}       % TODOs
+
+% Section and subsection formatting for clarity
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+% Custom bullet points for lists
+\renewcommand{\labelitemi}{$\bullet$}
+\renewcommand{\labelitemii}{$\circ$}
+
+% Hyperlink settings
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdfborder={0 0 0},
+}
+
+% Custom commands
+\newcommand{\AuthorName}{Christine Annelise Midtgaard} % Your name
+\newcommand{\SupervisorName}{Kim Bjerge}              % Supervisor's name
+
+% Spacing adjustments for notes
+\setlength{\parskip}{0.5em}   % Slight space between paragraphs
+\setlength\parindent{0pt}     % No paragraph indentation

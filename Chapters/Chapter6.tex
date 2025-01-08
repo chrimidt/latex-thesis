@@ -2,13 +2,13 @@
 This section revisits the goals outlined in Section~\ref{sec:goals}, summarizes the main findings from the experiments, and suggests directions for future work.
 
 \section{Revisiting the Goals of the Thesis}
-In revisiting the goals of this thesis, it has become clear that the investigation of the deep long-tailed learning technique Class Re-Balancing has yielded valuable insight. The goals and findings are presented in the following.
+In revisiting the goals of this thesis, it has become clear that the investigation of the deep long-tailed learning technique class-sensitive learning has yielded valuable insight. The goals and findings are presented in the following.
 
 \noindent\textbf{Investigate the efficacy of long-tailed learning methods by assessing their performance on tail classes without sacrificing accuracy on head classes.}
-The findings included that performance on tail classes often comes with a trade-off in performance on head classes. Similarly, adequate performances on all classes was often attributed to the performance on head classes and not inherently on tail classes. Nevertheless, Balanced Softmax Loss convincingly overcame this challenge across CNN-based architectures. This aligns with the goal of investigating the ability of deep long-tailed learning techniques to maintain overall accuracy. 
+The findings included that performance on tail classes often comes with a trade-off in performance on head classes. Similarly, adequate performances on all classes was often attributed to the performance on head classes and not inherently on tail classes. Nevertheless, BS loss convincingly overcame this challenge across CNN-based architectures. This aligns with the goal of investigating the ability of deep long-tailed learning techniques to maintain overall accuracy. 
 
 \noindent \textbf{Understand how model design affects the performance of deep long-tailed learning methods.}
-The evaluations of different model architectures, namely the CNN-based and Vision Transformers, in combination with different class re-balancing techniques has revealed that model design has an effect on the performance of long-tailed learning. Specifically, ConvNeXt-Base showed robustness  
+The evaluations of different model architectures, namely the CNN-based and ViTs, in combination with different class re-balancing techniques has revealed that model design has an effect on the performance of long-tailed learning. Specifically, ConvNeXt-Base showed robustness  
 
 \noindent \textbf{Provide a comprehensive insight in comparisons that inform the choice of methods for long-tailed distributions.}
 These findings contribute to a more comprehensive understanding of what to consider when training a deep network with long-tailed data, and, in doing so, serves as a guide to deep learning practitioners seeking more informed choices when encountered with a long-tailed problem.
@@ -16,11 +16,11 @@ These findings contribute to a more comprehensive understanding of what to consi
 \section{Summary of Main Findings}
 The experiments conducted in this thesis underscore the complexity of deep long-tailed learning and highlight the importance of carefully combining model architectures, loss functions, and training configurations. 
 
-Among the evaluated loss designs, the Balanced Softmax Loss consistently provided the best performance on minority (tail) classes across multiple CNN backbones. By re-scaling logits according to class frequencies, Balanced Softmax effectively mitigates the natural bias toward majority (head) classes. Although achieving comparable performances on head classes, the results indicate that this improvement sometimes comes at the expense of head-class accuracy, reflecting a broader trade-off in optimizing both head and tail classes simultaneously. 
+Among the evaluated loss designs, the BS loss consistently provided the best performance on minority (tail) classes across multiple CNN backbones. By re-scaling logits according to class frequencies, BS loss effectively mitigates the natural bias toward majority (head) classes. Although achieving comparable performances on head classes, the results indicate that this improvement sometimes comes at the expense of head-class accuracy, reflecting a broader trade-off in optimizing both head and tail classes simultaneously. 
 
 % Among the evaluated approaches, the Balanced Softmax Loss consistently achieved the best performance on tail classes, while maintaining a comparable performance on other categories across multiple CNN backbones. In contrast, Class-Balanced Loss underperformed across all models and categories, suggesting a fault in implementation \todo{investigate}.
 
-Equalization Loss underperformed across all models with the exception of ConvNext-Base, indicating a strong correlation with model robustnes, dataset size, and down-weighting of gradients. Likewise, LDAM loss, tested without deferred re-weighting (DRW), did not match the consistency of Balanced Softmax, reaffirming that additional sampling strategies might be needed to fully realize LDAM's potential.
+SEQL underperformed across all models with the exception of ConvNext-Base, indicating a strong correlation with model robustnes, dataset size, and down-weighting of gradients. Likewise, LDAM loss, tested without DRW, did not match the consistency of BS, reaffirming that additional sampling strategies might be needed to fully realize LDAM's potential.
 
 The ViT-B/16 architecture showed a pronounced performance gap compared not only to CNN-based architectures but also to its own reported benchmarks. Transformers often require large-scale and well-balanced datasets, as well as careful configuration of hyperparameters and training schemes, to perform at their peak. By contrast, CNN backbones generally demonstrated stronger performance and robustness under long-tailed conditions.
 
@@ -33,7 +33,7 @@ Future investigation would benefit from evaluating experiments on large-scale, l
 Additionally, training ViT-B/16 on larger datasets while carefully considering its configurations could prove its full potential. Furthermore, evaluating the LDAM including the DRW and, potentially, combined with other loss functions on CIFAR-100-LT could reveal under which conditions tail-class performance is maximized. Other techniques, such as re-sampling in combination with class re-balancing, could be explored. Finally, combining strong performances and ensemble learning can reveal extraordinary performances.
 
 \paragraph{Refining Class-Sensitive Learning with Other Long-Tailed Methods}
-Other studies have shown that combining LDAM with deferred re-weighting (DRW) on CIFAR-100-LT enchance performance on tail classes \cite{cao2019learningimbalanceddatasetslabeldistributionaware,menon2021longtaillearninglogitadjustment}. Investigating how LDAM-DRW interacts with other re-balancing strategies or advanced optimizers could pinpoint conditions under which tail-class performance is maximized.
+Other studies have shown that combining LDAM with DRW on CIFAR-100-LT enchance performance on tail classes \cite{cao2019learningimbalanceddatasetslabeldistributionaware,menon2021longtaillearninglogitadjustment}. Investigating how LDAM-DRW interacts with other re-balancing strategies or advanced optimizers could pinpoint conditions under which tail-class performance is maximized.
 
 \paragraph{Freezing Model Parameters}
 Given the trade-offs of fully fine-tuning pretrained models, exploring partial freezing or gradual unfreezing of layers might better retain universal features while still adapting effectively to the distribution of minority classes. This layered approach could mitigate overfitting risks, particularly for smaller long-tailed datasets like CIFAR-100-LT.
